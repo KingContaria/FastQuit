@@ -46,7 +46,7 @@ public abstract class MinecraftClientMixin {
     private void fastQuit_waitForSave() {
         if (!this.stopping && !FastQuit.savingWorlds.isEmpty()) {
             this.stopping = true;
-            String stillSaving = "Waiting for " + (FastQuit.savingWorlds.size() == 1 ? "'" + FastQuit.savingWorlds.get(0).getSaveProperties().getLevelName() + "'" : "worlds") + " to finish saving...";
+            String stillSaving = "Waiting for " + String.join(" & ", FastQuit.savingWorlds.stream().map(server -> "'" + server.getSaveProperties().getLevelName() + "'").toList()) + " to finish saving...";
             this.setScreen(new MessageScreen(Text.literal(stillSaving)));
             FastQuit.log(stillSaving);
             while(FastQuit.savingWorlds.stream().anyMatch((server) -> !server.isStopping())) {

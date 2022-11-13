@@ -5,13 +5,14 @@ import net.minecraft.server.integrated.IntegratedServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FastQuit implements ClientModInitializer {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final Set<IntegratedServer> savingWorlds = new HashSet<>();
+    public static final List<IntegratedServer> savingWorlds = Collections.synchronizedList(new ArrayList<>());
 
     public static void log(String msg) {
         LOGGER.info("[FastQuit] " + msg);

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "fastquit",
+  "version": "${version}",
+
+  "name": "FastQuit",
+  "description": "Lets you return to the title screen early while your world is still saving in the background",
+  "authors": [
+    "KingContaria"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/fastquit",
+    "sources": "https://github.com/KingContaria/FastQuit",
+    "issues": "https://github.com/KingContaria/FastQuit/issues"
+  },
+
+  "license": "MIT",
+
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.kingcontaria.fastquit.FastQuit"
+    ]
+  },
+  "mixins": [
+    "fastquit.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "minecraft": "1.19.x",
+    "java": ">=17"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.kingcontaria.fastquit.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MinecraftServerMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

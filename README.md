@@ -10,7 +10,7 @@ While the world is saving, it won't show up on the world list, this is intended!
 
 ### Download this mod
 
-Once it is processed, you can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!
+You can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!
 
 ### Configure
 

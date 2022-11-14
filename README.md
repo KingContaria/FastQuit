@@ -12,6 +12,19 @@ While the world is saving, it won't show up on the world list, this is intended!
 
 Once it is processed, you can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!
 
+### Configure
+
+To configure the mod, go to .minecraft/config/fastquit-config.txt
+There is currently two options to configure:
+
+**showToasts**:
+Determines whether a toast gets shown when a world finishes saving
+
+**backgroundPriority**:
+Sets the thread priority of the server when saving worlds in the background.
+This is done to improve client performance while saving, but will make the saving take longer over all.
+Value has to be between 0 and 10, setting it to 0 will disable changing thread priority
+
 ### Problems?
 
 If you are experiencing any problems, please open an issue on the [issue tracker](https://github.com/KingContaria/FastQuit/issues)!

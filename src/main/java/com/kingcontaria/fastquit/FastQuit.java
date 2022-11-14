@@ -70,7 +70,6 @@ public class FastQuit implements ClientModInitializer {
         lines.add("## Value has to be between 0 and 10, setting it to 0 will disable changing thread priority");
         lines.add("backgroundPriority:" + backgroundPriority);
 
-        if (!CONFIG.getParentFile().mkdirs()) throw new IOException("Failed to create config directory");
         Files.write(CONFIG.toPath(), String.join(System.lineSeparator(), lines).getBytes());
     }
 

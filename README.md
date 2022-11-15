@@ -26,6 +26,12 @@ Sets the thread priority of the server when saving worlds in the background.
 This is done to improve client performance while saving, but will make the saving take longer over all.
 Value has to be between 0 and 10, setting it to 0 will disable changing thread priority
 
+### Thanks to...
+
+#### Translators:
+- Felix14-v2 (russian)
+####
+
 ### Problems?
 
 If you are experiencing any problems, please open an issue on the [issue tracker](https://github.com/KingContaria/FastQuit/issues)!

@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "FastQuit",
-  "description": "Lets you return to the title screen early while your world is still saving in the background",
+  "description": "This mod lets you return to the Title Screen early while your world is still saving in the background.",
   "authors": [
     "KingContaria"
   ],

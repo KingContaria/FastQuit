@@ -9,5 +9,7 @@
   "options.fastquit.backgroundPriority.min": "1 (Minimum)",
   "options.fastquit.backgroundPriority.recommended": "2 (Recommended)",
   "options.fastquit.backgroundPriority.default": "5 (Default)",
-  "options.fastquit.backgroundPriority.max": "10 (Maximum)"
+  "options.fastquit.backgroundPriority.max": "10 (Maximum)",
+
+  "modmenu.summaryTranslation.fastquit": "Return to the Title Screen while the world is still saving!"
 }

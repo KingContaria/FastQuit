@@ -17,7 +17,7 @@ public class ConfigScreen extends Screen {
     private Text backgroundPriorityDescription;
 
     public ConfigScreen(Screen parent) {
-        super(Text.of("FastQuit"));
+        super(Text.literal("FastQuit"));
         this.parent = parent;
     }
 
@@ -76,7 +76,7 @@ public class ConfigScreen extends Screen {
             case 2 -> Text.translatable("options.fastquit.backgroundPriority.recommended");
             case 5 -> Text.translatable("options.fastquit.backgroundPriority.default");
             case 10 -> Text.translatable("options.fastquit.backgroundPriority.max");
-            default -> Text.of(String.valueOf(FastQuit.backgroundPriority));
+            default -> Text.literal(String.valueOf(FastQuit.backgroundPriority));
         };
     }
 }

@@ -20,8 +20,8 @@ public class FastQuit implements ClientModInitializer {
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
     private static final Version VERSION = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata().getVersion();
     public static final List<IntegratedServer> savingWorlds = Collections.synchronizedList(new ArrayList<>());
-    public static int backgroundPriority = 2;
     public static boolean showToasts = true;
+    public static int backgroundPriority = 2;
 
     public static void log(String msg) {
         LOGGER.info("[FastQuit] " + msg);
@@ -73,7 +73,7 @@ public class FastQuit implements ClientModInitializer {
         Files.write(CONFIG.toPath(), String.join(System.lineSeparator(), lines).getBytes());
     }
 
-    private boolean readConfig() throws IOException {
+    private static boolean readConfig() throws IOException {
         List<String> lines = Files.readAllLines(CONFIG.toPath());
         Version version = null;
         for (String line : lines) {

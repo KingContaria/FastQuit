@@ -9,7 +9,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
-import net.minecraft.util.profiler.Profiler;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,19 +25,17 @@ public abstract class MinecraftClientMixin {
     @Shadow protected abstract void render(boolean tick);
     @Shadow public abstract void setScreen(@Nullable Screen screen);
 
-    @Shadow private @Nullable ClientConnection integratedServerConnection;
-    @Shadow @Nullable public Entity cameraEntity;
     @Shadow @Final private SoundManager soundManager;
-    @Shadow private Profiler profiler;
+    @Shadow @Nullable public Entity cameraEntity;
+    @Shadow @Nullable private ClientConnection integratedServerConnection;
+
     @Unique private volatile boolean stopping;
 
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;reset(Lnet/minecraft/client/gui/screen/Screen;)V"))
     private void fastQuit_doNotOpenSaveScreen(MinecraftClient client, Screen screen) {
-        this.profiler.push("forcedTick");
         this.soundManager.stopAll();
         this.cameraEntity = null;
         this.integratedServerConnection = null;
-        this.profiler.pop();
     }
 
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
@@ -65,13 +62,11 @@ public abstract class MinecraftClientMixin {
             this.setScreen(new MessageScreen(stillSaving));
             FastQuit.log(stillSaving.getString());
 
-            FastQuit.savingWorlds.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
+            FastQuit.savingWorlds.forEach(server -> server.getThread().setPriority(Thread.MAX_PRIORITY));
 
             while (FastQuit.savingWorlds.stream().anyMatch(server -> !server.isStopping())) {
                 this.render(false);
             }
-
-            FastQuit.log("Done.");
         }
     }
 }

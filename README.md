@@ -6,7 +6,7 @@ This mod lets you return to the title screen early while your world is still sav
 
 Don't worry, if you quit Minecraft while the world is still saving, it will finish saving before closing the game.
 
-While the world is saving, it won't show up on the world list, this is intended!
+If you try to rejoin the world while it is still saving, the game will wait until its finished before loading it.
 
 ### Download this mod
 

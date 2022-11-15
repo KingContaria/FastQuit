@@ -27,7 +27,7 @@ public class FastQuit implements ClientModInitializer {
         LOGGER.info("[FastQuit] " + msg);
     }
 
-    private static void error(String msg, Exception e) {
+    public static void error(String msg, Exception e) {
         LOGGER.error("[FastQuit] " + msg, e);
     }
 
@@ -57,7 +57,7 @@ public class FastQuit implements ClientModInitializer {
         log("Initialized");
     }
 
-    private void writeConfig() throws IOException {
+    public static void writeConfig() throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add("# FastQuit Config");
         lines.add("version:" + VERSION.getFriendlyString());

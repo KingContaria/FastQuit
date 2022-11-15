@@ -20,6 +20,9 @@
   "entrypoints": {
     "client": [
       "com.kingcontaria.fastquit.FastQuit"
+    ],
+    "modmenu": [
+      "com.kingcontaria.fastquit.ModMenuIntegration"
     ]
   },
   "mixins": [

@@ -1,5 +1,13 @@
 {
   "toast.fastquit.title": "FastQuit done!",
   "toast.fastquit.description": "Finished saving '%s'",
-  "screen.fastquit.waiting": "Waiting for '%s' to finish saving..."
+  "screen.fastquit.waiting": "Waiting for '%s' to finish saving...",
+  "options.fastquit.showToasts": "Show Toasts",
+  "options.fastquit.showToasts.description": "Determines whether a toast gets shown when a world finishes saving.",
+  "options.fastquit.backgroundPriority": "Background Thread Priority",
+  "options.fastquit.backgroundPriority.description": "Sets the thread priority of the server when saving worlds in the background.\nThis is done to improve client performance while saving, but will make the saving take longer over all.",
+  "options.fastquit.backgroundPriority.min": "1 (Minimum)",
+  "options.fastquit.backgroundPriority.recommended": "2 (Recommended)",
+  "options.fastquit.backgroundPriority.default": "5 (Default)",
+  "options.fastquit.backgroundPriority.max": "10 (Maximum)"
 }

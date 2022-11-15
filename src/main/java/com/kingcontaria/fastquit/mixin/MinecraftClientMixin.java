@@ -53,7 +53,7 @@ public abstract class MinecraftClientMixin {
 
             FastQuit.savingWorlds.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
 
-            while (FastQuit.savingWorlds.stream().anyMatch((server) -> !server.isStopping())) {
+            while (FastQuit.savingWorlds.stream().anyMatch(server -> !server.isStopping())) {
                 this.render(false);
             }
 

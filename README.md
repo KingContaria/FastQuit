@@ -14,7 +14,8 @@ You can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!
 
 ### Configure
 
-To configure the mod, go to .minecraft/config/fastquit-config.txt
+To configure the mod, go to .minecraft/config/fastquit-config.txt or open the config screen from [ModMenu](https://modrinth.com/mod/modmenu).
+
 There is currently two options to configure:
 
 **showToasts**:

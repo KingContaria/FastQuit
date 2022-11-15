@@ -1,0 +1,16 @@
+{
+  "toast.fastquit.title": "Сохранение завершено.",
+  "toast.fastquit.description": "Мир \"%s\" успешно сохранён.",
+  "screen.fastquit.waiting": "Ожидание сохранения \"%s\"...",
+  "options.fastquit.showToasts": "Уведомление по завершении",
+  "options.fastquit.showToasts.description": "Показывать уведомление после завершения сохранения мира.",
+  "options.fastquit.backgroundPriority": "Приоритет сохранения в фоне",
+  "options.fastquit.backgroundPriority.description": "Указать приоритет потока игрового сервера при сохранении мира в фоне.\nЕго снижение полезно для улучшения отзывчивости игры за счёт общей длительности сохранения.",
+  "options.fastquit.backgroundPriority.min": "1 (минимальный)",
+  "options.fastquit.backgroundPriority.recommended": "2 (рекомендуется)",
+  "options.fastquit.backgroundPriority.default": "5 (по умолчанию)",
+  "options.fastquit.backgroundPriority.max": "10 (максимальный)",
+
+  "modmenu.summaryTranslation.fastquit": "Возвращайтесь в главное меню быстрее! Мир сохранится позже.",
+  "modmenu.descriptionTranslation.fastquit": "Теперь можно покидать мир быстрее, не дожидаясь окончания его сохранения. FastQuit продолжит выполнять эту задачу в фоне."
+}

@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -24,6 +25,7 @@ public abstract class MinecraftClientMixin {
 
     @Shadow protected abstract void render(boolean tick);
     @Shadow public abstract void setScreen(@Nullable Screen screen);
+    @Shadow public abstract void setScreenAndRender(Screen screen);
 
     @Shadow @Final private SoundManager soundManager;
     @Shadow @Nullable public Entity cameraEntity;
@@ -49,9 +51,15 @@ public abstract class MinecraftClientMixin {
         this.fastQuit_waitForSave();
     }
 
-    @Inject(method = "cleanUpAfterCrash", at = @At("HEAD"))
+    @Inject(method = "cleanUpAfterCrash", at = @At("TAIL"))
     private void fastQuit_waitForSaveOnCrash(CallbackInfo ci) {
         this.fastQuit_waitForSave();
+    }
+
+    @ModifyArg(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"))
+    private Screen fastQuit_renderSaveAndQuitScreenOnCrash(Screen screen) {
+        this.setScreenAndRender(screen);
+        return screen;
     }
 
     private void fastQuit_waitForSave() {

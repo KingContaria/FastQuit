@@ -3,6 +3,7 @@ package com.kingcontaria.fastquit;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
+import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.server.integrated.IntegratedServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,25 +11,23 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class FastQuit implements ClientModInitializer {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
-    private static final Version VERSION = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata().getVersion();
-    public static final List<IntegratedServer> savingWorlds = Collections.synchronizedList(new ArrayList<>());
+    private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
+    public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
     public static boolean showToasts = true;
     public static int backgroundPriority = 2;
 
     public static void log(String msg) {
-        LOGGER.info("[FastQuit] " + msg);
+        LOGGER.info("[" + FASTQUIT.getName() + "] " + msg);
     }
 
     public static void error(String msg, Exception e) {
-        LOGGER.error("[FastQuit] " + msg, e);
+        LOGGER.error("[" + FASTQUIT.getName() + "] " + msg, e);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class FastQuit implements ClientModInitializer {
     public static void writeConfig() throws IOException {
         List<String> lines = new ArrayList<>();
         lines.add("# FastQuit Config");
-        lines.add("version:" + VERSION.getFriendlyString());
+        lines.add("version:" + FASTQUIT.getVersion().getFriendlyString());
         lines.add("");
         lines.add("## Determines whether a toast gets shown when a world finishes saving");
         lines.add("showToasts:" + showToasts);
@@ -92,6 +91,6 @@ public class FastQuit implements ClientModInitializer {
             } catch (Exception ignored) {
             }
         }
-        return version == null || version.compareTo(VERSION) < 0;
+        return version == null || version.compareTo(FASTQUIT.getVersion()) < 0;
     }
 }

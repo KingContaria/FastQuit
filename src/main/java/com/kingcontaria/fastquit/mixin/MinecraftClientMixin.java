@@ -51,7 +51,7 @@ public abstract class MinecraftClientMixin {
         this.fastQuit_waitForSave();
     }
 
-    @Inject(method = "cleanUpAfterCrash", at = @At("TAIL"))
+    @Inject(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V", ordinal = 1))
     private void fastQuit_waitForSaveOnCrash(CallbackInfo ci) {
         this.fastQuit_waitForSave();
     }

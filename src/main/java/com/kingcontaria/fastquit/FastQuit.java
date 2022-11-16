@@ -4,7 +4,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.MessageScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +24,7 @@ public class FastQuit implements ClientModInitializer {
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
     public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
     public static boolean showToasts = true;
+    public static boolean renderSavingScreen = false;
     public static int backgroundPriority = 2;
 
     public static void log(String msg) {
@@ -64,12 +69,16 @@ public class FastQuit implements ClientModInitializer {
         lines.add("## Determines whether a toast gets shown when a world finishes saving");
         lines.add("showToasts:" + showToasts);
         lines.add("");
+        lines.add("## When playing on high render distance, quitting the world can still take a bit because the client-side chunk storage has to be cleared.");
+        lines.add("## By enabling this setting the 'Saving world' screen will be rendered.");
+        lines.add("renderSavingScreen:" + renderSavingScreen);
+        lines.add("");
         lines.add("## Sets the thread priority of the server when saving worlds in the background");
         lines.add("## This is done to improve client performance while saving, but will make the saving take longer over all");
         lines.add("## Value has to be between 0 and 10, setting it to 0 will disable changing thread priority");
         lines.add("backgroundPriority:" + backgroundPriority);
 
-        Files.write(CONFIG.toPath(), String.join(System.lineSeparator(), lines).getBytes());
+        Files.writeString(CONFIG.toPath(), String.join(System.lineSeparator(), lines));
     }
 
     private static boolean readConfig() throws IOException {
@@ -85,6 +94,7 @@ public class FastQuit implements ClientModInitializer {
                     switch (split[0]) {
                         case "version" -> version = Version.parse(split[1]);
                         case "showToasts" -> showToasts = Boolean.parseBoolean(split[1]);
+                        case "renderSavingScreen" -> renderSavingScreen = Boolean.parseBoolean(split[1]);
                         case "backgroundPriority" -> backgroundPriority = Math.max(0, Math.min(Thread.MAX_PRIORITY, Integer.parseInt(split[1])));
                     }
                 }
@@ -92,5 +102,17 @@ public class FastQuit implements ClientModInitializer {
             }
         }
         return version == null || version.compareTo(FASTQUIT.getVersion()) < 0;
+    }
+
+    public static void wait(Set<IntegratedServer> servers) {
+        Text stillSaving = Text.translatable("screen.fastquit.waiting", String.join("' & '", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
+        Screen waitingScreen = new MessageScreen(stillSaving);
+        log(stillSaving.getString());
+
+        servers.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
+
+        while (servers.stream().anyMatch(server -> !server.isStopping())) {
+            MinecraftClient.getInstance().setScreenAndRender(waitingScreen);
+        }
     }
 }

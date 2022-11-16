@@ -11,6 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+	maven { url 'https://jitpack.io' }
 	maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
@@ -22,7 +23,6 @@ dependencies {
 
 	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	//modImplementation fabricApi.module('fabric-resource-loader-v0', project.fabric_version)
 
 	// ModMenu
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"

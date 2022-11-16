@@ -15,6 +15,7 @@
   },
 
   "license": "MIT",
+  "icon": "assets/fastquit/icon.png",
 
   "environment": "client",
   "entrypoints": {

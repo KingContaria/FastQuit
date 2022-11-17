@@ -24,11 +24,16 @@ public abstract class MinecraftServerMixin {
     private void fastQuit_finishSaving(CallbackInfo ci) {
         //noinspection ConstantConditions
         if ((Object) this instanceof IntegratedServer) {
-            FastQuit.savingWorlds.remove((IntegratedServer) (Object) this);
+            String key;
+            if (FastQuit.savingWorlds.remove((IntegratedServer) (Object) this)) {
+                key = "toast.fastquit.description";
+            } else {
+                key = "toast.fastquit.deleted";
+            }
 
-            Text description = Text.translatable("toast.fastquit.description", this.saveProperties.getLevelName());
+            Text description = Text.translatable(key, this.saveProperties.getLevelName());
             if (FastQuit.showToasts) {
-                MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.TUTORIAL_HINT, Text.translatable("toast.fastquit.title"), description));
+                MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, Text.translatable("toast.fastquit.title"), description));
             }
             FastQuit.log(description.getString());
         }

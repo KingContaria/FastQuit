@@ -1,5 +1,6 @@
 package com.kingcontaria.fastquit;
 
+import com.kingcontaria.fastquit.mixin.MinecraftServerAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -105,7 +107,7 @@ public class FastQuit implements ClientModInitializer {
     }
 
     public static void wait(Set<IntegratedServer> servers) {
-        Text stillSaving = Text.translatable("screen.fastquit.waiting", String.join("' & '", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
+        Text stillSaving = Text.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
         Screen waitingScreen = new MessageScreen(stillSaving);
         log(stillSaving.getString());
 
@@ -114,5 +116,13 @@ public class FastQuit implements ClientModInitializer {
         while (servers.stream().anyMatch(server -> !server.isStopping())) {
             MinecraftClient.getInstance().setScreenAndRender(waitingScreen);
         }
+    }
+
+    public static Optional<IntegratedServer> getSavingWorld(String name) {
+        return savingWorlds.stream().filter(server -> ((MinecraftServerAccessor) server).getSession().getDirectoryName().equals(name)).findFirst();
+    }
+
+    public static boolean isSavingWorld(LevelStorage.Session session) {
+        return FastQuit.savingWorlds.stream().anyMatch(server -> ((MinecraftServerAccessor) server).getSession() == session);
     }
 }

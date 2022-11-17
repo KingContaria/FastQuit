@@ -19,7 +19,7 @@ public abstract class IntegratedServerLoaderMixin {
 
     @Inject(method = "createSession", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), cancellable = true)
     private void fastQuit_waitForSaveOnWorldLoad(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
-        FastQuit.savingWorlds.stream().filter(server -> ((MinecraftServerAccessor) server).getSession().getDirectoryName().equals(levelName)).findFirst().ifPresent(server -> {
+        FastQuit.getSavingWorld(levelName).ifPresent(server -> {
             FastQuit.wait(Collections.singleton(server));
             cir.setReturnValue(this.createSession(levelName));
         });

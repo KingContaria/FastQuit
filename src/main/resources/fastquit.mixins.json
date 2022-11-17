@@ -6,9 +6,11 @@
   "client": [
     "IntegratedServerLoaderMixin",
     "LevelStorageMixin",
+    "LevelStorageSessionMixin",
     "MinecraftClientMixin",
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
+    "RealmsUploadScreenMixin",
     "WorldListWidgetWorldEntryMixin"
   ],
   "injectors": {

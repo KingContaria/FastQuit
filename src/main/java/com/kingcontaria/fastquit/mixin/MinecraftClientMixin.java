@@ -1,6 +1,7 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -25,7 +26,6 @@ import java.util.Set;
 public abstract class MinecraftClientMixin {
 
     @Shadow public abstract void setScreenAndRender(Screen screen);
-    @Shadow protected abstract void render(boolean tick);
 
     @Shadow @Final private ToastManager toastManager;
 
@@ -47,13 +47,9 @@ public abstract class MinecraftClientMixin {
         }
     }
 
-    // using MixinExtras' @WrapCondition would be perfect here, but it doubles the filesize
-    // I doubt anyone else will redirect this call anyway, might reconsider in the future tho
-    @Redirect(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))
-    private void fastQuit_doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
-        if (FastQuit.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(Text.translatable("menu.savingLevel")))) {
-            this.render(tick);
-        }
+    @WrapWithCondition(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))
+    private boolean fastQuit_doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
+        return FastQuit.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(Text.translatable("menu.savingLevel")));
     }
 
     @Inject(method = "run", at = @At("RETURN"))

@@ -19,6 +19,9 @@
 
   "environment": "client",
   "entrypoints": {
+    "preLaunch": [
+      "com.llamalad7.mixinextras.MixinExtrasBootstrap::init"
+    ],
     "client": [
       "com.kingcontaria.fastquit.FastQuit"
     ],

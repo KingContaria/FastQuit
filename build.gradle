@@ -11,6 +11,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+	maven { url 'https://jitpack.io' }
 	maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
@@ -25,6 +26,9 @@ dependencies {
 
 	// ModMenu
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// MixinExtras
+	include(annotationProcessor(implementation("com.github.LlamaLad7:MixinExtras:${project.mixinextras_version}")))
 }
 
 processResources {

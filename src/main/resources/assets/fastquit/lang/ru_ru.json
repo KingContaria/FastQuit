@@ -1,6 +1,7 @@
 {
   "toast.fastquit.title": "Сохранение завершено.",
   "toast.fastquit.description": "Мир \"%s\" успешно сохранён.",
+  "toast.fastquit.deleted": "\"%s\" удалён",
   "screen.fastquit.waiting": "Ожидание сохранения \"%s\"...",
   "options.fastquit.showToasts": "Уведомление по завершении",
   "options.fastquit.showToasts.description": "Показывать уведомление после завершения сохранения мира.",

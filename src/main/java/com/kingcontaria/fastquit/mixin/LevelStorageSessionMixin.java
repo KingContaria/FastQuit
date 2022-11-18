@@ -40,12 +40,17 @@ public abstract class LevelStorageSessionMixin {
 
     @Unique private int extraTries;
 
-    @ModifyConstant(method = "deleteSessionLock", constant = @Constant(intValue = 5))
-    private int fastQuit_moreTriesForDeletion(int tries) {
+    @ModifyConstant(method = "deleteSessionLock", constant = @Constant(intValue = 5, ordinal = 0))
+    private int fastQuit_moreTriesForDeletion1(int tries) {
         //noinspection ConstantConditions
         if (FastQuit.isSavingWorld((LevelStorage.Session) (Object) this)) {
-            extraTries++;
+            this.extraTries++;
         }
-        return tries + extraTries;
+        return tries + this.extraTries;
+    }
+
+    @ModifyConstant(method = "deleteSessionLock", constant = @Constant(intValue = 5, ordinal = 1))
+    private int fastQuit_moreTriesForDeletion2(int tries) {
+        return tries + this.extraTries;
     }
 }

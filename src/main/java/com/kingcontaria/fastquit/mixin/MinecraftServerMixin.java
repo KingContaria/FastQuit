@@ -1,11 +1,14 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.world.SaveProperties;
+import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -43,6 +46,15 @@ public abstract class MinecraftServerMixin {
         //noinspection ConstantConditions
         if ((Object) this instanceof IntegratedServer && FastQuit.backgroundPriority != 0) {
             this.serverThread.setPriority(FastQuit.backgroundPriority);
+        }
+    }
+
+    @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
+    private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<?> original) {
+        synchronized (FastQuit.occupiedSessions) {
+            if (!FastQuit.occupiedSessions.remove(session)) {
+                original.call(session);
+            }
         }
     }
 }

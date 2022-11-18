@@ -26,11 +26,11 @@ public abstract class MinecraftServerMixin {
     private void fastQuit_finishSaving(CallbackInfo ci) {
         //noinspection ConstantConditions
         if ((Object) this instanceof IntegratedServer) {
-            String key;
+            String key = "toast.fastquit.";
             if (FastQuit.savingWorlds.remove((IntegratedServer) (Object) this)) {
-                key = "toast.fastquit.description";
+                key += "description";
             } else {
-                key = "toast.fastquit.deleted";
+                key += "deleted";
             }
 
             Text description = Text.translatable(key, this.saveProperties.getLevelName());
@@ -50,7 +50,7 @@ public abstract class MinecraftServerMixin {
     }
 
     @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
-    private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<?> original) {
+    private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<Void> original) {
         synchronized (FastQuit.occupiedSessions) {
             if (!FastQuit.occupiedSessions.remove(session)) {
                 original.call(session);

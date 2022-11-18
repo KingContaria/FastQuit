@@ -36,7 +36,7 @@ public abstract class MinecraftClientMixin {
         if (tick) {
             Toast toast;
             while ((toast = FastQuit.scheduledToasts.poll()) != null) {
-                toastManager.add(toast);
+                this.toastManager.add(toast);
             }
         }
     }

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Collections;
 
@@ -21,8 +21,8 @@ public abstract class LevelStorageSessionMixin {
 
     @Shadow @Final private String directoryName;
 
-    @Inject(method = "backupLevelDataFile(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V", at = @At("HEAD"))
-    private void fastQuit_waitForSaveOnBackup(CallbackInfo ci) {
+    @Inject(method = "createBackup", at = @At("HEAD"))
+    private void fastQuit_waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
         FastQuit.getSavingWorld(this.directoryName).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 

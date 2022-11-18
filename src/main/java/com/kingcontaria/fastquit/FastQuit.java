@@ -28,7 +28,7 @@ public class FastQuit implements ClientModInitializer {
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
     public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
     public static final ConcurrentLinkedQueue<Toast> scheduledToasts = new ConcurrentLinkedQueue<>();
-    public static final Set<LevelStorage.Session> occupiedSessions = new HashSet<>();
+    public static final List<LevelStorage.Session> occupiedSessions = new ArrayList<>();
     public static boolean showToasts = true;
     public static boolean renderSavingScreen = false;
     public static int backgroundPriority = 2;

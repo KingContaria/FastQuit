@@ -33,15 +33,12 @@ public abstract class WorldListWidgetWorldEntryMixin {
     }
 
     @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
-    private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) throws IOException {
+    private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
         synchronized (FastQuit.occupiedSessions) {
             Optional<IntegratedServer> server = FastQuit.getSavingWorld(directoryName);
             if (server.isPresent()) {
                 LevelStorage.Session session = ((MinecraftServerAccessor) server.get()).getSession();
-                if (!FastQuit.occupiedSessions.add(session)) {
-                    // IOException because that is what Minecraft will catch here
-                    throw new IOException("This should NEVER happen! If you are reading this in your log right now, PLEASE open an issue on the FastQuit github!");
-                }
+                FastQuit.occupiedSessions.add(session);
                 return session;
             }
         }

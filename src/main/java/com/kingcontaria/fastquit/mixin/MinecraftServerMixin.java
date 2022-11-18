@@ -1,7 +1,6 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.integrated.IntegratedServer;
@@ -33,7 +32,7 @@ public abstract class MinecraftServerMixin {
 
             Text description = Text.translatable(key, this.saveProperties.getLevelName());
             if (FastQuit.showToasts) {
-                MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, Text.translatable("toast.fastquit.title"), description));
+                FastQuit.scheduledToasts.add(new SystemToast(SystemToast.Type.WORLD_BACKUP, Text.translatable("toast.fastquit.title"), description));
             }
             FastQuit.log(description.getString());
         }

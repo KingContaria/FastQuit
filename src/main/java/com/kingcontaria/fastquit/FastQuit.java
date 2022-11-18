@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.toast.Toast;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.world.level.storage.LevelStorage;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FastQuit implements ClientModInitializer {
 
@@ -25,6 +27,7 @@ public class FastQuit implements ClientModInitializer {
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
     public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
+    public static final ConcurrentLinkedQueue<Toast> scheduledToasts = new ConcurrentLinkedQueue<>();
     public static boolean showToasts = true;
     public static boolean renderSavingScreen = false;
     public static int backgroundPriority = 2;

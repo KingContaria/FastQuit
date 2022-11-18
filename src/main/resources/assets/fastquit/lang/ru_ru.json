@@ -1,9 +1,12 @@
 {
   "toast.fastquit.title": "Сохранение завершено.",
   "toast.fastquit.description": "Мир \"%s\" успешно сохранён.",
+  "toast.fastquit.deleted": "\"%s\" удалён",
   "screen.fastquit.waiting": "Ожидание сохранения \"%s\"...",
   "options.fastquit.showToasts": "Уведомление по завершении",
   "options.fastquit.showToasts.description": "Показывать уведомление после завершения сохранения мира.",
+  "options.fastquit.renderSavingScreen": "Отображение экрана выгрузки",
+  "options.fastquit.renderSavingScreen.description": "При игре с высокой прорисовкой выход из мира сопровождается дополнительной задержкой из-за необходимости выгрузки данных чанков у клиента.\nПри включении вернётся отображение экрана сохранения вместо зависания во время этого процесса.",
   "options.fastquit.backgroundPriority": "Приоритет сохранения в фоне",
   "options.fastquit.backgroundPriority.description": "Указать приоритет потока игрового сервера при сохранении мира в фоне.\nЕго снижение полезно для улучшения отзывчивости игры за счёт общей длительности сохранения.",
   "options.fastquit.backgroundPriority.1": "1 (минимальный)",

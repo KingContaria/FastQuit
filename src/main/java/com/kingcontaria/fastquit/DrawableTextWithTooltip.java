@@ -30,7 +30,7 @@ public class DrawableTextWithTooltip implements Drawable, Element {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.textRenderer.draw(matrices, this.text, this.x, this.y, 0xFFFFFF);
-        if (this.isMouseOverText(mouseX, mouseY)) {
+        if (this.isMouseOver(mouseX, mouseY)) {
             this.screen.renderOrderedTooltip(matrices, this.textRenderer.wrapLines(this.tooltip, 200), mouseX, mouseY);
             if (lastNarration != this) {
                 MinecraftClient.getInstance().getNarratorManager().narrate(this.text);
@@ -41,14 +41,15 @@ public class DrawableTextWithTooltip implements Drawable, Element {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.isMouseOverText(mouseX, mouseY)) {
+        if (this.isMouseOver(mouseX, mouseY)) {
             MinecraftClient.getInstance().getNarratorManager().narrate(this.tooltip);
             return true;
         }
         return false;
     }
 
-    private boolean isMouseOverText(double mouseX, double mouseY) {
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
         return mouseX > this.x && mouseX < this.x + this.textRenderer.getWidth(this.text) && mouseY > this.y && mouseY < this.y + this.textRenderer.fontHeight;
     }
 }

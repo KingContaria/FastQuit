@@ -1,6 +1,7 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
@@ -55,7 +56,15 @@ public abstract class MinecraftClientMixin {
 
     @ModifyArg(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"))
     private Screen fastQuit_renderSaveAndQuitScreenOnCrash(Screen screen) {
-        this.setScreenAndRender(screen);
+        if (!FastQuit.renderSavingScreen) {
+            this.setScreenAndRender(screen);
+        }
         return screen;
+    }
+
+    @ModifyReceiver(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;stop(Z)V"))
+    private IntegratedServer fastQuit_addDisconnectingServerOnCrash(IntegratedServer server, boolean join) {
+        FastQuit.savingWorlds.add(server);
+        return server;
     }
 }

@@ -61,7 +61,7 @@ public abstract class MinecraftServerMixin {
     }
 
     @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
-    private void fastQuit_synchronizedEEEEEE(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
+    private void fastQuit_synchronizedLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
         synchronized (saveProperties) {
             original.call(session, registryManager, saveProperties, nbt);
         }

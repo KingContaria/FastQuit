@@ -13,6 +13,7 @@
     "MinecraftClientMixin",
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
+    "OptimizeWorldScreenMixin",
     "RealmsUploadScreenMixin",
     "WorldListWidgetWorldEntryMixin"
   ],

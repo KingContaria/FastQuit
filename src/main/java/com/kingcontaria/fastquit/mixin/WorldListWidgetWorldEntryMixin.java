@@ -26,7 +26,7 @@ public abstract class WorldListWidgetWorldEntryMixin {
     @Shadow @Final private LevelSummary level;
 
     // While this is technically not needed anymore, I'll leave it in just in case something goes wrong
-    @Inject(method = "edit", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/world/WorldListWidget;load()V"))
+    @Inject(method = "edit", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/SystemToast;addWorldAccessFailureToast(Lnet/minecraft/client/MinecraftClient;Ljava/lang/String;)V"))
     private void fastQuit_openWorldListWhenFailed(CallbackInfo ci) {
         this.client.setScreen(this.screen);
     }

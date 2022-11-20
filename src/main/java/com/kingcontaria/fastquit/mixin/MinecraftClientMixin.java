@@ -34,11 +34,9 @@ public abstract class MinecraftClientMixin {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void fastQuit_addScheduledToasts(boolean tick, CallbackInfo ci) {
-        if (tick) {
-            Toast toast;
-            while ((toast = FastQuit.scheduledToasts.poll()) != null) {
-                this.toastManager.add(toast);
-            }
+        Toast toast;
+        while ((toast = FastQuit.scheduledToasts.poll()) != null) {
+            this.toastManager.add(toast);
         }
     }
 

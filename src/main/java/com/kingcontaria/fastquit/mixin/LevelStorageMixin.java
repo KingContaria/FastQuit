@@ -15,8 +15,11 @@ public abstract class LevelStorageMixin {
     private void fastQuit_addCurrentlySavingLevels(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
         synchronized (FastQuit.occupiedSessions) {
             FastQuit.getSavingWorld(levelSave.getRootPath()).ifPresent(server -> {
-                synchronized (((MinecraftServerAccessor) server).getSession()) {
-                    cir.setReturnValue(((MinecraftServerAccessor) server).getSession().getLevelSummary());
+                LevelStorage.Session session = ((MinecraftServerAccessor) server).getSession();
+                if (((SessionAccessor) session).getLock().isValid()) {
+                    synchronized (session) {
+                        cir.setReturnValue(session.getLevelSummary());
+                    }
                 }
             });
         }

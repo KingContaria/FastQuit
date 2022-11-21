@@ -37,8 +37,10 @@ public abstract class WorldListWidgetWorldEntryMixin {
             Optional<IntegratedServer> server = FastQuit.getSavingWorld(directoryName);
             if (server.isPresent()) {
                 LevelStorage.Session session = ((MinecraftServerAccessor) server.get()).getSession();
-                FastQuit.occupiedSessions.add(session);
-                return session;
+                if (((SessionAccessor) session).getLock().isValid()) {
+                    FastQuit.occupiedSessions.add(session);
+                    return session;
+                }
             }
         }
         return original.call(storage, directoryName);

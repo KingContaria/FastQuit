@@ -15,7 +15,7 @@ public class ConfigScreen extends Screen {
     private final List<DrawableTextWithTooltip> texts = new ArrayList<>();
 
     public ConfigScreen(Screen parent) {
-        super(Text.literal("FastQuit"));
+        super(TextHelper.literal("FastQuit"));
         this.parent = parent;
     }
 

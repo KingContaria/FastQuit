@@ -23,7 +23,7 @@ public abstract class EditWorldScreenMixin {
         }, () -> original.call(session, name));
     }
 
-    @WrapOperation(method = "method_29068", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;"))
+    @WrapOperation(method = "method_29068", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
     private SaveLoader fastQuit_synchronizeExportingWorldGenSettings(IntegratedServerLoader serverLoader, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
         synchronized (session) {
             return original.call(serverLoader, session, safeMode);

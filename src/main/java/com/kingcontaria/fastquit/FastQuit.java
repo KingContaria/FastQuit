@@ -111,7 +111,7 @@ public class FastQuit implements ClientModInitializer {
     }
 
     public static void wait(Set<IntegratedServer> servers) {
-        Text stillSaving = Text.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
+        Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
         Screen waitingScreen = new MessageScreen(stillSaving);
         log(stillSaving.getString());
 

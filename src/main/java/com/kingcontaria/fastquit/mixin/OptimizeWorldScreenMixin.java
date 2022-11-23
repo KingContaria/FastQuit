@@ -17,7 +17,7 @@ import java.util.Collections;
 public abstract class OptimizeWorldScreenMixin {
 
     @Inject(method = "create", at = @At("HEAD"))
-    private static void fastQuit_waitForSaveOnRealmsUpload(MinecraftClient client, BooleanConsumer callback, DataFixer dataFixer, LevelStorage.Session storageSession, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
+    private static void fastQuit_waitForSaveOnOptimizeWorld(MinecraftClient client, BooleanConsumer callback, DataFixer dataFixer, LevelStorage.Session storageSession, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
         FastQuit.getSavingWorld(storageSession.getDirectoryName()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 }

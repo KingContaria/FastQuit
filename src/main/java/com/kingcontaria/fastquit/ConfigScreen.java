@@ -4,7 +4,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
 import java.io.IOException;
@@ -22,8 +21,8 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void init() {
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 55, 150, 20, ScreenTexts.onOrOff(FastQuit.showToasts), button -> button.setMessage(ScreenTexts.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 85, 150, 20, ScreenTexts.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(ScreenTexts.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 55, 150, 20, TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 85, 150, 20, TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))));
         this.addDrawableChild(new SliderWidget(this.width / 2 + 5, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
             @Override
             protected void updateMessage() {
@@ -35,13 +34,13 @@ public class ConfigScreen extends Screen {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
         });
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, ScreenTexts.DONE, button -> this.close()));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, TextHelper.DONE, button -> this.close()));
 
         int textX = this.width / 2 - 155;
         int textYOffset = (20 - this.textRenderer.fontHeight) / 2;
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, Text.translatable("options.fastquit.showToasts"), Text.translatable("options.fastquit.showToasts.description"), textX, 55 + textYOffset));
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, Text.translatable("options.fastquit.renderSavingScreen"), Text.translatable("options.fastquit.renderSavingScreen.description"), textX, 85 + textYOffset));
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, Text.translatable("options.fastquit.backgroundPriority"), Text.translatable("options.fastquit.backgroundPriority.description"), textX, 115 + textYOffset));
+        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.showToasts"), TextHelper.translatable("options.fastquit.showToasts.description"), textX, 55 + textYOffset));
+        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.renderSavingScreen"), TextHelper.translatable("options.fastquit.renderSavingScreen.description"), textX, 85 + textYOffset));
+        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.backgroundPriority"), TextHelper.translatable("options.fastquit.backgroundPriority.description"), textX, 115 + textYOffset));
     }
 
     @Override
@@ -80,9 +79,9 @@ public class ConfigScreen extends Screen {
 
     private static Text getBackgroundPriorityText() {
         return switch (FastQuit.backgroundPriority) {
-            case 0 -> ScreenTexts.OFF;
-            case 1, 2, 5, 10 -> Text.translatable("options.fastquit.backgroundPriority." + FastQuit.backgroundPriority);
-            default -> Text.literal(String.valueOf(FastQuit.backgroundPriority));
+            case 0 -> TextHelper.OFF;
+            case 1, 2, 5, 10 -> TextHelper.translatable("options.fastquit.backgroundPriority." + FastQuit.backgroundPriority);
+            default -> TextHelper.literal(String.valueOf(FastQuit.backgroundPriority));
         };
     }
 }

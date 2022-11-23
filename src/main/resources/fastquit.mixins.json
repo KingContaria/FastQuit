@@ -15,12 +15,10 @@
     "MinecraftServerMixin",
     "OptimizeWorldScreenMixin",
     "RealmsUploadScreenMixin",
+    "SessionAccessor",
     "WorldListWidgetWorldEntryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "SessionAccessor"
-  ]
+  }
 }

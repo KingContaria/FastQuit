@@ -13,15 +13,15 @@ public abstract class LevelStorageMixin {
 
     @Inject(method = "method_43418", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), cancellable = true, remap = false)
     private void fastQuit_addCurrentlySavingLevels(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
-        synchronized (FastQuit.occupiedSessions) {
-            FastQuit.getSavingWorld(levelSave.getRootPath()).ifPresent(server -> {
+        FastQuit.getSavingWorld(levelSave.getRootPath()).ifPresent(server -> {
+            synchronized (FastQuit.occupiedSessions) {
                 LevelStorage.Session session = ((MinecraftServerAccessor) server).getSession();
                 if (((SessionAccessor) session).getLock().isValid()) {
                     synchronized (session) {
                         cir.setReturnValue(session.getLevelSummary());
                     }
                 }
-            });
-        }
+            }
+        });
     }
 }

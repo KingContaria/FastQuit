@@ -33,9 +33,9 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
     private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
-        synchronized (FastQuit.occupiedSessions) {
-            Optional<IntegratedServer> server = FastQuit.getSavingWorld(directoryName);
-            if (server.isPresent()) {
+        Optional<IntegratedServer> server = FastQuit.getSavingWorld(directoryName);
+        if (server.isPresent()) {
+            synchronized (FastQuit.occupiedSessions) {
                 LevelStorage.Session session = ((MinecraftServerAccessor) server.get()).getSession();
                 if (((SessionAccessor) session).getLock().isValid()) {
                     FastQuit.occupiedSessions.add(session);

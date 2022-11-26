@@ -1,0 +1,19 @@
+{
+  "toast.fastquit.title": "FastQuit ist fertig!",
+  "toast.fastquit.description": "Speichern abgeschlossen\"%s\"",
+  "toast.fastquit.deleted": "\"%s\" wurde gelöscht",
+  "screen.fastquit.waiting": "Warte auf das Speichern von \"%s\"...",
+  "options.fastquit.showToasts": "Zeige Benachrichtigungen",
+  "options.fastquit.showToasts.description": "Bestimmt, ob eine Benachrichtigung gezeigt wird, wenn eine Welt gespeichert wurde.",
+  "options.fastquit.renderSavingScreen": "Zeige \"Speichere Welt\" Ladebildschirm",
+  "options.fastquit.renderSavingScreen.description": "Bei höheren Sichtweiten dauert es manchmal etwas länger, eine Welt zu verlassen.\nDurch einschalten dieser Einstellung, wird der \"Speichere Welt\" Ladebildschirm angezeigt.",
+  "options.fastquit.backgroundPriority": "Hintergrund Thread-Priorität",
+  "options.fastquit.backgroundPriority.description": "Ändert die Thread-Priorität des Servers beim Speichern von Welten im Hintergrund.\nDiese Einstellung verbessert die Performance des Clients, verlangsamt aber das Speichern von Welten.",
+  "options.fastquit.backgroundPriority.1": "1 (Minimum)",
+  "options.fastquit.backgroundPriority.2": "2 (Empfohlen)",
+  "options.fastquit.backgroundPriority.5": "5 (Standard)",
+  "options.fastquit.backgroundPriority.10": "10 (Maximum)",
+
+  "modmenu.summaryTranslation.fastquit": "Kehre zum Hauptmenü zurück, während die Welt noch speichert!",
+  "modmenu.descriptionTranslation.fastquit": "Dieser Mod erlaubt es dir, das Hauptmenü frühzeitig zu öffnen, während die Welt im Hintergrund speichert."
+}

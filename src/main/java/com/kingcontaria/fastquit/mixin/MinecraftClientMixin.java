@@ -45,7 +45,7 @@ public abstract class MinecraftClientMixin {
         return FastQuit.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
     }
 
-    @Inject(method = "run", at = @At("RETURN"))
+    @Inject(method = "run", at = {@At("RETURN"), @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;printCrashReport(Lnet/minecraft/util/crash/CrashReport;)V")})
     private void fastQuit_waitForSaveOnShutdown(CallbackInfo ci) {
         if (!FastQuit.savingWorlds.isEmpty()) {
             FastQuit.wait(FastQuit.savingWorlds);

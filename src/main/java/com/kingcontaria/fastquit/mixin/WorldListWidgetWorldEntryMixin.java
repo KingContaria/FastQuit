@@ -8,12 +8,12 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.level.storage.LevelStorage;
-import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
@@ -23,7 +23,6 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @Shadow @Final private SelectWorldScreen screen;
     @Shadow @Final private MinecraftClient client;
-    @Shadow @Final private LevelSummary level;
 
     // While this is technically not needed anymore, I'll leave it in just in case something goes wrong
     @Inject(method = "edit", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/SystemToast;addWorldAccessFailureToast(Lnet/minecraft/client/MinecraftClient;Ljava/lang/String;)V"))
@@ -33,7 +32,7 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
     private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
-        Optional<IntegratedServer> server = FastQuit.getSavingWorld(directoryName);
+        Optional<IntegratedServer> server = FastQuit.getSavingWorld(storage.getSavesDirectory().resolve(directoryName));
         if (server.isPresent()) {
             synchronized (FastQuit.occupiedSessions) {
                 LevelStorage.Session session = ((MinecraftServerAccessor) server.get()).getSession();
@@ -55,8 +54,9 @@ public abstract class WorldListWidgetWorldEntryMixin {
         }
     }
 
-    @Inject(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
-    private void fastQuit_removeSavingWorldAfterDeleting(CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.level.getName()).ifPresent(FastQuit.savingWorlds::remove);
+    @ModifyVariable(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
+    private LevelStorage.Session fastQuit_removeSavingWorldAfterDeleting(LevelStorage.Session session) {
+        FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresent(FastQuit.savingWorlds::remove);
+        return session;
     }
 }

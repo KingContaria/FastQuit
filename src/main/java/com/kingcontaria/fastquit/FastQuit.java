@@ -1,6 +1,7 @@
 package com.kingcontaria.fastquit;
 
 import com.kingcontaria.fastquit.mixin.MinecraftServerAccessor;
+import com.kingcontaria.fastquit.mixin.SessionAccessor;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -122,8 +124,8 @@ public class FastQuit implements ClientModInitializer {
         }
     }
 
-    public static Optional<IntegratedServer> getSavingWorld(String name) {
-        return savingWorlds.stream().filter(server -> ((MinecraftServerAccessor) server).getSession().getDirectoryName().equals(name)).findFirst();
+    public static Optional<IntegratedServer> getSavingWorld(Path path) {
+        return savingWorlds.stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
     }
 
     public static boolean isSavingWorld(LevelStorage.Session session) {

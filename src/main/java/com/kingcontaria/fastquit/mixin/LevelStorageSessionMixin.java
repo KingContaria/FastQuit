@@ -18,11 +18,11 @@ import java.util.Collections;
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
 
-    @Shadow @Final private String directoryName;
+    @Shadow @Final LevelStorage.LevelSave directory;
 
     @Inject(method = "createBackup", at = @At("HEAD"))
     private void fastQuit_waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
-        FastQuit.getSavingWorld(this.directoryName).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 
     @WrapWithCondition(method = "backupLevelDataFile(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;error(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))

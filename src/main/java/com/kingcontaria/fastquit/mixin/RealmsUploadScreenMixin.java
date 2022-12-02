@@ -15,6 +15,6 @@ public abstract class RealmsUploadScreenMixin {
 
     @Inject(method = "tarGzipArchive", at = @At("HEAD"))
     private void fastQuit_waitForSaveOnRealmsUpload(File pathToDirectoryFile, CallbackInfoReturnable<File> cir) {
-        FastQuit.getSavingWorld(pathToDirectoryFile.getName()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld(pathToDirectoryFile.toPath()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 }

@@ -9,4 +9,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface SessionAccessor {
     @Accessor
     SessionLock getLock();
+
+    @Accessor
+    LevelStorage.LevelSave getDirectory();
 }

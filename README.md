@@ -64,7 +64,9 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 ### Thanks to...
 
 #### Translators:
-- Felix14-v2 (russian)
+- Felix14-v2 (Russian)
+- Cccc-owo (Simplified Chinese)
+- JustAlittleWolf (German)
 ####
 
 ### Compatibility

@@ -71,9 +71,11 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 
 ### Compatibility
 
-There is currently no known incompatibilities.
-
 With the help of [MixinExtras](https://github.com/LlamaLad7/MixinExtras), the mixins have been designed to be very non-intrusive while also being very effective.
+
+Because of that there is currently no known hard incompatibilities.
+
+However Minecraft will crash when trying to pregenerate new chunks with [WorldGen](https://modrinth.com/mod/world-gen) for a currently saving world. This should be solved on WorldGen's side by adding a fallback similar to those Minecraft has (with a toast informing the user of the failure) as it not only affects FastQuit but also accessing worlds occupied by other processes/Minecraft instances.
 
 If you do suspect an incompatibility with another mod, please [open an issue](#problems)!
 

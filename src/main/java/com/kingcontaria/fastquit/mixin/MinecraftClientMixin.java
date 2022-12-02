@@ -7,10 +7,7 @@ import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.toast.Toast;
-import net.minecraft.client.toast.ToastManager;
 import net.minecraft.server.integrated.IntegratedServer;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,20 +21,10 @@ public abstract class MinecraftClientMixin {
 
     @Shadow public abstract void setScreenAndRender(Screen screen);
 
-    @Shadow @Final private ToastManager toastManager;
-
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
     private boolean fastQuit(IntegratedServer server) {
         FastQuit.savingWorlds.add(server);
         return true;
-    }
-
-    @Inject(method = "render", at = @At("HEAD"))
-    private void fastQuit_addScheduledToasts(boolean tick, CallbackInfo ci) {
-        Toast toast;
-        while ((toast = FastQuit.scheduledToasts.poll()) != null) {
-            this.toastManager.add(toast);
-        }
     }
 
     @WrapWithCondition(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))

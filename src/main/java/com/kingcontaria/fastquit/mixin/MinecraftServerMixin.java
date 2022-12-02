@@ -4,6 +4,7 @@ import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.TextHelper;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -38,7 +39,7 @@ public abstract class MinecraftServerMixin {
 
             Text description = TextHelper.translatable(key, this.saveProperties.getLevelName());
             if (FastQuit.showToasts) {
-                FastQuit.scheduledToasts.add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description));
+                MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
             FastQuit.log(description.getString());
         }

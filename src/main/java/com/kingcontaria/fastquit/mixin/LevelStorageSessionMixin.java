@@ -29,12 +29,6 @@ public abstract class LevelStorageSessionMixin {
     private boolean fastQuit_doNotLogErrorServerSide(Logger logger, String s, Object o1, Object o2) {
         IntegratedServer server = MinecraftClient.getInstance().getServer();
         //noinspection ConstantConditions
-        return (server != null && !server.isStopped() && ((MinecraftServerAccessor) server).getSession() == (Object) this) || FastQuit.isSavingWorld((LevelStorage.Session) (Object) this);
-    }
-
-    @WrapWithCondition(method = "deleteSessionLock", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
-    private boolean fastQuit_doNotLogErrorClientSide(Logger logger, String s, Object o1, Object o2) {
-        //noinspection ConstantConditions
-        return !FastQuit.isSavingWorld((LevelStorage.Session) (Object) this);
+        return (server != null && ((MinecraftServerAccessor) server).getSession() == (Object) this) || FastQuit.isSavingWorld((LevelStorage.Session) (Object) this);
     }
 }

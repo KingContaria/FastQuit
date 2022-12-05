@@ -26,12 +26,6 @@ public abstract class WorldListWidgetWorldEntryMixin {
     @Shadow @Final private SelectWorldScreen screen;
     @Shadow @Final private MinecraftClient client;
 
-    // While this is technically not needed anymore, I'll leave it in just in case something goes wrong
-    @Inject(method = "edit", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/SystemToast;addWorldAccessFailureToast(Lnet/minecraft/client/MinecraftClient;Ljava/lang/String;)V"))
-    private void fastQuit_openWorldListWhenFailed(CallbackInfo ci) {
-        this.client.setScreen(this.screen);
-    }
-
     @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
     private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
         Optional<IntegratedServer> server = FastQuit.getSavingWorld(storage.getSavesDirectory().resolve(directoryName));
@@ -63,9 +57,15 @@ public abstract class WorldListWidgetWorldEntryMixin {
     }
 
     @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
-    private SaveLoader fastQuit_synchronizeExportingWorldGenSettings(IntegratedServerLoader serverLoader, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
+    private SaveLoader fastQuit_synchronizeRecreatingWorld(IntegratedServerLoader serverLoader, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
         synchronized (session) {
             return original.call(serverLoader, session, safeMode);
         }
+    }
+
+    // While this is technically not needed anymore, I'll leave it in just in case something goes wrong
+    @Inject(method = "edit", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/toast/SystemToast;addWorldAccessFailureToast(Lnet/minecraft/client/MinecraftClient;Ljava/lang/String;)V"))
+    private void fastQuit_openWorldListWhenFailed(CallbackInfo ci) {
+        this.client.setScreen(this.screen);
     }
 }

@@ -55,17 +55,23 @@ public abstract class MinecraftServerMixin {
 
     @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
     private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<Void> original) {
-        synchronized (FastQuit.occupiedSessions) {
-            if (!FastQuit.occupiedSessions.remove(session)) {
-                original.call(session);
+        //noinspection ConstantConditions
+        if ((Object) this instanceof IntegratedServer) {
+            synchronized (FastQuit.occupiedSessions) {
+                if (!FastQuit.occupiedSessions.remove(session)) {
+                    original.call(session);
+                }
             }
         }
     }
 
     @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
     private void fastQuit_synchronizedLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
-        synchronized (session) {
-            original.call(session, registryManager, saveProperties, nbt);
+        //noinspection ConstantConditions
+        if ((Object) this instanceof IntegratedServer) {
+            synchronized (session) {
+                original.call(session, registryManager, saveProperties, nbt);
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ public class FastQuit implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if (CONFIG.exists()) {
+        if (CONFIG.isFile()) {
             try {
                 boolean update = readConfig();
 

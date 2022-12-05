@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ConfigScreen extends Screen {
     private final Screen parent;
@@ -36,34 +37,22 @@ public class ConfigScreen extends Screen {
         });
         this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, TextHelper.DONE, button -> this.close()));
 
-        int textX = this.width / 2 - 155;
-        int textYOffset = (20 - this.textRenderer.fontHeight) / 2;
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.showToasts"), TextHelper.translatable("options.fastquit.showToasts.description"), textX, 55 + textYOffset));
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.renderSavingScreen"), TextHelper.translatable("options.fastquit.renderSavingScreen.description"), textX, 85 + textYOffset));
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit.backgroundPriority"), TextHelper.translatable("options.fastquit.backgroundPriority.description"), textX, 115 + textYOffset));
+        this.addOptionText("showToasts", 55);
+        this.addOptionText("renderSavingScreen", 85);
+        this.addOptionText("backgroundPriority", 115);
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 25, 0xFFFFFF);
-        for (DrawableTextWithTooltip text : this.texts) {
-            text.render(matrices, mouseX, mouseY, delta);
-        }
+        this.texts.forEach(text -> text.render(matrices, mouseX, mouseY, delta));
         super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (super.mouseClicked(mouseX, mouseY, button)) {
-            return true;
-        }
-        for (DrawableTextWithTooltip text : this.texts) {
-            if (text.mouseClicked(mouseX, mouseY, button)) {
-                return true;
-            }
-        }
-        return false;
+        return super.mouseClicked(mouseX, mouseY, button) || this.texts.stream().anyMatch(text -> text.mouseClicked(mouseX, mouseY, button));
     }
 
     @Override
@@ -73,8 +62,11 @@ public class ConfigScreen extends Screen {
         } catch (IOException e) {
             FastQuit.error("Failed to save config!", e);
         }
-        assert this.client != null;
-        this.client.setScreen(this.parent);
+        Objects.requireNonNull(this.client).setScreen(this.parent);
+    }
+
+    private void addOptionText(String optionKey, int y) {
+        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 155, y + (20 - this.textRenderer.fontHeight) / 2));
     }
 
     private static Text getBackgroundPriorityText() {

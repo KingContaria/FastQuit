@@ -3,12 +3,14 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.server.SaveLoader;
+import net.minecraft.client.world.GeneratorOptionsHolder;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.integrated.IntegratedServerLoader;
+import net.minecraft.world.level.LevelInfo;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -56,10 +58,10 @@ public abstract class WorldListWidgetWorldEntryMixin {
         return session;
     }
 
-    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
-    private SaveLoader fastQuit_synchronizeRecreatingWorld(IntegratedServerLoader serverLoader, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
+    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;loadForRecreation(Lnet/minecraft/world/level/storage/LevelStorage$Session;)Lcom/mojang/datafixers/util/Pair;", remap = true), remap = false)
+    private Pair<LevelInfo, GeneratorOptionsHolder> fastQuit_synchronizeRecreatingWorld(IntegratedServerLoader serverLoader, LevelStorage.Session session, Operation<Pair<LevelInfo, GeneratorOptionsHolder>> original) {
         synchronized (session) {
-            return original.call(serverLoader, session, safeMode);
+            return original.call(serverLoader, session);
         }
     }
 

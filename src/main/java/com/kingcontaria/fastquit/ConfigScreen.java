@@ -22,8 +22,8 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void init() {
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 55, 150, 20, TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 85, 150, 20, TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))));
+        this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))).position(this.width / 2 + 5, 55).build());
+        this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))).position(this.width / 2 + 5, 85).build());
         this.addDrawableChild(new SliderWidget(this.width / 2 + 5, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
             @Override
             protected void updateMessage() {
@@ -35,7 +35,7 @@ public class ConfigScreen extends Screen {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
         });
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, TextHelper.DONE, button -> this.close()));
+        this.addDrawableChild(ButtonWidget.builder(TextHelper.DONE, button -> this.close()).position(this.width / 2 - 100, this.height / 6 + 168).width(200).build());
 
         this.addOptionText("showToasts", 55);
         this.addOptionText("renderSavingScreen", 85);

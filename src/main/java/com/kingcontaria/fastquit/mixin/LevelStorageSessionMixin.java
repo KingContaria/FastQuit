@@ -29,6 +29,6 @@ public abstract class LevelStorageSessionMixin {
     private boolean fastQuit_doNotLogErrorIfDeleted(Logger logger, String s, Object o1, Object o2) {
         IntegratedServer server = MinecraftClient.getInstance().getServer();
         //noinspection ConstantConditions
-        return (server != null && ((MinecraftServerAccessor) server).getSession() == (Object) this) || FastQuit.isSavingWorld((LevelStorage.Session) (Object) this);
+        return (server != null && ((MinecraftServerAccessor) server).getSession() == (Object) this) || FastQuit.getSavingWorld(this.directory.path()).isPresent();
     }
 }

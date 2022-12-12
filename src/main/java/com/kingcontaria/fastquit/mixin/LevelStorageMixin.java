@@ -33,6 +33,6 @@ public abstract class LevelStorageMixin {
 
     @WrapWithCondition(method = "getLevelList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false))
     private boolean fastQuit_doNotLogWarning(Logger logger, String s, Object file, Object exception) {
-        return !(file instanceof File && FastQuit.getSavingWorld(((File) file).toPath()).isPresent());
+        return !(file instanceof File) || FastQuit.getSavingWorld(((File) file).toPath()).isEmpty();
     }
 }

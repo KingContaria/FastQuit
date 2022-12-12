@@ -35,7 +35,7 @@ public class ConfigScreen extends Screen {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
         });
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, TextHelper.DONE, button -> this.close()));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, this.height / 6 + 168, 200, 20, TextHelper.DONE, button -> this.onClose()));
 
         this.addOptionText("showToasts", 55);
         this.addOptionText("renderSavingScreen", 85);
@@ -56,7 +56,7 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         try {
             FastQuit.writeConfig();
         } catch (IOException e) {

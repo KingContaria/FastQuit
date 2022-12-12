@@ -23,7 +23,7 @@ import java.util.Collections;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
-    @Shadow public abstract void setScreenAndRender(Screen screen);
+    @Shadow public abstract void method_29970(Screen screen);
 
     @Shadow @Final private LevelStorage levelStorage;
 
@@ -51,7 +51,7 @@ public abstract class MinecraftClientMixin {
     @ModifyArg(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"))
     private Screen fastQuit_renderSaveAndQuitScreenOnCrash(Screen screen) {
         if (!FastQuit.renderSavingScreen) {
-            this.setScreenAndRender(screen);
+            this.method_29970(screen);
         }
         return screen;
     }

@@ -2,7 +2,6 @@ package com.kingcontaria.fastquit;
 
 import com.kingcontaria.fastquit.mixin.MinecraftServerAccessor;
 import com.kingcontaria.fastquit.mixin.SessionAccessor;
-import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
@@ -13,7 +12,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.world.level.storage.LevelStorage;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import java.util.*;
 
 public class FastQuit implements ClientModInitializer {
 
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
     public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
@@ -117,7 +117,7 @@ public class FastQuit implements ClientModInitializer {
         servers.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
 
         while (servers.stream().anyMatch(server -> !server.isStopping())) {
-            MinecraftClient.getInstance().setScreenAndRender(waitingScreen);
+            MinecraftClient.getInstance().method_29970(waitingScreen);
         }
     }
 

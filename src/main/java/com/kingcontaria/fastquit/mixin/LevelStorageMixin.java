@@ -17,7 +17,7 @@ import java.util.List;
 @Mixin(LevelStorage.class)
 public abstract class LevelStorageMixin {
 
-    @Inject(method = "getLevelList", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(method = "getLevelList", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V", remap = false), locals = LocalCapture.CAPTURE_FAILHARD)
     private void fastQuit_addCurrentlySavingLevels(CallbackInfoReturnable<List<LevelSummary>> cir, List<LevelSummary> levelSummaries, File[] files, File[] var3, int var4, int var5, File file) {
         FastQuit.getSavingWorld(file.toPath()).ifPresent(server -> {
             synchronized (FastQuit.occupiedSessions) {

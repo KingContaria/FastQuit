@@ -124,8 +124,4 @@ public class FastQuit implements ClientModInitializer {
     public static Optional<IntegratedServer> getSavingWorld(Path path) {
         return savingWorlds.stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
     }
-
-    public static boolean isSavingWorld(LevelStorage.Session session) {
-        return savingWorlds.stream().anyMatch(server -> ((MinecraftServerAccessor) server).getSession() == session);
-    }
 }

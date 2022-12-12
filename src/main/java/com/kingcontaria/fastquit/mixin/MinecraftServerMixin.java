@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
 
-    @Shadow @Final private Thread serverThread;
     @Shadow @Final protected SaveProperties saveProperties;
 
     @Inject(method = "exit", at = @At("RETURN"))
@@ -42,14 +41,6 @@ public abstract class MinecraftServerMixin {
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
             FastQuit.log(description.getString());
-        }
-    }
-
-    @Inject(method = "shutdown", at = @At("HEAD"))
-    private void fastQuit_lowerThreadPriority(CallbackInfo ci) {
-        //noinspection ConstantConditions
-        if ((Object) this instanceof IntegratedServer && FastQuit.backgroundPriority != 0) {
-            this.serverThread.setPriority(FastQuit.backgroundPriority);
         }
     }
 

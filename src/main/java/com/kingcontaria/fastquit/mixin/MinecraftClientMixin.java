@@ -24,6 +24,9 @@ public abstract class MinecraftClientMixin {
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
     private boolean fastQuit(IntegratedServer server) {
         FastQuit.savingWorlds.add(server);
+        if (FastQuit.backgroundPriority != 0) {
+            server.getThread().setPriority(FastQuit.backgroundPriority);
+        }
         return true;
     }
 

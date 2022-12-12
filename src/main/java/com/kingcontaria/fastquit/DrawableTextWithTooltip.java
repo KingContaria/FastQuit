@@ -1,10 +1,10 @@
 package com.kingcontaria.fastquit;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.NarratorManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
@@ -33,7 +33,7 @@ public class DrawableTextWithTooltip implements Drawable, Element {
         if (this.isMouseOver(mouseX, mouseY)) {
             this.screen.renderOrderedTooltip(matrices, this.textRenderer.wrapLines(this.tooltip, 200), mouseX, mouseY);
             if (lastNarration != this) {
-                MinecraftClient.getInstance().getNarratorManager().narrate(this.text);
+                NarratorManager.INSTANCE.narrate(this.text);
                 lastNarration = this;
             }
         }
@@ -42,7 +42,7 @@ public class DrawableTextWithTooltip implements Drawable, Element {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (this.isMouseOver(mouseX, mouseY)) {
-            MinecraftClient.getInstance().getNarratorManager().narrate(this.tooltip);
+            NarratorManager.INSTANCE.narrate(this.tooltip);
             return true;
         }
         return false;

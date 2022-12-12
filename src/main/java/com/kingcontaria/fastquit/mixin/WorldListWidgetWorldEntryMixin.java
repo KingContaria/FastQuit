@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.server.SaveLoader;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.server.integrated.IntegratedServerLoader;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,11 +15,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@Mixin(WorldListWidget.WorldEntry.class)
+@Mixin(WorldListWidget.Entry.class)
 public abstract class WorldListWidgetWorldEntryMixin {
 
     @Shadow @Final private SelectWorldScreen screen;
@@ -52,14 +52,14 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @ModifyVariable(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
     private LevelStorage.Session fastQuit_removeSavingWorldAfterDeleting(LevelStorage.Session session) {
-        FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresent(FastQuit.savingWorlds::remove);
+        FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory()).ifPresent(FastQuit.savingWorlds::remove);
         return session;
     }
 
-    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServerLoader;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
-    private SaveLoader fastQuit_synchronizeRecreatingWorld(IntegratedServerLoader serverLoader, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
+    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
+    private SaveLoader fastQuit_synchronizeRecreatingWorld(MinecraftClient client, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
         synchronized (session) {
-            return original.call(serverLoader, session, safeMode);
+            return original.call(client, session, safeMode);
         }
     }
 

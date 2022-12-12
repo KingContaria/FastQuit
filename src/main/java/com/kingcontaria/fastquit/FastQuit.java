@@ -8,7 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.MessageScreen;
+import net.minecraft.client.gui.screen.SaveLevelScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
@@ -111,7 +111,7 @@ public class FastQuit implements ClientModInitializer {
 
     public static void wait(Set<IntegratedServer> servers) {
         Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
-        Screen waitingScreen = new MessageScreen(stillSaving);
+        Screen waitingScreen = new SaveLevelScreen(stillSaving);
         log(stillSaving.getString());
 
         servers.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
@@ -122,6 +122,6 @@ public class FastQuit implements ClientModInitializer {
     }
 
     public static Optional<IntegratedServer> getSavingWorld(Path path) {
-        return savingWorlds.stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
+        return savingWorlds.stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().equals(path)).findFirst();
     }
 }

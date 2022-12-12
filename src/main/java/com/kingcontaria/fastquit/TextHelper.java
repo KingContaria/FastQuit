@@ -1,7 +1,9 @@
 package com.kingcontaria.fastquit;
 
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.gui.screen.ScreenTexts;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 /**
  * For ease of porting to older versions.
@@ -12,11 +14,11 @@ public class TextHelper {
     public static final Text DONE = ScreenTexts.DONE;
 
     public static Text translatable(String key, Object... args) {
-        return Text.translatable(key, args);
+        return new TranslatableText(key, args);
     }
 
     public static Text literal(String string) {
-        return Text.literal(string);
+        return new LiteralText(string);
     }
 
     public static Text onOrOff(boolean on) {

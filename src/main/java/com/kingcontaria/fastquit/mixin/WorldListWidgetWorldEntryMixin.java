@@ -3,11 +3,15 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.datafixers.util.Function4;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
-import net.minecraft.server.SaveLoader;
+import net.minecraft.resource.DataPackSettings;
+import net.minecraft.resource.ResourceManager;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.world.SaveProperties;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,10 +19,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @Mixin(WorldListWidget.Entry.class)
 public abstract class WorldListWidgetWorldEntryMixin {
@@ -56,10 +60,10 @@ public abstract class WorldListWidgetWorldEntryMixin {
         return session;
     }
 
-    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;createSaveLoader(Lnet/minecraft/world/level/storage/LevelStorage$Session;Z)Lnet/minecraft/server/SaveLoader;", remap = true), remap = false)
-    private SaveLoader fastQuit_synchronizeRecreatingWorld(MinecraftClient client, LevelStorage.Session session, boolean safeMode, Operation<SaveLoader> original) {
+    @WrapOperation(method = "recreate", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;createIntegratedResourceManager(Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;Ljava/util/function/Function;Lcom/mojang/datafixers/util/Function4;ZLnet/minecraft/world/level/storage/LevelStorage$Session;)Lnet/minecraft/client/MinecraftClient$IntegratedResourceManager;", remap = true), remap = false)
+    private MinecraftClient.IntegratedResourceManager fastQuit_synchronizeRecreatingWorld(MinecraftClient client, DynamicRegistryManager.Impl registryManager, Function<LevelStorage.Session, DataPackSettings> dataPackSettingsGetter, Function4<LevelStorage.Session, DynamicRegistryManager.Impl, ResourceManager, DataPackSettings, SaveProperties> savePropertiesGetter, boolean safeMode, LevelStorage.Session session, Operation<MinecraftClient.IntegratedResourceManager> original) {
         synchronized (session) {
-            return original.call(client, session, safeMode);
+            return original.call(client, registryManager, dataPackSettingsGetter, savePropertiesGetter, safeMode, session);
         }
     }
 

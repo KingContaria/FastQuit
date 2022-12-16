@@ -54,7 +54,7 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @ModifyVariable(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;deleteSessionLock()V", shift = At.Shift.AFTER))
     private LevelStorage.Session fastQuit_removeSavingWorldAfterDeleting(LevelStorage.Session session) {
-        FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresent(FastQuit.savingWorlds::remove);
+        FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresent(server -> FastQuit.savingWorlds.replace(server, true));
         return session;
     }
 

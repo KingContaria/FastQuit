@@ -28,9 +28,9 @@ public abstract class MinecraftServerMixin {
     @Inject(method = "exit", at = @At("RETURN"))
     private void fastQuit_finishSaving(CallbackInfo ci) {
         //noinspection ConstantConditions
-        if ((Object) this instanceof IntegratedServer) {
+        if ((Object) this instanceof IntegratedServer server) {
             String key = "toast.fastquit.";
-            if (FastQuit.savingWorlds.remove((IntegratedServer) (Object) this)) {
+            if (!Boolean.TRUE.equals(FastQuit.savingWorlds.remove(server))) {
                 key += "description";
             } else {
                 key += "deleted";
@@ -46,23 +46,17 @@ public abstract class MinecraftServerMixin {
 
     @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
     private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<Void> original) {
-        //noinspection ConstantConditions
-        if ((Object) this instanceof IntegratedServer) {
-            synchronized (FastQuit.occupiedSessions) {
-                if (!FastQuit.occupiedSessions.remove(session)) {
-                    original.call(session);
-                }
+        synchronized (FastQuit.occupiedSessions) {
+            if (!FastQuit.occupiedSessions.remove(session)) {
+                original.call(session);
             }
         }
     }
 
     @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
     private void fastQuit_synchronizedLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
-        //noinspection ConstantConditions
-        if ((Object) this instanceof IntegratedServer) {
-            synchronized (session) {
-                original.call(session, registryManager, saveProperties, nbt);
-            }
+        synchronized (session) {
+            original.call(session, registryManager, saveProperties, nbt);
         }
     }
 }

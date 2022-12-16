@@ -26,7 +26,7 @@ public class FastQuit implements ClientModInitializer {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
-    public static final Set<IntegratedServer> savingWorlds = Collections.synchronizedSet(new HashSet<>());
+    public static final Map<IntegratedServer, Boolean> savingWorlds = Collections.synchronizedMap(new HashMap<>());
     public static final List<LevelStorage.Session> occupiedSessions = new ArrayList<>();
     public static boolean showToasts = true;
     public static boolean renderSavingScreen = false;
@@ -112,7 +112,7 @@ public class FastQuit implements ClientModInitializer {
     public static void exit() {
         try {
             if (!FastQuit.savingWorlds.isEmpty()) {
-                FastQuit.wait(FastQuit.savingWorlds);
+                FastQuit.wait(FastQuit.savingWorlds.keySet());
             }
         } catch (Exception e) {
             error("Something went horribly wrong when exiting FastQuit!", e);
@@ -132,6 +132,6 @@ public class FastQuit implements ClientModInitializer {
     }
 
     public static Optional<IntegratedServer> getSavingWorld(Path path) {
-        return savingWorlds.stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
+        return savingWorlds.keySet().stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
     }
 }

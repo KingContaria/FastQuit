@@ -23,7 +23,7 @@ public abstract class MinecraftClientMixin {
 
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
     private boolean fastQuit(IntegratedServer server) {
-        FastQuit.savingWorlds.add(server);
+        FastQuit.savingWorlds.put(server, false);
         if (FastQuit.backgroundPriority != 0) {
             server.getThread().setPriority(FastQuit.backgroundPriority);
         }
@@ -51,11 +51,5 @@ public abstract class MinecraftClientMixin {
             this.setScreenAndRender(screen);
         }
         return screen;
-    }
-
-    @ModifyReceiver(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;stop(Z)V"))
-    private IntegratedServer fastQuit_addDisconnectingServerOnCrash(IntegratedServer server, boolean join) {
-        FastQuit.savingWorlds.add(server);
-        return server;
     }
 }

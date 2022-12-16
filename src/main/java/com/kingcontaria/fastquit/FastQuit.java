@@ -109,6 +109,16 @@ public class FastQuit implements ClientModInitializer {
         return version == null || version.compareTo(FASTQUIT.getVersion()) < 0;
     }
 
+    public static void exit() {
+        try {
+            if (!FastQuit.savingWorlds.isEmpty()) {
+                FastQuit.wait(FastQuit.savingWorlds);
+            }
+        } catch (Exception e) {
+            error("Something went horribly wrong when exiting FastQuit!", e);
+        }
+    }
+
     public static void wait(Set<IntegratedServer> servers) {
         Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
         Screen waitingScreen = new MessageScreen(stillSaving);

@@ -35,11 +35,14 @@ public abstract class MinecraftClientMixin {
         return FastQuit.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
     }
 
-    @Inject(method = "run", at = {@At("RETURN"), @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;printCrashReport(Lnet/minecraft/util/crash/CrashReport;)V")})
+    @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect()V", shift = At.Shift.AFTER))
     private void fastQuit_waitForSaveOnShutdown(CallbackInfo ci) {
-        if (!FastQuit.savingWorlds.isEmpty()) {
-            FastQuit.wait(FastQuit.savingWorlds);
-        }
+        FastQuit.exit();
+    }
+
+    @Inject(method = "printCrashReport", at = @At("HEAD"))
+    private static void fastQuit_waitForSaveOnCrash(CallbackInfo ci) {
+        FastQuit.exit();
     }
 
     @ModifyArg(method = "cleanUpAfterCrash", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect(Lnet/minecraft/client/gui/screen/Screen;)V"))

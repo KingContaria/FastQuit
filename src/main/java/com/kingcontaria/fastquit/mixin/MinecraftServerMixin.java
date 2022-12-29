@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
@@ -41,11 +42,18 @@ public abstract class MinecraftServerMixin {
     }
 
     @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
-    private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<Void> original) {
+    private void fastQuit_synchronizeSessionClose(LevelStorage.Session session, Operation<Void> original) {
         synchronized (FastQuit.occupiedSessions) {
             if (!FastQuit.occupiedSessions.remove(session)) {
                 original.call(session);
             }
+        }
+    }
+
+    @Inject(method = "save", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), cancellable = true)
+    private void fastQuit_cancelSavingIfDeleted(CallbackInfoReturnable<Boolean> cir) {
+        if (Boolean.TRUE.equals(FastQuit.savingWorlds.get(this))) {
+            cir.setReturnValue(false);
         }
     }
 

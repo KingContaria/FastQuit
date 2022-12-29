@@ -43,7 +43,7 @@ public abstract class WorldListWidgetWorldEntryMixin {
     }
 
     @WrapOperation(method = {"delete", "method_27032", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
-    private void fastQuit_synchronizedSessionClose(LevelStorage.Session session, Operation<Void> original) {
+    private void fastQuit_synchronizeSessionClose(LevelStorage.Session session, Operation<Void> original) {
         synchronized (FastQuit.occupiedSessions) {
             if (!FastQuit.occupiedSessions.remove(session)) {
                 original.call(session);

@@ -10,7 +10,11 @@ import net.minecraft.text.Text;
 
 public class DrawableTextWithTooltip implements Drawable, Element {
 
+    /**
+     * Last narrated {@link DrawableTextWithTooltip}
+     */
     private static DrawableTextWithTooltip lastNarration;
+
     private final Screen screen;
     private final TextRenderer textRenderer;
     private final Text text;

@@ -13,17 +13,13 @@ import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.level.storage.LevelStorage;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-
-    @Shadow @Final protected SaveProperties saveProperties;
 
     @Inject(method = "exit", at = @At("RETURN"))
     private void fastQuit_finishSaving(CallbackInfo ci) {
@@ -36,7 +32,7 @@ public abstract class MinecraftServerMixin {
                 key += "deleted";
             }
 
-            Text description = TextHelper.translatable(key, this.saveProperties.getLevelName());
+            Text description = TextHelper.translatable(key, server.getSaveProperties().getLevelName());
             if (FastQuit.showToasts) {
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
@@ -54,9 +50,11 @@ public abstract class MinecraftServerMixin {
     }
 
     @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
-    private void fastQuit_synchronizedLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
+    private void fastQuit_synchronizeLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
         synchronized (session) {
-            original.call(session, registryManager, saveProperties, nbt);
+            if (!Boolean.TRUE.equals(FastQuit.savingWorlds.get(this))) {
+                original.call(session, registryManager, saveProperties, nbt);
+            }
         }
     }
 }

@@ -4,9 +4,9 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
 /**
- * For ease of porting to older versions.
+ * Utility class for ease of porting to older Minecraft versions.
  */
-public class TextHelper {
+public final class TextHelper {
 
     public static final Text OFF = ScreenTexts.OFF;
     public static final Text DONE = ScreenTexts.DONE;

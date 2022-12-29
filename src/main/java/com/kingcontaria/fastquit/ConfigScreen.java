@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * FastQuit Config Screen, can be opened through ModMenu.
+ */
 public class ConfigScreen extends Screen {
     private final Screen parent;
     private final List<DrawableTextWithTooltip> texts = new ArrayList<>();
@@ -65,10 +68,16 @@ public class ConfigScreen extends Screen {
         Objects.requireNonNull(this.client).setScreen(this.parent);
     }
 
+    /**
+     * Creates a new {@link DrawableTextWithTooltip} for the option with the given translation key and adds it to the screen.
+     */
     private void addOptionText(String optionKey, int y) {
         this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 155, y + (20 - this.textRenderer.fontHeight) / 2));
     }
 
+    /**
+     * @return - {@link Text} for {@link FastQuit#backgroundPriority} option
+     */
     private static Text getBackgroundPriorityText() {
         return switch (FastQuit.backgroundPriority) {
             case 0 -> TextHelper.OFF;

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class EditWorldScreenMixin {
 
     @WrapOperation(method = "commit", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;save(Ljava/lang/String;)V"))
-    private void fastQuit_editWorldName(LevelStorage.Session session, String name, Operation<Void> original) {
+    private void fastQuit_synchronizeEditingWorldName(LevelStorage.Session session, String name, Operation<Void> original) {
         FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresentOrElse(server -> {
             synchronized (session) {
                 original.call(session, name);

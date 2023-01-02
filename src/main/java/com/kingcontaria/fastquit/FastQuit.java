@@ -93,7 +93,7 @@ public final class FastQuit implements ClientModInitializer {
 
     /**
      * Writes the options to the config file.
-     * @throws IOException - if an I/O error occurs reading from the config file
+     * @throws IOException - if an I/O error occurs writing to the config file
      */
     public static void writeConfig() throws IOException {
         List<String> lines = new ArrayList<>();

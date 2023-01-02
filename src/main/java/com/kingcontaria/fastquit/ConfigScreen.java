@@ -15,6 +15,7 @@ import java.util.Objects;
  * FastQuit Config Screen, can be opened through ModMenu.
  */
 public class ConfigScreen extends Screen {
+
     private final Screen parent;
     private final List<DrawableTextWithTooltip> texts = new ArrayList<>();
 

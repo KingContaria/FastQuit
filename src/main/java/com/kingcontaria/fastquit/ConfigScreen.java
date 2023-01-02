@@ -5,10 +5,8 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,10 +14,10 @@ import java.util.Objects;
  */
 public class ConfigScreen extends Screen {
 
+    @Nullable
     private final Screen parent;
-    private final List<DrawableTextWithTooltip> texts = new ArrayList<>();
 
-    public ConfigScreen(Screen parent) {
+    public ConfigScreen(@Nullable Screen parent) {
         super(TextHelper.literal("FastQuit"));
         this.parent = parent;
     }
@@ -50,22 +48,12 @@ public class ConfigScreen extends Screen {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
         drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 25, 0xFFFFFF);
-        this.texts.forEach(text -> text.render(matrices, mouseX, mouseY, delta));
         super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        return super.mouseClicked(mouseX, mouseY, button) || this.texts.stream().anyMatch(text -> text.mouseClicked(mouseX, mouseY, button));
-    }
-
-    @Override
     public void close() {
-        try {
-            FastQuit.writeConfig();
-        } catch (IOException e) {
-            FastQuit.error("Failed to save config!", e);
-        }
+        FastQuit.writeConfig("save");
         Objects.requireNonNull(this.client).setScreen(this.parent);
     }
 
@@ -73,7 +61,7 @@ public class ConfigScreen extends Screen {
      * Creates a new {@link DrawableTextWithTooltip} for the option with the given translation key and adds it to the screen.
      */
     private void addOptionText(String optionKey, int y) {
-        this.texts.add(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 155, y + (20 - this.textRenderer.fontHeight) / 2));
+        this.addDrawableChild(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 155, y + (20 - this.textRenderer.fontHeight) / 2));
     }
 
     /**

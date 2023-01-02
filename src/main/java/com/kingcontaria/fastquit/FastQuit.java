@@ -59,6 +59,13 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
+     * Logs the given warning.
+     */
+    public static void warn(String msg) {
+        LOGGER.warn("[" + FASTQUIT.getName() + "] " + msg);
+    }
+
+    /**
      * Logs the given message and error.
      */
     public static void error(String msg, Throwable throwable) {
@@ -68,35 +75,23 @@ public final class FastQuit implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         if (CONFIG.isFile()) {
-            try {
-                boolean update = readConfig();
+            boolean update = readConfig("read");
 
-                if (update) {
-                    try {
-                        writeConfig();
-                    } catch (IOException e) {
-                        error("Failed to update config!", e);
-                    }
-                }
-            } catch (IOException e) {
-                error("Failed to read config!", e);
+            if (update) {
+                writeConfig("update");
             }
         } else {
-            try {
-                writeConfig();
-            } catch (IOException e) {
-                error("Failed to write config!", e);
-            }
+            writeConfig("write");
         }
         log("Initialized");
     }
 
     /**
      * Writes the options to the config file.
-     * @throws IOException - if an I/O error occurs writing to the config file
      */
-    public static void writeConfig() throws IOException {
+    public static void writeConfig(String action) {
         List<String> lines = new ArrayList<>();
+
         lines.add("# FastQuit Config");
         lines.add("version:" + FASTQUIT.getVersion().getFriendlyString());
         lines.add("");
@@ -112,32 +107,41 @@ public final class FastQuit implements ClientModInitializer {
         lines.add("## Value has to be between 0 and 10, setting it to 0 will disable changing thread priority");
         lines.add("backgroundPriority:" + backgroundPriority);
 
-        Files.writeString(CONFIG.toPath(), String.join(System.lineSeparator(), lines));
+        try {
+            Files.writeString(CONFIG.toPath(), String.join(System.lineSeparator(), lines));
+        } catch (IOException e) {
+            error("Failed to " + action + " config!", e);
+        }
     }
 
     /**
      * Restores the options from the config file.
      * @return if the version specified in the config is outdated and the config should be updated
-     * @throws IOException - if an I/O error occurs reading from the config file
      */
-    private static boolean readConfig() throws IOException {
-        List<String> lines = Files.readAllLines(CONFIG.toPath());
+    public static boolean readConfig(String action) {
         Version version = null;
-        for (String line : lines) {
-            try {
-                if (!line.startsWith("#") && !line.trim().isEmpty()) {
-                    String[] split = line.split(":", 2);
-                    split[1] = split[1].trim();
 
-                    switch (split[0].trim()) {
-                        case "version" -> version = Version.parse(split[1]);
-                        case "showToasts" -> showToasts = Boolean.parseBoolean(split[1]);
-                        case "renderSavingScreen" -> renderSavingScreen = Boolean.parseBoolean(split[1]);
-                        case "backgroundPriority" -> backgroundPriority = Math.max(0, Math.min(Thread.MAX_PRIORITY, Integer.parseInt(split[1])));
+        try {
+            List<String> lines = Files.readAllLines(CONFIG.toPath());
+
+            for (String line : lines) {
+                try {
+                    if (!line.startsWith("#") && !line.trim().isEmpty()) {
+                        String[] split = line.split(":", 2);
+                        split[1] = split[1].trim();
+
+                        switch (split[0].trim()) {
+                            case "version" -> version = Version.parse(split[1]);
+                            case "showToasts" -> showToasts = Boolean.parseBoolean(split[1]);
+                            case "renderSavingScreen" -> renderSavingScreen = Boolean.parseBoolean(split[1]);
+                            case "backgroundPriority" -> backgroundPriority = Math.max(0, Math.min(Thread.MAX_PRIORITY, Integer.parseInt(split[1])));
+                        }
                     }
+                } catch (Exception ignored) {
                 }
-            } catch (Exception ignored) {
             }
+        } catch (IOException e) {
+            error("Failed to " + action + " config!", e);
         }
         return version == null || version.compareTo(FASTQUIT.getVersion()) < 0;
     }
@@ -148,18 +152,14 @@ public final class FastQuit implements ClientModInitializer {
      */
     public static void exit() {
         try {
-            if (!savingWorlds.isEmpty()) {
-                wait(savingWorlds.keySet());
-            }
+            wait(savingWorlds.keySet());
         } catch (Throwable throwable) {
             error("Something went horribly wrong when exiting FastQuit!", throwable);
             savingWorlds.forEach((server, deleted) -> {
                 try {
-                    if (!Boolean.TRUE.equals(deleted)) {
-                        server.getThread().join();
-                    }
+                    server.getThread().join();
                 } catch (Throwable throwable2) {
-                    error("Failed to wait for " + server.getSaveProperties().getLevelName(), throwable2);
+                    error("Failed to wait for \"" + server.getSaveProperties().getLevelName() + "\"", throwable2);
                 }
             });
         }
@@ -167,9 +167,24 @@ public final class FastQuit implements ClientModInitializer {
 
     /**
      * Waits for all the {@link IntegratedServer}'s in the given {@link Collection} to finish saving and in the meantime renders a {@link MessageScreen} with a waiting message.
+     * @throws IllegalStateException if called on one of the given {@link IntegratedServer}'s threads, would cause a deadlock otherwise
      */
     public static void wait(Collection<IntegratedServer> servers) {
+        if (servers.isEmpty()) {
+            return;
+        }
+
         MinecraftClient client = MinecraftClient.getInstance();
+
+        if (!client.isOnThread()) {
+            if (servers.stream().anyMatch(server -> Thread.currentThread() == server.getThread())) {
+                throw new IllegalStateException("Tried to call FastQuit.wait(...) from one of the servers it's supposed to wait for.");
+            }
+
+            client.submit(() -> wait(servers)).join();
+            return;
+        }
+
         Screen oldScreen = client.currentScreen;
 
         Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));

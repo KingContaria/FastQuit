@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -60,7 +61,7 @@ public abstract class MinecraftServerMixin {
     @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
     private void fastQuit_synchronizeLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
         synchronized (session) {
-            if (!Boolean.TRUE.equals(FastQuit.savingWorlds.get(this))) {
+            if (!isDeleted()) {
                 original.call(session, registryManager, saveProperties, nbt);
             }
         }
@@ -68,7 +69,7 @@ public abstract class MinecraftServerMixin {
 
     @WrapWithCondition(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
     private boolean fastQuit_cancelPlayerSavingIfDeleted(PlayerManager playerManager) {
-        if (Boolean.TRUE.equals(FastQuit.savingWorlds.get(this))) {
+        if (isDeleted()) {
             LOGGER.info("Cancelled saving players because level was deleted");
             return false;
         }
@@ -77,9 +78,14 @@ public abstract class MinecraftServerMixin {
 
     @Inject(method = "save", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), cancellable = true)
     private void fastQuit_cancelSavingIfDeleted(CallbackInfoReturnable<Boolean> cir) {
-        if (Boolean.TRUE.equals(FastQuit.savingWorlds.get(this))) {
+        if (isDeleted()) {
             LOGGER.info("Cancelled saving worlds because level was deleted");
             cir.setReturnValue(false);
         }
+    }
+
+    @Unique
+    private boolean isDeleted() {
+        return Boolean.TRUE.equals(FastQuit.savingWorlds.get(this));
     }
 }

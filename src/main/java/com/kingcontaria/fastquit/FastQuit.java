@@ -81,8 +81,9 @@ public final class FastQuit implements ClientModInitializer {
                 writeConfig("update");
             }
         } else {
-            writeConfig("write");
+            writeConfig("create");
         }
+
         log("Initialized");
     }
 

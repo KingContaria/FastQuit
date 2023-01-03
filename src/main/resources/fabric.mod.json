@@ -38,5 +38,17 @@
     "minecraft": ">=1.19.3",
     "fabric-resource-loader-v0": "*",
     "java": ">=17"
+  },
+
+  "custom":
+  {
+    "modmenu":
+    {
+      "links":
+      {
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/fastquit",
+        "modmenu.modrinth": "https://modrinth.com/mod/fastquit"
+      }
+    }
   }
 }

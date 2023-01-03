@@ -26,6 +26,7 @@ public final class FastQuit implements ClientModInitializer {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final File CONFIG = FabricLoader.getInstance().getConfigDir().resolve("fastquit-config.txt").toFile();
     private static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
+    private static final String LOG_PREFIX = "[" + FASTQUIT.getName() + "] ";
 
     /**
      * Map containing all currently saving {@link IntegratedServer}'s, with a {@link Boolean} indicating if the world has been deleted.
@@ -55,21 +56,21 @@ public final class FastQuit implements ClientModInitializer {
      * Logs the given message.
      */
     public static void log(String msg) {
-        LOGGER.info("[" + FASTQUIT.getName() + "] " + msg);
+        LOGGER.info(LOG_PREFIX + msg);
     }
 
     /**
      * Logs the given warning.
      */
     public static void warn(String msg) {
-        LOGGER.warn("[" + FASTQUIT.getName() + "] " + msg);
+        LOGGER.warn(LOG_PREFIX + msg);
     }
 
     /**
      * Logs the given message and error.
      */
     public static void error(String msg, Throwable throwable) {
-        LOGGER.error("[" + FASTQUIT.getName() + "] " + msg, throwable);
+        LOGGER.error(LOG_PREFIX + msg, throwable);
     }
 
     @Override

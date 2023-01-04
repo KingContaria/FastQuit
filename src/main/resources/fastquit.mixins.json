@@ -5,10 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "EditWorldScreenMixin",
+    "IntegratedServerLoaderMixin",
     "LevelInfoAccessor",
     "LevelPropertiesAccessor",
     "LevelStorageMixin",
     "LevelStorageSessionMixin",
+    "MinecraftClientAccessor",
     "MinecraftClientMixin",
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
@@ -19,9 +21,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "IntegratedServerLoaderMixin",
-    "MinecraftClientAccessor"
-  ]
+  }
 }

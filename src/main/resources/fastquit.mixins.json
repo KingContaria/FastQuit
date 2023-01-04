@@ -19,5 +19,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "IntegratedServerLoaderMixin",
+    "MinecraftClientAccessor"
+  ]
 }

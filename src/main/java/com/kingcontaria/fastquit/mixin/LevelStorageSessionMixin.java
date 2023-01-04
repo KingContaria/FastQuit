@@ -20,6 +20,7 @@ public abstract class LevelStorageSessionMixin {
     @Shadow @Final LevelStorage.LevelSave directory;
     @Shadow @Final private String directoryName;
 
+    // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "createBackup", at = @At("HEAD"))
     private void fastQuit_waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
         FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));

@@ -1,5 +1,6 @@
 package com.kingcontaria.fastquit;
 
+import com.kingcontaria.fastquit.mixin.MinecraftClientAccessor;
 import com.kingcontaria.fastquit.mixin.MinecraftServerAccessor;
 import com.kingcontaria.fastquit.mixin.SessionAccessor;
 import com.mojang.logging.LogUtils;
@@ -8,12 +9,13 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
 import net.minecraft.world.level.storage.LevelStorage;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -118,6 +120,7 @@ public final class FastQuit implements ClientModInitializer {
 
     /**
      * Restores the options from the config file.
+     *
      * @return if the version specified in the config is outdated and the config should be updated
      */
     public static boolean readConfig(String action) {
@@ -168,11 +171,20 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * Waits for all the {@link IntegratedServer}'s in the given {@link Collection} to finish saving and in the meantime renders a {@link MessageScreen} with a waiting message.
-     * @throws IllegalStateException if called on one of the given {@link IntegratedServer}'s threads, would cause a deadlock otherwise
+     * @see FastQuit#wait(Collection, CallbackInfo)
      */
     public static void wait(Collection<IntegratedServer> servers) {
-        if (servers.isEmpty()) {
+        wait(servers, null);
+    }
+
+    /**
+     * Waits for all the {@link IntegratedServer}'s in the given {@link Collection} to finish saving and in the meantime renders a {@link WaitingScreen}.
+     * If a {@link CallbackInfo} is given, the waiting can be cancelled by the user.
+     *
+     * @throws IllegalStateException if called on one of the given {@link IntegratedServer}'s threads, would cause a deadlock otherwise
+     */
+    public static void wait(Collection<IntegratedServer> servers, @Nullable CallbackInfo cancellable) {
+        if (servers == null || servers.isEmpty()) {
             return;
         }
 
@@ -190,17 +202,29 @@ public final class FastQuit implements ClientModInitializer {
         Screen oldScreen = client.currentScreen;
 
         Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
-        Screen waitingScreen = new MessageScreen(stillSaving);
         log(stillSaving.getString());
 
         servers.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));
 
         try {
+            client.setScreen(new WaitingScreen(stillSaving, cancellable));
+
             while (servers.stream().anyMatch(server -> !server.isStopping())) {
-                client.setScreenAndRender(waitingScreen);
+                if (cancellable != null && cancellable.isCancelled()) {
+                    if (backgroundPriority != 0) {
+                        servers.forEach(server -> server.getThread().setPriority(backgroundPriority));
+                    }
+                    break;
+                }
+                ((MinecraftClientAccessor) client).callRender(false);
             }
         } finally {
-            client.setScreen(oldScreen);
+            // compatibility with "WorldGen" mod
+            if (oldScreen != null && oldScreen.getClass().getName().equals("caeruleusTait.WorldGen.gui.screens.WGConfigScreen")) {
+                client.currentScreen = oldScreen;
+            } else {
+                client.setScreen(oldScreen);
+            }
         }
     }
 

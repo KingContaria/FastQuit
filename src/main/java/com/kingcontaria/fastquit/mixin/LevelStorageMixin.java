@@ -19,7 +19,7 @@ public abstract class LevelStorageMixin {
     @Shadow @Final Path savesDirectory;
 
     @Inject(method = "createSession", at = @At("HEAD"))
-    private void fastQuit_waitForSaveOnWorldLoad(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
+    private void fastQuit_waitForSaveOnSessionCreation(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
         FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 

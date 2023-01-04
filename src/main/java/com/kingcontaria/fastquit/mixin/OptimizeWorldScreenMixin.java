@@ -16,6 +16,7 @@ import java.util.Collections;
 @Mixin(OptimizeWorldScreen.class)
 public abstract class OptimizeWorldScreenMixin {
 
+    // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "create", at = @At("HEAD"))
     private static void fastQuit_waitForSaveOnOptimizeWorld(MinecraftClient client, BooleanConsumer callback, DataFixer dataFixer, LevelStorage.Session session, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
         FastQuit.getSavingWorld(((SessionAccessor) session).getDirectory().path()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));

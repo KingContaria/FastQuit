@@ -10,6 +10,7 @@ public final class TextHelper {
 
     public static final Text OFF = ScreenTexts.OFF;
     public static final Text DONE = ScreenTexts.DONE;
+    public static final Text BACK = ScreenTexts.BACK;
 
     public static Text translatable(String key, Object... args) {
         return Text.translatable(key, args);

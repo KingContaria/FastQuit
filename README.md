@@ -26,22 +26,27 @@ There is currently three options to configure:
 
 **Show Toasts**:
 
-Determines whether a toast gets shown when a world finishes saving
+Determines whether a toast gets shown when a world finishes saving.
 
 **Background Thread Priority**:
 
 Sets the thread priority of the server when saving worlds in the background.
 This is done to improve client performance while saving, but will make the saving take longer over all.
-Value has to be between 0 and 10, setting it to 0 will disable changing thread priority
+Value has to be between 0 and 10, setting it to 0 will disable changing thread priority.
 
 **Render "Saving world" Screen**:
 
 When playing on high render distance, quitting the world can still take a bit because the client-side chunk storage has to be cleared.
 By enabling this setting the "Saving world" screen will be rendered.
 
+**Show Saving Time**
+
+Determines whether the time it took to save the world gets displayed on toasts and the world list.
+Value has to be between 0 and 2, with 0 never showing the time, 1 only on the toast and 2 also on the world list. In ModMenu these are accordingly labelled.
+
 ### How does this mod work?
 
-**At it's core, this mod is very simple:**
+**At it's core, this mod is quite simple:**
 
 Normally, when quitting a singleplayer world, the client will wait until the server thread has finished saving the world before going to the Title Screen.
 This mod skips this waiting period and lets the server continue saving in the background.
@@ -71,11 +76,9 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 
 ### Compatibility
 
-With the help of [MixinExtras](https://github.com/LlamaLad7/MixinExtras), the mixins have been designed to be very non-intrusive while also being very effective.
+With the help of [MixinExtras](https://github.com/LlamaLad7/MixinExtras) and a custom Mixin Config Plugin, the mixins have been designed to be very non-intrusive while also being very effective.
 
 Because of that there is currently no known hard incompatibilities.
-
-However Minecraft will crash when trying to pregenerate new chunks with [WorldGen](https://modrinth.com/mod/world-gen) for a currently saving world. This should be solved on WorldGen's side by adding a fallback similar to those Minecraft has (with a toast informing the user of the failure) as it not only affects FastQuit but also accessing worlds occupied by other processes/Minecraft instances.
 
 If you do suspect an incompatibility with another mod, please [open an issue](#problems)!
 

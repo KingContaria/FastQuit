@@ -1,6 +1,7 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
+import com.kingcontaria.fastquit.WorldInfo;
 import com.kingcontaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -71,9 +72,12 @@ public abstract class LevelStorageSessionMixin {
 
     @Inject(method = "deleteSessionLock", at = @At("TAIL"))
     private void fastQuit_deleteWorld(CallbackInfo ci) {
-        synchronized (FastQuit.savingWorlds) {
-            FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> FastQuit.savingWorlds.get(server).deleted = true);
-        }
+        FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> {
+            WorldInfo info = FastQuit.savingWorlds.get(server);
+            if (info != null) {
+                info.deleted = true;
+            }
+        });
     }
 
     @WrapOperation(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"))
@@ -82,13 +86,13 @@ public abstract class LevelStorageSessionMixin {
             if (!FastQuit.occupiedSessions.remove(this)) {
                 original.call(lock);
             } else {
-                FastQuit.warn("Something tried to close the \"" + this.directoryName + "\" session without checking if it was occupied. Please open an issue on github!");
+                FastQuit.warn("Tried to close the \"" + this.directoryName + "\" session without checking if it was occupied. Please open an issue on github!");
             }
         }
     }
 
     @Inject(method = "checkValid", at = @At("HEAD"))
-    private void fastQuit_warnIfNotSynchronizedSessionAccess(CallbackInfo ci) {
+    private void fastQuit_warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
         if (!Thread.holdsLock(this) && FastQuit.getSavingWorld(this.directory.path()).isPresent()) {
             FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
         }

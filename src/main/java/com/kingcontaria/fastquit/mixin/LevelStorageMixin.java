@@ -29,7 +29,8 @@ public abstract class LevelStorageMixin {
             synchronized (FastQuit.occupiedSessions) {
                 try {
                     cir.setReturnValue(((MinecraftServerAccessor) server).getSession().getLevelSummary());
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    FastQuit.error("Failed to load level summary from saving server!", e);
                 }
             }
         });

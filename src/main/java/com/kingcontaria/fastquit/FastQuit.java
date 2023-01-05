@@ -158,6 +158,7 @@ public final class FastQuit implements ClientModInitializer {
      */
     public static void exit() {
         try {
+            log("Exiting FastQuit.");
             wait(savingWorlds.keySet());
         } catch (Throwable throwable) {
             error("Something went horribly wrong when exiting FastQuit!", throwable);
@@ -215,6 +216,7 @@ public final class FastQuit implements ClientModInitializer {
                     if (backgroundPriority != 0) {
                         servers.forEach(server -> server.getThread().setPriority(backgroundPriority));
                     }
+                    FastQuit.log("Stopped waiting.");
                     break;
                 }
                 ((MinecraftClientAccessor) client).callRender(false);

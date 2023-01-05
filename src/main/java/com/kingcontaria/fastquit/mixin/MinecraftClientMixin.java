@@ -23,6 +23,7 @@ public abstract class MinecraftClientMixin {
         if (FastQuit.backgroundPriority != 0) {
             server.getThread().setPriority(FastQuit.backgroundPriority);
         }
+        FastQuit.log("Disconnected \"" + server.getSaveProperties().getLevelName() + "\" from the client.");
         return true;
     }
 

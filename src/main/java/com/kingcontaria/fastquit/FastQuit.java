@@ -33,9 +33,10 @@ public final class FastQuit implements ClientModInitializer {
     /**
      * Map containing all currently saving {@link IntegratedServer}'s, with a {@link Boolean} indicating if the world has been deleted.
      */
-    public static final Map<IntegratedServer, Boolean> savingWorlds = Collections.synchronizedMap(new HashMap<>());
+    public static final Map<IntegratedServer, WorldInfo> savingWorlds = Collections.synchronizedMap(new HashMap<>());
     /**
      * Stores {@link net.minecraft.world.level.storage.LevelStorage.Session}'s used by FastQuit as to only close them if no other process is currently using them.
+     * <p>
      * Needs to be synchronized separately!
      */
     public static final List<LevelStorage.Session> occupiedSessions = new ArrayList<>();
@@ -160,7 +161,7 @@ public final class FastQuit implements ClientModInitializer {
             wait(savingWorlds.keySet());
         } catch (Throwable throwable) {
             error("Something went horribly wrong when exiting FastQuit!", throwable);
-            savingWorlds.forEach((server, deleted) -> {
+            savingWorlds.forEach((server, info) -> {
                 try {
                     server.getThread().join();
                 } catch (Throwable throwable2) {

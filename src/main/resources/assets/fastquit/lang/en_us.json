@@ -1,5 +1,5 @@
 {
-  "toast.fastquit.title": "FastQuit done!",
+  "toast.fastquit.title": "FastQuit done! (%s)",
   "toast.fastquit.description": "Finished saving \"%s\"",
   "toast.fastquit.deleted": "\"%s\" was deleted",
   "screen.fastquit.waiting": "Waiting for \"%s\" to finish saving...",

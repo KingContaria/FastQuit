@@ -2,18 +2,16 @@ package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.TextHelper;
+import com.kingcontaria.fastquit.WorldInfo;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.Text;
-import net.minecraft.world.SaveProperties;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -34,15 +32,16 @@ public abstract class MinecraftServerMixin {
     private void fastQuit_finishSaving(CallbackInfo ci) {
         //noinspection ConstantConditions
         if ((Object) this instanceof IntegratedServer server) {
-            String key = "toast.fastquit.";
-            if (!Boolean.TRUE.equals(FastQuit.savingWorlds.remove(server))) {
-                key += "description";
-            } else {
-                key += "deleted";
+            WorldInfo info = FastQuit.savingWorlds.remove(server);
+
+            if (info == null) {
+                FastQuit.warn("\"" + server.getSaveProperties().getLevelName() + "\" was not registered in currently saving worlds!");
+                return;
             }
 
-            Text description = TextHelper.translatable(key, server.getSaveProperties().getLevelName());
+            Text description = TextHelper.translatable("toast.fastquit." + (info.deleted ? "deleted" : "description"), server.getSaveProperties().getLevelName(), info.timeSpentSaving());
             if (FastQuit.showToasts) {
+                String s = info.timeSpentSaving();
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
             FastQuit.log(description.getString());
@@ -58,15 +57,6 @@ public abstract class MinecraftServerMixin {
         }
     }
 
-    @WrapOperation(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"))
-    private void fastQuit_synchronizeLevelDataSave(LevelStorage.Session session, DynamicRegistryManager registryManager, SaveProperties saveProperties, NbtCompound nbt, Operation<Void> original) {
-        synchronized (session) {
-            if (!isDeleted()) {
-                original.call(session, registryManager, saveProperties, nbt);
-            }
-        }
-    }
-
     @WrapWithCondition(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
     private boolean fastQuit_cancelPlayerSavingIfDeleted(PlayerManager playerManager) {
         if (isDeleted()) {
@@ -76,7 +66,7 @@ public abstract class MinecraftServerMixin {
         return true;
     }
 
-    @Inject(method = "save", at = @At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), cancellable = true)
+    @Inject(method = "save", at = {@At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V")}, cancellable = true)
     private void fastQuit_cancelSavingIfDeleted(CallbackInfoReturnable<Boolean> cir) {
         if (isDeleted()) {
             LOGGER.info("Cancelled saving worlds because level was deleted");
@@ -86,6 +76,7 @@ public abstract class MinecraftServerMixin {
 
     @Unique
     private boolean isDeleted() {
-        return Boolean.TRUE.equals(FastQuit.savingWorlds.get(this));
+        WorldInfo info = FastQuit.savingWorlds.get(this);
+        return info != null && info.deleted;
     }
 }

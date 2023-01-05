@@ -41,7 +41,6 @@ public abstract class MinecraftServerMixin {
 
             Text description = TextHelper.translatable("toast.fastquit." + (info.deleted ? "deleted" : "description"), server.getSaveProperties().getLevelName(), info.timeSpentSaving());
             if (FastQuit.showToasts) {
-                String s = info.timeSpentSaving();
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
             FastQuit.log(description.getString());

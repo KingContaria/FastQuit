@@ -1,7 +1,7 @@
 package com.kingcontaria.fastquit;
 
 /**
- * Saves additional information about a world
+ * Saves additional information about a world.
  */
 public class WorldInfo {
 
@@ -13,7 +13,7 @@ public class WorldInfo {
     /**
      * Saves the time of instantiation which is the same as the start of saving of the corresponding world.
      */
-    private final long startedSaving = System.currentTimeMillis() - 100000;
+    private final long startedSaving = System.currentTimeMillis();
 
     public WorldInfo() {
     }

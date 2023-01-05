@@ -1,6 +1,6 @@
 {
   "toast.fastquit.title": "FastQuit ist fertig!",
-  "toast.fastquit.description": "Speichern abgeschlossen \"%s\"",
+  "toast.fastquit.description": "Speichern abgeschlossen \"%s\" (%s)",
   "toast.fastquit.deleted": "\"%s\" wurde gelöscht",
   "screen.fastquit.waiting": "Warte auf das Speichern von \"%s\"...",
   "options.fastquit.showToasts": "Zeige Benachrichtigungen",

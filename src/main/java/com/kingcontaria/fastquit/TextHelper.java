@@ -1,6 +1,7 @@
 package com.kingcontaria.fastquit;
 
 import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 /**
@@ -12,11 +13,11 @@ public final class TextHelper {
     public static final Text DONE = ScreenTexts.DONE;
     public static final Text BACK = ScreenTexts.BACK;
 
-    public static Text translatable(String key, Object... args) {
+    public static MutableText translatable(String key, Object... args) {
         return Text.translatable(key, args);
     }
 
-    public static Text literal(String string) {
+    public static MutableText literal(String string) {
         return Text.literal(string);
     }
 

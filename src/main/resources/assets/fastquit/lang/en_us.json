@@ -1,6 +1,6 @@
 {
   "toast.fastquit.title": "FastQuit done!",
-  "toast.fastquit.description": "Finished saving \"%s\" (%s)",
+  "toast.fastquit.description": "Finished saving \"%s\"",
   "toast.fastquit.deleted": "\"%s\" was deleted",
   "screen.fastquit.waiting": "Waiting for \"%s\" to finish saving...",
   "options.fastquit.showToasts": "Show Toasts",
@@ -13,6 +13,9 @@
   "options.fastquit.backgroundPriority.2": "2 (Recommended)",
   "options.fastquit.backgroundPriority.5": "5 (Default)",
   "options.fastquit.backgroundPriority.10": "10 (Maximum)",
+  "options.fastquit.showSavingTime": "Show Saving Time",
+  "options.fastquit.showSavingTime.description": "Determines whether the time it took/takes to save the world gets displayed on toasts and the world list.",
+  "options.fastquit.showSavingTime.toastsOnly": "Toasts only",
 
   "modmenu.summaryTranslation.fastquit": "Return to the Title Screen while the world is still saving!",
   "modmenu.descriptionTranslation.fastquit": "This mod lets you return to the Title Screen early while your world is still saving in the background."

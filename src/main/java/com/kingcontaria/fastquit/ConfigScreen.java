@@ -37,11 +37,16 @@ public class ConfigScreen extends Screen {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
         });
+        this.addDrawableChild(ButtonWidget.builder(getShowSavingTimeText(), button -> {
+            FastQuit.showSavingTime = (FastQuit.showSavingTime + 1) % 3;
+            button.setMessage(getShowSavingTimeText());
+        }).position(this.width / 2 + 5, 145).build());
         this.addDrawableChild(ButtonWidget.builder(TextHelper.DONE, button -> this.close()).position(this.width / 2 - 100, this.height / 6 + 168).width(200).build());
 
         this.addOptionText("showToasts", 55);
         this.addOptionText("renderSavingScreen", 85);
         this.addOptionText("backgroundPriority", 115);
+        this.addOptionText("showSavingTime", 145);
     }
 
     @Override
@@ -73,5 +78,15 @@ public class ConfigScreen extends Screen {
             case 1, 2, 5, 10 -> TextHelper.translatable("options.fastquit.backgroundPriority." + FastQuit.backgroundPriority);
             default -> TextHelper.literal(String.valueOf(FastQuit.backgroundPriority));
         };
+    }
+
+    /**
+     * @return - {@link Text} for {@link FastQuit#showSavingTime} option
+     */
+    private static Text getShowSavingTimeText() {
+        if (FastQuit.showSavingTime == 1) {
+            return TextHelper.translatable("options.fastquit.showSavingTime.toastsOnly");
+        }
+        return TextHelper.onOrOff(FastQuit.showSavingTime > 1);
     }
 }

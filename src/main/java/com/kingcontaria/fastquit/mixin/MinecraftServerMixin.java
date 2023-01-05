@@ -11,7 +11,7 @@ import net.minecraft.client.toast.SystemToast;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.text.Text;
+import net.minecraft.text.MutableText;
 import net.minecraft.world.level.storage.LevelStorage;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -39,7 +39,10 @@ public abstract class MinecraftServerMixin {
                 return;
             }
 
-            Text description = TextHelper.translatable("toast.fastquit." + (info.deleted ? "deleted" : "description"), server.getSaveProperties().getLevelName(), info.endSaving());
+            MutableText description = TextHelper.translatable("toast.fastquit." + (info.deleted ? "deleted" : "description"), server.getSaveProperties().getLevelName());
+            if (FastQuit.showSavingTime >= 1 && !info.deleted) {
+                description.append(" (" + info.getTimeSaving() + ")");
+            }
             if (FastQuit.showToasts) {
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }

@@ -54,6 +54,11 @@ public final class FastQuit implements ClientModInitializer {
      * Value needs to be between 0 and 10, with Thread priority staying unchanged if the value is 0.
      */
     public static int backgroundPriority = 2;
+    /**
+     * Determines whether the time it took to save the world gets displayed on toasts and the world list.
+     * Value needs to be between 0 and 2, with 0 never showing the time, 1 only on the toast and 2 also on the world list.
+     */
+    public static int showSavingTime = 2;
 
     /**
      * Logs the given message.
@@ -95,22 +100,26 @@ public final class FastQuit implements ClientModInitializer {
      * Writes the options to the config file.
      */
     public static void writeConfig(String action) {
-        List<String> lines = new ArrayList<>();
-
-        lines.add("# FastQuit Config");
-        lines.add("version:" + FASTQUIT.getVersion().getFriendlyString());
-        lines.add("");
-        lines.add("## Determines whether a toast gets shown when a world finishes saving");
-        lines.add("showToasts:" + showToasts);
-        lines.add("");
-        lines.add("## When playing on high render distance, quitting the world can still take a bit because the client-side chunk storage has to be cleared.");
-        lines.add("## By enabling this setting the 'Saving world' screen will be rendered.");
-        lines.add("renderSavingScreen:" + renderSavingScreen);
-        lines.add("");
-        lines.add("## Sets the thread priority of the server when saving worlds in the background");
-        lines.add("## This is done to improve client performance while saving, but will make the saving take longer over all");
-        lines.add("## Value has to be between 0 and 10, setting it to 0 will disable changing thread priority");
-        lines.add("backgroundPriority:" + backgroundPriority);
+        String[] lines = new String[]{
+                "# FastQuit Config",
+                "version:" + FASTQUIT.getVersion().getFriendlyString(),
+                "",
+                "## Determines whether a toast gets shown when a world finishes saving.",
+                "showToasts:" + showToasts,
+                "",
+                "## When playing on high render distance, quitting the world can still take a bit because the client-side chunk storage has to be cleared.",
+                "## By enabling this setting the 'Saving world' screen will be rendered.",
+                "renderSavingScreen:" + renderSavingScreen,
+                "",
+                "## Sets the thread priority of the server when saving worlds in the background.",
+                "## This is done to improve client performance while saving, but will make the saving take longer over all.",
+                "## Value has to be between 0 and 10, setting it to 0 will disable changing thread priority.",
+                "backgroundPriority:" + backgroundPriority,
+                "",
+                "## Determines whether the time it took to save the world gets displayed on toasts and the world list.",
+                "## Value has to be between 0 and 2, with 0 never showing the time, 1 only on the toast and 2 also on the world list.",
+                "showSavingTime:" + showSavingTime
+        };
 
         try {
             Files.writeString(CONFIG.toPath(), String.join(System.lineSeparator(), lines));
@@ -141,6 +150,7 @@ public final class FastQuit implements ClientModInitializer {
                             case "showToasts" -> showToasts = Boolean.parseBoolean(split[1]);
                             case "renderSavingScreen" -> renderSavingScreen = Boolean.parseBoolean(split[1]);
                             case "backgroundPriority" -> backgroundPriority = Math.max(0, Math.min(Thread.MAX_PRIORITY, Integer.parseInt(split[1])));
+                            case "showSavingTime" -> showSavingTime = Math.max(0, Math.min(2, Integer.parseInt(split[1])));
                         }
                     }
                 } catch (Exception ignored) {

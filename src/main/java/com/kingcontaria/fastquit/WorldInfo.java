@@ -21,7 +21,7 @@ public class WorldInfo {
     /**
      * @return a String representing the time passed since the start of saving the corresponding world
      */
-    public String endSaving() {
+    public String getTimeSaving() {
         long sec = Math.round((System.currentTimeMillis() - startedSaving) / 1000.0);
         return sec < 60 ? (sec + "s") : (sec / 60 + "min " + sec % 60 + "s");
     }

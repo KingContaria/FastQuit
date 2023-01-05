@@ -1,6 +1,6 @@
 {
   "toast.fastquit.title": "FastQuit 完成！",
-  "toast.fastquit.description": "成功保存 \"%s\" (%s)",
+  "toast.fastquit.description": "成功保存 \"%s\"",
   "toast.fastquit.deleted": "\"%s\" 已被删除",
   "screen.fastquit.waiting": "等待 \"%s\" 完成保存……",
   "options.fastquit.showToasts": "显示弹窗",

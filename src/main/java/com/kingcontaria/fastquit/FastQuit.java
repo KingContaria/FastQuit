@@ -31,15 +31,13 @@ public final class FastQuit implements ClientModInitializer {
     private static final String LOG_PREFIX = "[" + FASTQUIT.getName() + "] ";
 
     /**
-     * Map containing all currently saving {@link IntegratedServer}'s, with a {@link Boolean} indicating if the world has been deleted.
+     * Synchronized {@link Map} containing all currently saving {@link IntegratedServer}'s, with a {@link WorldInfo} with more information about the world.
      */
     public static final Map<IntegratedServer, WorldInfo> savingWorlds = Collections.synchronizedMap(new HashMap<>());
     /**
-     * Stores {@link net.minecraft.world.level.storage.LevelStorage.Session}'s used by FastQuit as to only close them if no other process is currently using them.
-     * <p>
-     * Needs to be synchronized separately!
+     * Stores {@link LevelStorage.Session}'s used by FastQuit as to only close them if no other process is currently using them.
      */
-    public static final List<LevelStorage.Session> occupiedSessions = new ArrayList<>();
+    public static final List<LevelStorage.Session> occupiedSessions = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Determines whether a toast gets shown when a world finishes saving.
@@ -98,9 +96,11 @@ public final class FastQuit implements ClientModInitializer {
 
     /**
      * Writes the options to the config file.
+     * 
+     * @param action - used for logging possible errors
      */
     public static void writeConfig(String action) {
-        String[] lines = new String[]{
+        String[] lines = new String[] {
                 "# FastQuit Config",
                 "version:" + FASTQUIT.getVersion().getFriendlyString(),
                 "",
@@ -131,6 +131,7 @@ public final class FastQuit implements ClientModInitializer {
     /**
      * Restores the options from the config file.
      *
+     * @param action - used for logging possible errors
      * @return if the version specified in the config is outdated and the config should be updated
      */
     public static boolean readConfig(String action) {
@@ -163,7 +164,7 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * Waits for all servers to finish saving, should be called when Minecraft is closed.
+     * Waits for all {@link IntegratedServer}'s to finish saving, gets called when Minecraft is closed.
      * Catches everything to avoid any issues in the areas where it's called.
      */
     public static void exit() {
@@ -242,9 +243,34 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * @return optionally returns the currently saving world matching the given path
+     * @return optionally returns the currently {@link IntegratedServer} matching the given {@link Path}
      */
     public static Optional<IntegratedServer> getSavingWorld(Path path) {
         return savingWorlds.keySet().stream().filter(server -> ((SessionAccessor) ((MinecraftServerAccessor) server).getSession()).getDirectory().path().equals(path)).findFirst();
+    }
+
+    /**
+     * @return optionally returns the currently {@link IntegratedServer} matching the given {@link LevelStorage.Session}
+     */
+    public static Optional<IntegratedServer> getSavingWorld(LevelStorage.Session session) {
+        return savingWorlds.keySet().stream().filter(server -> ((MinecraftServerAccessor) server).getSession() == session).findFirst();
+    }
+
+    /**
+     * @implNote Remember to close the session after using it!
+     * @return optionally returns the {@link LevelStorage.Session} of the currently saving {@link IntegratedServer} matching the given {@link Path}
+     */
+    public static Optional<LevelStorage.Session> getSession(Path path) {
+        Optional<IntegratedServer> server = getSavingWorld(path);
+        if (server.isPresent()) {
+            LevelStorage.Session session;
+            synchronized (session  = ((MinecraftServerAccessor) server.get()).getSession()) {
+                if (((SessionAccessor) session).getLock().isValid()) {
+                    occupiedSessions.add(session);
+                    return Optional.of(session);
+                }
+            }
+        }
+        return Optional.empty();
     }
 }

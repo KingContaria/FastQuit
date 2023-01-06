@@ -39,6 +39,9 @@
     "fabric-resource-loader-v0": "*",
     "java": ">=17"
   },
+  "suggests": {
+    "modmenu": "*"
+  },
 
   "custom":
   {

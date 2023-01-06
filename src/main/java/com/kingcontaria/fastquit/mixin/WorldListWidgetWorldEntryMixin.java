@@ -8,7 +8,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.screen.world.WorldListWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.spongepowered.asm.mixin.Final;
@@ -17,8 +16,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Optional;
 
 @Mixin(WorldListWidget.WorldEntry.class)
 public abstract class WorldListWidgetWorldEntryMixin {
@@ -29,26 +26,7 @@ public abstract class WorldListWidgetWorldEntryMixin {
 
     @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
     private LevelStorage.Session fastQuit_editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
-        Optional<IntegratedServer> server = FastQuit.getSavingWorld(storage.getSavesDirectory().resolve(directoryName));
-        if (server.isPresent()) {
-            synchronized (FastQuit.occupiedSessions) {
-                LevelStorage.Session session = ((MinecraftServerAccessor) server.get()).getSession();
-                if (((SessionAccessor) session).getLock().isValid()) {
-                    FastQuit.occupiedSessions.add(session);
-                    return session;
-                }
-            }
-        }
-        return original.call(storage, directoryName);
-    }
-
-    @WrapOperation(method = {"delete", "method_27032", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
-    private void fastQuit_synchronizeSessionClose(LevelStorage.Session session, Operation<Void> original) {
-        synchronized (FastQuit.occupiedSessions) {
-            if (!FastQuit.occupiedSessions.remove(session)) {
-                original.call(session);
-            }
-        }
+        return FastQuit.getSession(storage.getSavesDirectory().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
     }
 
     // While this should not be needed anymore, I'll leave it in just in case something goes wrong.

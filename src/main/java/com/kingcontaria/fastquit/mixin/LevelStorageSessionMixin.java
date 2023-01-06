@@ -3,8 +3,7 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.WorldInfo;
 import com.kingcontaria.fastquit.plugin.Synchronized;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
@@ -35,7 +34,6 @@ import java.util.Collections;
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
 
-    @Shadow @Final LevelStorage.LevelSave directory;
     @Shadow @Final private String directoryName;
 
     @Synchronized
@@ -59,20 +57,23 @@ public abstract class LevelStorageSessionMixin {
     @Synchronized
     @Shadow public abstract void save(String name) throws IOException;
 
+    @Synchronized
+    @Shadow public abstract void close() throws IOException;
+
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "createBackup", at = @At("HEAD"))
     private void fastQuit_waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
-        FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 
     @Inject(method = "save", at = @At("TAIL"))
     private void fastQuit_editWorldName(String name, CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).getLevelInfo()).setName(name));
+        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).getLevelInfo()).setName(name));
     }
 
     @Inject(method = "deleteSessionLock", at = @At("TAIL"))
     private void fastQuit_deleteWorld(CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.directory.path()).ifPresent(server -> {
+        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {
             WorldInfo info = FastQuit.savingWorlds.get(server);
             if (info != null) {
                 info.deleted = true;
@@ -80,20 +81,14 @@ public abstract class LevelStorageSessionMixin {
         });
     }
 
-    @WrapOperation(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"))
-    private void fastQuit_synchronizeSessionClose_fallback(SessionLock lock, Operation<Void> original) {
-        synchronized (FastQuit.occupiedSessions) {
-            if (!FastQuit.occupiedSessions.remove(this)) {
-                original.call(lock);
-            } else {
-                FastQuit.warn("Tried to close the \"" + this.directoryName + "\" session without checking if it was occupied. Please open an issue on github!");
-            }
-        }
+    @WrapWithCondition(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"))
+    private boolean fastQuit_synchronizeSessionClose(SessionLock lock) {
+        return !FastQuit.occupiedSessions.remove((LevelStorage.Session) (Object) this);
     }
 
     @Inject(method = "checkValid", at = @At("HEAD"))
     private void fastQuit_warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
-        if (!Thread.holdsLock(this) && FastQuit.getSavingWorld(this.directory.path()).isPresent()) {
+        if (!Thread.holdsLock(this) && FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).isPresent()) {
             FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
         }
     }

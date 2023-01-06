@@ -19,6 +19,6 @@ public abstract class EditWorldScreenMixin {
 
     @Inject(method = {"method_19931", "method_27029"}, at = @At("HEAD"), remap = false, cancellable = true)
     private void fastQuit_waitForSaveOnBackupOrOptimizeWorld_cancellable(CallbackInfo ci) {
-        FastQuit.getSavingWorld(((SessionAccessor) this.storageSession).getDirectory().path()).ifPresent(server -> FastQuit.wait(Collections.singleton(server), ci));
+        FastQuit.getSavingWorld(this.storageSession).ifPresent(server -> FastQuit.wait(Collections.singleton(server), ci));
     }
 }

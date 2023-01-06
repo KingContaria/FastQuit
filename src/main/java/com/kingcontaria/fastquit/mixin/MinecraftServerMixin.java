@@ -4,15 +4,12 @@ import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.TextHelper;
 import com.kingcontaria.fastquit.WorldInfo;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.text.MutableText;
-import net.minecraft.world.level.storage.LevelStorage;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,15 +44,6 @@ public abstract class MinecraftServerMixin {
                 MinecraftClient.getInstance().submit(() -> MinecraftClient.getInstance().getToastManager().add(new SystemToast(SystemToast.Type.WORLD_BACKUP, TextHelper.translatable("toast.fastquit.title"), description)));
             }
             FastQuit.log(description.getString());
-        }
-    }
-
-    @WrapOperation(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;close()V"))
-    private void fastQuit_synchronizeSessionClose(LevelStorage.Session session, Operation<Void> original) {
-        synchronized (FastQuit.occupiedSessions) {
-            if (!FastQuit.occupiedSessions.remove(session)) {
-                original.call(session);
-            }
         }
     }
 

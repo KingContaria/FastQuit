@@ -1,7 +1,6 @@
 package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
-import com.kingcontaria.fastquit.WorldInfo;
 import com.kingcontaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.datafixers.util.Pair;
@@ -30,6 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
@@ -67,22 +67,17 @@ public abstract class LevelStorageSessionMixin {
     }
 
     @Inject(method = "save", at = @At("TAIL"))
-    private void fastQuit_editWorldName(String name, CallbackInfo ci) {
+    private void fastQuit_editSavingWorldName(String name, CallbackInfo ci) {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).getLevelInfo()).setName(name));
     }
 
     @Inject(method = "deleteSessionLock", at = @At("TAIL"))
-    private void fastQuit_deleteWorld(CallbackInfo ci) {
-        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {
-            WorldInfo info = FastQuit.savingWorlds.get(server);
-            if (info != null) {
-                info.deleted = true;
-            }
-        });
+    private void fastQuit_deleteSavingWorld(CallbackInfo ci) {
+        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).flatMap(server -> Optional.ofNullable(FastQuit.savingWorlds.get(server))).ifPresent(info -> info.deleted = true);
     }
 
     @WrapWithCondition(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"))
-    private boolean fastQuit_synchronizeSessionClose(SessionLock lock) {
+    private boolean fastQuit_checkSessionClose(SessionLock lock) {
         return !FastQuit.occupiedSessions.remove((LevelStorage.Session) (Object) this);
     }
 

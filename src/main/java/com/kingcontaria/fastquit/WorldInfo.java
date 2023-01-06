@@ -19,7 +19,7 @@ public class WorldInfo {
     }
 
     /**
-     * @return a String representing the time passed since the start of saving the corresponding world
+     * @return a {@link String} representing the time passed since the start of saving the corresponding world
      */
     public String getTimeSaving() {
         long sec = Math.round((System.currentTimeMillis() - startedSaving) / 1000.0);

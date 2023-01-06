@@ -3,18 +3,14 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.resource.DataConfiguration;
+import net.minecraft.resource.DataPackSettings;
+import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.WorldSaveHandler;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.minecraft.world.level.storage.SessionLock;
@@ -43,10 +39,10 @@ public abstract class LevelStorageSessionMixin {
     @Shadow public abstract @Nullable LevelSummary getLevelSummary();
 
     @Synchronized
-    @Shadow public abstract @Nullable Pair<SaveProperties, DimensionOptionsRegistryHolder.DimensionsConfig> readLevelProperties(DynamicOps<NbtElement> ops, DataConfiguration dataConfiguration, Registry<DimensionOptions> dimensionOptionsRegistry, Lifecycle lifecycle);
+    @Shadow public abstract @Nullable SaveProperties readLevelProperties(DynamicOps<NbtElement> ops, DataPackSettings dataPackSettings, Lifecycle lifecycle);
 
     @Synchronized
-    @Shadow public abstract @Nullable DataConfiguration getDataPackSettings();
+    @Shadow public abstract @Nullable DataPackSettings getDataPackSettings();
 
     @Synchronized
     @Shadow public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);

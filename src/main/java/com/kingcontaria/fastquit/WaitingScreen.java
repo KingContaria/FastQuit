@@ -27,7 +27,7 @@ public class WaitingScreen extends MessageScreen {
     @Override
     public void init() {
         if (this.cancellable != null) {
-            this.addDrawableChild(ButtonWidget.builder(TextHelper.BACK, button -> this.close()).dimensions(this.width - 100 - 5, this.height - 20 - 5, 100, 20).build());
+            this.addDrawableChild(new ButtonWidget(this.width - 100 - 5, this.height - 20 - 5, 100, 20, TextHelper.BACK, button -> this.close()));
         }
     }
 

@@ -12,7 +12,7 @@ This is done by reusing the info from the still saving world.
 In its current state this should be safe to do as measures for thread safety have been taken.
 If you do somehow still encounter an issue, the worst thing to happen will be the action failing and Minecraft showing you a toast informing you of it.
 
-**If that happens, please [open an issue](#problems) with your .minecraft/logs/latest.log file attached!**
+***If that happens, please [open an issue](#problems) with your .minecraft/logs/latest.log file attached!***
 
 ### Join the Discord!
 

@@ -14,6 +14,10 @@ If you do somehow still encounter an issue, the worst thing to happen will be th
 
 **If that happens, please [open an issue](#problems) with your .minecraft/logs/latest.log file attached!**
 
+### Join the Discord!
+
+If you are interested in my mods or have any questions, you can join my [Discord](https://discord.gg/B6ZV8SF672)!
+
 ### Download this mod
 
 You can download this mod on [Modrinth](https://modrinth.com/mod/fastquit)!

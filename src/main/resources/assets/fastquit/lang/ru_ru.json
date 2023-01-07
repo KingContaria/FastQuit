@@ -14,7 +14,7 @@
   "options.fastquit.backgroundPriority.5": "5 (по умолчанию)",
   "options.fastquit.backgroundPriority.10": "10 (максимальный)",
   "options.fastquit.showSavingTime": "Отображение времени сохранения",
-  "options.fastquit.showSavingTime.description": "Отображать время сохранения мира в уведомлении и в списке миров.",
+  "options.fastquit.showSavingTime.description": "Показывать время сохранения мира в уведомлении и в списке миров.",
   "options.fastquit.showSavingTime.toastsOnly": "В уведомлении",
 
   "modmenu.summaryTranslation.fastquit": "Возвращайтесь в главное меню быстрее! Мир сохранится позже.",

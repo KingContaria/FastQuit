@@ -24,11 +24,9 @@ public abstract class IntegratedServerLoaderMixin {
     private void fastQuit_waitForSaveOnWorldLoad_cancellable(Screen parent, String levelName, CallbackInfo ci) {
         FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> {
             FastQuit.wait(Collections.singleton(server), ci);
-            if (ci.isCancelled()) {
-                this.client.setScreen(parent);
-            } else {
-                ((MinecraftClientAccessor) this.client).callRender(false);
-            }
         });
+        if (ci.isCancelled()) {
+            this.client.setScreen(parent);
+        }
     }
 }

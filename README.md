@@ -76,13 +76,16 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 - Felix14-v2 (Russian)
 - Cccc-owo (Simplified Chinese)
 - JustAlittleWolf (German)
+- YakisikliBaran (Turkish)
+- Skidamek (Polish)
+- Oondanomala (Italian)
 ####
 
 ### Compatibility
 
 With the help of [MixinExtras](https://github.com/LlamaLad7/MixinExtras) and a custom Mixin Config Plugin, the mixins have been designed to be very non-intrusive while also being very effective.
 
-Because of that there is currently no known hard incompatibilities.
+Because of that there is currently no known incompatibilities.
 
 If you do suspect an incompatibility with another mod, please [open an issue](#problems)!
 

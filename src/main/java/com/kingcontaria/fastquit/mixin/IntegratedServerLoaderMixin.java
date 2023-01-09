@@ -20,11 +20,9 @@ public abstract class IntegratedServerLoaderMixin {
     @Shadow @Final private LevelStorage storage;
     @Shadow @Final private MinecraftClient client;
 
-    @Inject(method = "start(Lnet/minecraft/client/gui/screen/Screen;Ljava/lang/String;)V", at = @At("HEAD"), cancellable = true)
-    private void fastQuit_waitForSaveOnWorldLoad_cancellable(Screen parent, String levelName, CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> {
-            FastQuit.wait(Collections.singleton(server), ci);
-        });
+    @Inject(method = "start(Lnet/minecraft/client/gui/screen/Screen;Ljava/lang/String;ZZ)V", at = @At("HEAD"), cancellable = true)
+    private void fastQuit_waitForSaveOnWorldLoad_cancellable(Screen parent, String levelName, boolean safeMode, boolean canShowBackupPrompt, CallbackInfo ci) {
+        FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> FastQuit.wait(Collections.singleton(server), ci));
         if (ci.isCancelled()) {
             this.client.setScreen(parent);
         }

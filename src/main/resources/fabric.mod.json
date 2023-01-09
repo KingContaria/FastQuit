@@ -43,16 +43,16 @@
     "modmenu": "*"
   },
 
-  "custom":
-  {
-    "modmenu":
-    {
-      "links":
-      {
+  "custom": {
+    "modmenu": {
+      "links": {
         "modmenu.discord": "https://discord.gg/B6ZV8SF672",
         "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/fastquit",
         "modmenu.modrinth": "https://modrinth.com/mod/fastquit"
       }
+    },
+    "catalogue": {
+      "configFactory": "com.kingcontaria.fastquit.CatalogueIntegration"
     }
   }
 }

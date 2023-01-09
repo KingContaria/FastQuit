@@ -8,7 +8,10 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
+
+import java.util.List;
 
 public class DrawableTextWithTooltip implements Drawable, Element, Selectable {
 
@@ -23,19 +26,26 @@ public class DrawableTextWithTooltip implements Drawable, Element, Selectable {
     private final Text tooltip;
     private final int x;
     private final int y;
+    private final int maxWidth;
 
-    public DrawableTextWithTooltip(Screen parentScreen, TextRenderer textRenderer, Text text, Text tooltip, int x, int y) {
+    public DrawableTextWithTooltip(Screen parentScreen, TextRenderer textRenderer, Text text, Text tooltip, int x, int y, int maxWidth) {
         this.parentScreen = parentScreen;
         this.textRenderer = textRenderer;
         this.text = text;
         this.tooltip = tooltip;
         this.x = x;
         this.y = y;
+        this.maxWidth = maxWidth;
     }
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.textRenderer.draw(matrices, this.text, this.x, this.y, 0xFFFFFF);
+        List<OrderedText> lines = this.textRenderer.wrapLines(this.text, this.maxWidth);
+        int yOffset = -(((this.textRenderer.fontHeight + 2) / 2) * (lines.size() - 1));
+        for (OrderedText line : lines) {
+            this.textRenderer.draw(matrices, line, this.x, this.y + yOffset, 0xFFFFFF);
+            yOffset += this.textRenderer.fontHeight + 2;
+        }
         if (this.isMouseOver(mouseX, mouseY)) {
             this.parentScreen.renderOrderedTooltip(matrices, this.textRenderer.wrapLines(this.tooltip, 200), mouseX, mouseY);
             if (lastNarration != this) {

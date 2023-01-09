@@ -24,9 +24,9 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void init() {
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 55, 150, 20, TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))));
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 85, 150, 20, TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))));
-        this.addDrawableChild(new SliderWidget(this.width / 2 + 5, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 10, 55, 150, 20, TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))));
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 10, 85, 150, 20, TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))));
+        this.addDrawableChild(new SliderWidget(this.width / 2 + 10, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(getBackgroundPriorityText());
@@ -37,7 +37,7 @@ public class ConfigScreen extends Screen {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
         });
-        this.addDrawableChild(new ButtonWidget(this.width / 2 + 5, 145, 150, 20, getShowSavingTimeText(), button -> {
+        this.addDrawableChild(new ButtonWidget(this.width / 2 + 10, 145, 150, 20, getShowSavingTimeText(), button -> {
             FastQuit.showSavingTime = (FastQuit.showSavingTime + 1) % 3;
             button.setMessage(getShowSavingTimeText());
         }));
@@ -66,7 +66,7 @@ public class ConfigScreen extends Screen {
      * Creates a new {@link DrawableTextWithTooltip} for the option with the given translation key and adds it to the screen.
      */
     private void addOptionText(String optionKey, int y) {
-        this.addDrawableChild(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 155, y + (20 - this.textRenderer.fontHeight) / 2));
+        this.addDrawableChild(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 160, y + (20 - this.textRenderer.fontHeight) / 2, 160));
     }
 
     /**

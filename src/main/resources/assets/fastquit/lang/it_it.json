@@ -1,0 +1,22 @@
+{
+  "toast.fastquit.title": "FastQuit finito!",
+  "toast.fastquit.description": "Salvato \"%s\"",
+  "toast.fastquit.deleted": "\"%s\" è stato eliminato",
+  "screen.fastquit.waiting": "Aspettando che \"%s\" finisca di salvare...",
+  "options.fastquit.showToasts": "Mostra toast",
+  "options.fastquit.showToasts.description": "Mostra un toast quando un mondo viene finito di salvare",
+  "options.fastquit.renderSavingScreen": "Mostra lo schermo di salvataggio del mondo",
+  "options.fastquit.renderSavingScreen.description": "Giocando con una distanza di rendering elevata, uscire da un mondo può comunque metterci tanto perché la memoria dei chunk del client va svuotata.\nAttivando questa impostazione lo schermo di salvataggio verrà mostrato mentre la memoria viene svuotata.",
+  "options.fastquit.backgroundPriority": "Priorità di thread nel background",
+  "options.fastquit.backgroundPriority.description": "La priorità di thread del server per salvare i mondi nel background.\nUn valore più basso migliora le prestazioni del client mentre salva, ma il server ci mette di più a farlo.",
+  "options.fastquit.backgroundPriority.1": "1 (Minima)",
+  "options.fastquit.backgroundPriority.2": "2 (Consigliata)",
+  "options.fastquit.backgroundPriority.5": "5 (Default)",
+  "options.fastquit.backgroundPriority.10": "10 (Massima)",
+  "options.fastquit.showSavingTime": "Mostra il tempo di salvataggio",
+  "options.fastquit.showSavingTime.description": "Mostra il tempo impiegato per salvare il mondo nei toast e nella lista dei mondi.",
+  "options.fastquit.showSavingTime.toastsOnly": "Solo toast",
+
+  "modmenu.summaryTranslation.fastquit": "Ritorna al menu principale mentre il mondo si sta ancora salvando!",
+  "modmenu.descriptionTranslation.fastquit": "Questa mod ti permette ti ritornare al menu principale mentre il tuo mondo viene salvato nel background."
+}

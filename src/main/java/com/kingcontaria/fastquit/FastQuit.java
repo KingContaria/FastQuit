@@ -237,7 +237,7 @@ public final class FastQuit implements ClientModInitializer {
             if (oldScreen != null && oldScreen.getClass().getName().equals("caeruleusTait.WorldGen.gui.screens.WGConfigScreen")) {
                 client.currentScreen = oldScreen;
             } else {
-                client.setScreen(oldScreen);
+                client.setScreenAndRender(oldScreen);
             }
         }
     }

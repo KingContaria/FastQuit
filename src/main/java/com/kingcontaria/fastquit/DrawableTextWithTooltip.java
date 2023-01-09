@@ -66,7 +66,8 @@ public class DrawableTextWithTooltip implements Drawable, Element, Selectable {
 
     @Override
     public boolean isMouseOver(double mouseX, double mouseY) {
-        return mouseX > this.x && mouseX < this.x + this.textRenderer.getWidth(this.text) && mouseY > this.y && mouseY < this.y + this.textRenderer.fontHeight;
+        List<OrderedText> lines = this.textRenderer.wrapLines(this.text, this.maxWidth);
+        return mouseX >= this.x && mouseX <= this.x + lines.stream().mapToInt(this.textRenderer::getWidth).max().orElse(0) && mouseY >= this.y - ((this.textRenderer.fontHeight + 2) / 2.0f) * (lines.size() - 1)  && mouseY <= this.y + this.textRenderer.fontHeight + ((this.textRenderer.fontHeight + 2) / 2.0f) * (lines.size() - 1);
     }
 
     @Override

@@ -165,7 +165,8 @@ public final class FastQuit implements ClientModInitializer {
 
     /**
      * Waits for all {@link IntegratedServer}'s to finish saving, gets called when Minecraft is closed.
-     * Catches everything to avoid any issues in the areas where it's called.
+     *
+     * @implNote Catches everything to avoid any issues in the areas where it's called.
      */
     public static void exit() {
         try {
@@ -184,7 +185,7 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * @see FastQuit#wait(Collection, CallbackInfo)
+     * @see #wait(Collection, CallbackInfo)
      */
     public static void wait(Collection<IntegratedServer> servers) {
         wait(servers, null);
@@ -227,7 +228,7 @@ public final class FastQuit implements ClientModInitializer {
                     if (backgroundPriority != 0) {
                         servers.forEach(server -> server.getThread().setPriority(backgroundPriority));
                     }
-                    FastQuit.log("Stopped waiting.");
+                    log("Stopped waiting.");
                     break;
                 }
                 ((MinecraftClientAccessor) client).callRender(false);
@@ -257,20 +258,19 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * @implNote Remember to close the session after using it!
+     * @apiNote Remember to {@link LevelStorage.Session#close() close} the session after using it!
      * @return optionally returns the {@link LevelStorage.Session} of the currently saving {@link IntegratedServer} matching the given {@link Path}
      */
     public static Optional<LevelStorage.Session> getSession(Path path) {
-        Optional<IntegratedServer> server = getSavingWorld(path);
-        if (server.isPresent()) {
+        return getSavingWorld(path).flatMap(server -> {
             LevelStorage.Session session;
-            synchronized (session  = ((MinecraftServerAccessor) server.get()).getSession()) {
+            synchronized (session  = ((MinecraftServerAccessor) server).getSession()) {
                 if (((SessionAccessor) session).getLock().isValid()) {
                     occupiedSessions.add(session);
                     return Optional.of(session);
                 }
             }
-        }
-        return Optional.empty();
+            return Optional.empty();
+        });
     }
 }

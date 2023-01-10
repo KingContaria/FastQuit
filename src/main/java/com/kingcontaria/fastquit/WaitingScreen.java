@@ -18,7 +18,7 @@ public class WaitingScreen extends MessageScreen {
     public WaitingScreen(Text text, @Nullable CallbackInfo cancellable) {
         super(text);
         if (cancellable != null && !cancellable.isCancellable()) {
-            FastQuit.warn("Provided CallbackInfo for '" + cancellable.getId() + "' is not cancellable!");
+            FastQuit.warn("Provided CallbackInfo for \"" + cancellable.getId() + "\" is not cancellable!");
             cancellable = null;
         }
         this.cancellable = cancellable;

@@ -1,7 +1,9 @@
 package com.kingcontaria.fastquit;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -24,9 +26,9 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void init() {
-        this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))).position(this.width / 2 + 10, 55).build());
-        this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))).position(this.width / 2 + 10, 85).build());
-        this.addDrawableChild(new SliderWidget(this.width / 2 + 10, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
+        this.addOptionText("showToasts", this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.showToasts), button -> button.setMessage(TextHelper.onOrOff(FastQuit.showToasts = !FastQuit.showToasts))).position(this.width / 2 + 10, 55).build()));
+        this.addOptionText("renderSavingScreen", this.addDrawableChild(ButtonWidget.builder(TextHelper.onOrOff(FastQuit.renderSavingScreen), button -> button.setMessage(TextHelper.onOrOff(FastQuit.renderSavingScreen = !FastQuit.renderSavingScreen))).position(this.width / 2 + 10, 85).build()));
+        this.addOptionText("backgroundPriority", this.addDrawableChild(new SliderWidget(this.width / 2 + 10, 115, 150, 20, getBackgroundPriorityText(), FastQuit.backgroundPriority / 10.0) {
             @Override
             protected void updateMessage() {
                 this.setMessage(getBackgroundPriorityText());
@@ -36,17 +38,12 @@ public class ConfigScreen extends Screen {
             protected void applyValue() {
                 FastQuit.backgroundPriority = (int) Math.round(this.value * 10);
             }
-        });
-        this.addDrawableChild(ButtonWidget.builder(getShowSavingTimeText(), button -> {
+        }));
+        this.addOptionText("showSavingTime", this.addDrawableChild(ButtonWidget.builder(getShowSavingTimeText(), button -> {
             FastQuit.showSavingTime = (FastQuit.showSavingTime + 1) % 3;
             button.setMessage(getShowSavingTimeText());
-        }).position(this.width / 2 + 10, 145).build());
+        }).position(this.width / 2 + 10, 145).build()));
         this.addDrawableChild(ButtonWidget.builder(TextHelper.DONE, button -> this.close()).position(this.width / 2 - 100, this.height / 6 + 168).width(200).build());
-
-        this.addOptionText("showToasts", 55);
-        this.addOptionText("renderSavingScreen", 85);
-        this.addOptionText("backgroundPriority", 115);
-        this.addOptionText("showSavingTime", 145);
     }
 
     @Override
@@ -57,16 +54,23 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void removed() {
         FastQuit.writeConfig("save");
+    }
+
+    @Override
+    public void close() {
         Objects.requireNonNull(this.client).setScreen(this.parent);
     }
 
     /**
      * Creates a new {@link DrawableTextWithTooltip} for the option with the given translation key and adds it to the screen.
+     *
+     * @param reference - reference widget to determine y coordinate
+     * @param optionKey - name of the option to create the translation keys
      */
-    private void addOptionText(String optionKey, int y) {
-        this.addDrawableChild(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 160, y + (20 - this.textRenderer.fontHeight) / 2, 160));
+    private void addOptionText(String optionKey, ClickableWidget reference) {
+        this.addDrawableChild(new DrawableTextWithTooltip(this, this.textRenderer, TextHelper.translatable("options.fastquit." + optionKey), TextHelper.translatable("options.fastquit." + optionKey + ".description"), this.width / 2 - 160, reference.getY() + (20 - this.textRenderer.fontHeight) / 2, 160));
     }
 
     /**

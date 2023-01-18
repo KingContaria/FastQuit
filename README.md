@@ -79,6 +79,7 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 - YakisikliBaran (Turkish)
 - Skidamek (Polish)
 - Oondanomala (Italian)
+- Madis0 (Estonian)
 ####
 
 ### Compatibility

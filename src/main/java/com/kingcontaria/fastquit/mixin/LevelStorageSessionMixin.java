@@ -83,8 +83,13 @@ public abstract class LevelStorageSessionMixin {
 
     @Inject(method = "checkValid", at = @At("HEAD"))
     private void fastQuit_warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
-        if (!Thread.holdsLock(this) && FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).isPresent()) {
-            FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
+        if (!Thread.holdsLock(this)) {
+            FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {
+                FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
+                if (!server.isOnThread()) {
+                    FastQuit.wait(Collections.singleton(server));
+                }
+            });
         }
     }
 }

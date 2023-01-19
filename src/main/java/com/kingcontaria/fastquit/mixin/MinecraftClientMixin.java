@@ -19,10 +19,16 @@ public abstract class MinecraftClientMixin {
 
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
     private boolean fastQuit(IntegratedServer server) {
+        int worlds = FastQuit.savingWorlds.size();
+
         FastQuit.savingWorlds.put(server, new WorldInfo());
+
+        Thread thread = server.getThread();
         if (FastQuit.backgroundPriority != 0) {
-            server.getThread().setPriority(FastQuit.backgroundPriority);
+            thread.setPriority(FastQuit.backgroundPriority);
         }
+        thread.setName("Background " + thread.getName() + (worlds > 0 ? " (" + worlds + ")" : ""));
+
         FastQuit.log("Disconnected \"" + server.getSaveProperties().getLevelName() + "\" from the client.");
         return true;
     }

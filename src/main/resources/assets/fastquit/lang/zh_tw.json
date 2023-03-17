@@ -1,0 +1,22 @@
+{
+  "toast.fastquit.title": "FastQuit 完成！",
+  "toast.fastquit.description": "完成 儲存「%s」",
+  "toast.fastquit.deleted": "「%s」已被刪除",
+  "screen.fastquit.waiting": "等待「%s」完成...",
+  "options.fastquit.showToasts": "顯示彈窗",
+  "options.fastquit.showToasts.description": "此設定決定當世界完成儲存時是否會顯示彈窗。",
+  "options.fastquit.renderSavingScreen": "繪製「儲存世界」畫面",
+  "options.fastquit.renderSavingScreen.description": "當使用高渲染距離時，退出世界仍可能需要一點時間，因為客戶端區塊儲存必須被清除。啟用此設定將會顯示「正在儲存世界」畫面。",
+  "options.fastquit.backgroundPriority": "背景執行緒優先權",
+  "options.fastquit.backgroundPriority.description": "在後台保存世界時，設定伺服器的線程優先級。\n這是為了提高客戶端效能而做的，但將使保存時間加長。",
+  "options.fastquit.backgroundPriority.1": "1 (最小)",
+  "options.fastquit.backgroundPriority.2": "2（建議）",
+  "options.fastquit.backgroundPriority.5": "5 (預設)",
+  "options.fastquit.backgroundPriority.10": "10 (最大)",
+  "options.fastquit.showSavingTime": "顯示儲存時間",
+  "options.fastquit.showSavingTime.description": "是否在彈窗和世界列表上顯示儲存世界所需的時間。",
+  "options.fastquit.showSavingTime.toastsOnly": "僅在彈窗上顯示。",
+
+  "modmenu.summaryTranslation.fastquit": "當世界還在儲存時會到標題畫面！",
+  "modmenu.descriptionTranslation.fastquit": "此模組讓你在世界還在背景儲存時提前回到標題畫面。"
+}

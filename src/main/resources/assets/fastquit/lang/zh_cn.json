@@ -13,7 +13,10 @@
   "options.fastquit.backgroundPriority.2": "2 （推荐）",
   "options.fastquit.backgroundPriority.5": "5 （默认）",
   "options.fastquit.backgroundPriority.10": "10 （最大）",
-
+  "options.fastquit.showSavingTime": "显示保存时间",
+  "options.fastquit.showSavingTime.description": "决定是否在世界列表和弹窗上显示世界保存花费的时间",
+  "options.fastquit.showSavingTime.toastsOnly": "仅弹窗",
+  
   "modmenu.summaryTranslation.fastquit": "在世界还在保存的时候，返回标题画面！",
   "modmenu.descriptionTranslation.fastquit": "这个模组可以让你在你的世界还在后台保存时提前返回标题屏幕。"
 }

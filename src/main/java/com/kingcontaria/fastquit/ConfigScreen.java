@@ -49,7 +49,7 @@ public class ConfigScreen extends Screen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
-        drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 25, 0xFFFFFF);
+        drawCenteredTextWithShadow(matrices, this.textRenderer, this.title, this.width / 2, 25, 0xFFFFFF);
         super.render(matrices, mouseX, mouseY, delta);
     }
 

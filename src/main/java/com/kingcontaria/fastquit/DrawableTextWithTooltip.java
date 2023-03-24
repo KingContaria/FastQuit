@@ -79,4 +79,14 @@ public class DrawableTextWithTooltip implements Drawable, Element, Selectable {
     public void appendNarrations(NarrationMessageBuilder builder) {
         // only here to implement Selectable, so it can be added to the config screen properly
     }
+
+    @Override
+    public void setFocused(boolean focused) {
+        // Can't be focused so we just keep this empty
+    }
+
+    @Override
+    public boolean isFocused() {
+        return false;
+    }
 }

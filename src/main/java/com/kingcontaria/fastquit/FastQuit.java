@@ -251,7 +251,7 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * @return optionally returns the currently {@link IntegratedServer} matching the given {@link LevelStorage.Session}
+     * @return optionally returns the currently saving {@link IntegratedServer} matching the given {@link LevelStorage.Session}
      */
     public static Optional<IntegratedServer> getSavingWorld(LevelStorage.Session session) {
         return savingWorlds.keySet().stream().filter(server -> ((MinecraftServerAccessor) server).getSession() == session).findFirst();

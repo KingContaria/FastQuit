@@ -16,7 +16,7 @@
     "MinecraftServerMixin",
     "OptimizeWorldScreenMixin",
     "RealmsUploadScreenMixin",
-    "SessionAccessor",
+    "LevelStorageSessionAccessor",
     "WorldListWidgetWorldEntryMixin"
   ],
   "injectors": {

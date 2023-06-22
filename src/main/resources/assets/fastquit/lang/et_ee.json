@@ -1,22 +1,24 @@
 {
-  "toast.fastquit.title": "FastQuit valmis!",
-  "toast.fastquit.description": "\"%s\" salvestamine lõpetatud",
-  "toast.fastquit.deleted": "\"%s\" kustutati",
-  "screen.fastquit.waiting": "\"%s\" salvestamise lõppemise ootamine...",
-  "options.fastquit.showToasts": "Hüpikud",
-  "options.fastquit.showToasts.description": "Määrab, kas maailma salvestamise lõpus kuvatakse hüpikut.",
-  "options.fastquit.renderSavingScreen": "\"Maailma salvestamine\" kuva",
-  "options.fastquit.renderSavingScreen.description": "Kõrge renderduskaugusega mängides võib maailmast lahkumine siiski mõnda aega võtta, sest kliendipoolne kamakamälu tuleb tühjendada.\nSelle valiku lubamisel kuvatakse \"Maailma salvestamine\" kuva.",
-  "options.fastquit.backgroundPriority": "Taustalõime prioriteet",
-  "options.fastquit.backgroundPriority.description": "Määrab serveri lõimeprioriteedi, kui maailmu salvestatakse taustal.\nSeda tehakse salvestamise hetkel kliendi jõudluse parandamiseks, ent muudab salvestamise üldiselt kauem kestvamaks.",
-  "options.fastquit.backgroundPriority.1": "1 (minimaalne)",
-  "options.fastquit.backgroundPriority.2": "2 (soovitatud)",
-  "options.fastquit.backgroundPriority.5": "5 (vaikeväärtus)",
-  "options.fastquit.backgroundPriority.10": "10 (maksimaalne)",
-  "options.fastquit.showSavingTime": "Salvestamisaja kuvamine",
-  "options.fastquit.showSavingTime.description": "Määrab, kas maailma salvestamiseks kulunud/kuluv aeg kuvatakse hüpikutel ja maailmaloendis.",
-  "options.fastquit.showSavingTime.toastsOnly": "Vaid hüpikud",
+  "fastquit.toast.title": "FastQuit valmis!",
+  "fastquit.toast.description": "\"%s\" salvestamine lõpetatud",
+  "fastquit.toast.deleted": "\"%s\" kustutati",
 
-  "modmenu.summaryTranslation.fastquit": "Pöördu tagasi avamenüüsse, kuni maailm veel salvestub!",
-  "modmenu.descriptionTranslation.fastquit": "See mod võimaldab sul pöörduda avamenüüsse varakult, kuni maailm taustal veel edasi salvestub."
+  "fastquit.screen.waiting": "\"%s\" salvestamise lõppemise ootamine...",
+
+  "fastquit.config.general.showToasts": "Hüpikud",
+  "fastquit.config.general.showToasts.description": "Määrab, kas maailma salvestamise lõpus kuvatakse hüpikut.",
+  "fastquit.config.general.renderSavingScreen": "\"Maailma salvestamine\" kuva",
+  "fastquit.config.general.renderSavingScreen.description": "Kõrge renderduskaugusega mängides võib maailmast lahkumine siiski mõnda aega võtta, sest kliendipoolne kamakamälu tuleb tühjendada.\nSelle valiku lubamisel kuvatakse \"Maailma salvestamine\" kuva.",
+  "fastquit.config.general.showSavingTime": "Salvestamisaja kuvamine",
+  "fastquit.config.general.showSavingTime.description": "Määrab, kas maailma salvestamiseks kulunud/kuluv aeg kuvatakse hüpikutel ja maailmaloendis.",
+  "fastquit.config.general.showSavingTime.toastsOnly": "Vaid hüpikud",
+  "fastquit.config.performance.backgroundPriority": "Taustalõime prioriteet",
+  "fastquit.config.performance.backgroundPriority.description": "Määrab serveri lõimeprioriteedi, kui maailmu salvestatakse taustal.\nSeda tehakse salvestamise hetkel kliendi jõudluse parandamiseks, ent muudab salvestamise üldiselt kauem kestvamaks.",
+  "fastquit.config.performance.backgroundPriority.1": "1 (minimaalne)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (soovitatud)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (vaikeväärtus)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (maksimaalne)",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Pöördu tagasi avamenüüsse, kuni maailm veel salvestub!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "See mod võimaldab sul pöörduda avamenüüsse varakult, kuni maailm taustal veel edasi salvestub."
 }

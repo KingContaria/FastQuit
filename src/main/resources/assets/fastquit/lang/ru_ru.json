@@ -1,22 +1,24 @@
 {
-  "toast.fastquit.title": "Сохранение завершено.",
-  "toast.fastquit.description": "Мир \"%s\" успешно сохранён.",
-  "toast.fastquit.deleted": "\"%s\" удалён",
-  "screen.fastquit.waiting": "Ожидание сохранения \"%s\"...",
-  "options.fastquit.showToasts": "Уведомление по завершении",
-  "options.fastquit.showToasts.description": "Показывать уведомление после завершения сохранения мира.",
-  "options.fastquit.renderSavingScreen": "Отображение экрана выгрузки",
-  "options.fastquit.renderSavingScreen.description": "При игре с высокой прорисовкой выход из мира сопровождается дополнительной задержкой из-за необходимости выгрузки данных чанков у клиента.\nПри включении вернётся отображение экрана сохранения вместо зависания во время этого процесса.",
-  "options.fastquit.backgroundPriority": "Приоритет сохранения в фоне",
-  "options.fastquit.backgroundPriority.description": "Указать приоритет потока игрового сервера при сохранении мира в фоне.\nЕго снижение полезно для улучшения отзывчивости игры за счёт общей длительности сохранения.",
-  "options.fastquit.backgroundPriority.1": "1 (минимальный)",
-  "options.fastquit.backgroundPriority.2": "2 (рекомендуется)",
-  "options.fastquit.backgroundPriority.5": "5 (по умолчанию)",
-  "options.fastquit.backgroundPriority.10": "10 (максимальный)",
-  "options.fastquit.showSavingTime": "Отображение времени сохранения",
-  "options.fastquit.showSavingTime.description": "Показывать время сохранения мира в уведомлении и в списке миров.",
-  "options.fastquit.showSavingTime.toastsOnly": "В уведомлении",
+  "fastquit.toast.title": "Сохранение завершено.",
+  "fastquit.toast.description": "Мир \"%s\" успешно сохранён.",
+  "fastquit.toast.deleted": "\"%s\" удалён",
 
-  "modmenu.summaryTranslation.fastquit": "Возвращайтесь в главное меню быстрее! Мир сохранится позже.",
-  "modmenu.descriptionTranslation.fastquit": "Теперь можно покидать мир быстрее, не дожидаясь окончания его сохранения. FastQuit продолжит выполнять эту задачу в фоне."
+  "fastquit.screen.waiting": "Ожидание сохранения \"%s\"...",
+
+  "fastquit.config.general.showToasts": "Уведомление по завершении",
+  "fastquit.config.general.showToasts.description": "Показывать уведомление после завершения сохранения мира.",
+  "fastquit.config.general.renderSavingScreen": "Отображение экрана выгрузки",
+  "fastquit.config.general.renderSavingScreen.description": "При игре с высокой прорисовкой выход из мира сопровождается дополнительной задержкой из-за необходимости выгрузки данных чанков у клиента.\nПри включении вернётся отображение экрана сохранения вместо зависания во время этого процесса.",
+  "fastquit.config.general.showSavingTime": "Отображение времени сохранения",
+  "fastquit.config.general.showSavingTime.description": "Показывать время сохранения мира в уведомлении и в списке миров.",
+  "fastquit.config.general.showSavingTime.toastsOnly": "В уведомлении",
+  "fastquit.config.performance.backgroundPriority": "Приоритет сохранения в фоне",
+  "fastquit.config.performance.backgroundPriority.description": "Указать приоритет потока игрового сервера при сохранении мира в фоне.\nЕго снижение полезно для улучшения отзывчивости игры за счёт общей длительности сохранения.",
+  "fastquit.config.performance.backgroundPriority.1": "1 (минимальный)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (рекомендуется)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (по умолчанию)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (максимальный)",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Возвращайтесь в главное меню быстрее! Мир сохранится позже.",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "Теперь можно покидать мир быстрее, не дожидаясь окончания его сохранения. FastQuit продолжит выполнять эту задачу в фоне."
 }

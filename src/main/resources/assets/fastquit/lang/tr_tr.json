@@ -1,22 +1,24 @@
 {
-  "toast.fastquit.title": "FastQuit uygulandı!",
-  "toast.fastquit.description": "\"%s\" Kaydedildi'",
-  "toast.fastquit.deleted": "\"%s\" Silindi",
-  "screen.fastquit.waiting": "Kaydetmek için \"%s\" bekleniyor...",
-  "options.fastquit.showToasts": "Bildirimleri Göster",
-  "options.fastquit.showToasts.description": "Bir dünya kaydolmayı tamamlayınca bir bildirim göstermesini sağlar.",
-  "options.fastquit.renderSavingScreen": "\"Dünya Kaydediliyor\" Ekranını İşle",
-  "options.fastquit.renderSavingScreen.description": "Yüksek işleme çözünürlüklerinde oynarken, dünya'dan çıkmak hala biraz daha uzun sürebilir çünkü cihaz tarafındaki parça verisi temizlenir.\nBu seçeneği işaretlemek \"Dünya Kaydediliyor\" ekranının işlenmesini sağlar.",
-  "options.fastquit.backgroundPriority": "Arkaplan İşlem Önceliği",
-  "options.fastquit.backgroundPriority.description": "Bu sunucunun arkaplanda dünyaları kaydederken yapılan işlem önceliğini değiştirir.\nBu kaydedilirken cihaz performansını geliştirmek için yapılır, ama kaydetmek daha uzun sürer.",
-  "options.fastquit.backgroundPriority.1": "1 (Minimum)",
-  "options.fastquit.backgroundPriority.2": "2 (Önerilen)",
-  "options.fastquit.backgroundPriority.5": "5 (Varsayılan)",
-  "options.fastquit.backgroundPriority.10": "10 (Maksimum)",
-  "options.fastquit.showSavingTime": "Kaydedilen Süreyi Göster",
-  "options.fastquit.showSavingTime.description": "Kaydedilmesi için geçmiş/geçen süreyi bildirimde veya dünya listesinde gösterir.",
-  "options.fastquit.showSavingTime.toastsOnly": "Sadece Bildirimler",
+  "fastquit.toast.title": "FastQuit uygulandı!",
+  "fastquit.toast.description": "\"%s\" Kaydedildi'",
+  "fastquit.toast.deleted": "\"%s\" Silindi",
 
-  "modmenu.summaryTranslation.fastquit": "Dünyanız hala daha kaydolurken Ana Ekran'a dönün!",
-  "modmenu.descriptionTranslation.fastquit": "Bu mod dünyanız hala daha arkaplanda kaydolurken erkenden Ana Ekran'a dönmenizi sağlar."
+  "fastquit.screen.waiting": "Kaydetmek için \"%s\" bekleniyor...",
+
+  "fastquit.config.general.showToasts": "Bildirimleri Göster",
+  "fastquit.config.general.showToasts.description": "Bir dünya kaydolmayı tamamlayınca bir bildirim göstermesini sağlar.",
+  "fastquit.config.general.renderSavingScreen": "\"Dünya Kaydediliyor\" Ekranını İşle",
+  "fastquit.config.general.renderSavingScreen.description": "Yüksek işleme çözünürlüklerinde oynarken, dünya'dan çıkmak hala biraz daha uzun sürebilir çünkü cihaz tarafındaki parça verisi temizlenir.\nBu seçeneği işaretlemek \"Dünya Kaydediliyor\" ekranının işlenmesini sağlar.",
+  "fastquit.config.general.showSavingTime": "Kaydedilen Süreyi Göster",
+  "fastquit.config.general.showSavingTime.description": "Kaydedilmesi için geçmiş/geçen süreyi bildirimde veya dünya listesinde gösterir.",
+  "fastquit.config.general.showSavingTime.toastsOnly": "Sadece Bildirimler",
+  "fastquit.config.performance.backgroundPriority": "Arkaplan İşlem Önceliği",
+  "fastquit.config.performance.backgroundPriority.description": "Bu sunucunun arkaplanda dünyaları kaydederken yapılan işlem önceliğini değiştirir.\nBu kaydedilirken cihaz performansını geliştirmek için yapılır, ama kaydetmek daha uzun sürer.",
+  "fastquit.config.performance.backgroundPriority.1": "1 (Minimum)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (Önerilen)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (Varsayılan)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (Maksimum)",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Dünyanız hala daha kaydolurken Ana Ekran'a dönün!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "Bu mod dünyanız hala daha arkaplanda kaydolurken erkenden Ana Ekran'a dönmenizi sağlar."
 }

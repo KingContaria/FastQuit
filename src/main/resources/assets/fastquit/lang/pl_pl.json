@@ -1,22 +1,24 @@
 {
-  "toast.fastquit.title": "FastQuit zakończony!",
-  "toast.fastquit.description": "Zakończono zapisywanie \"%s\"",
-  "toast.fastquit.deleted": "\"%s\" zostało usunięte",
-  "screen.fastquit.waiting": "Czekanie na zakończenie zapisywania \"%s\"...",
-  "options.fastquit.showToasts": "Pokazuj powiadomienia",
-  "options.fastquit.showToasts.description": "Określa, czy po zakończeniu zapisywania świata pojawi się powiadomienie.",
-  "options.fastquit.renderSavingScreen": "Pokazuj ekran \"Zapisywanie świata\"",
-  "options.fastquit.renderSavingScreen.description": "Jeśli grasz z dużym zasięgiem renderowania, zamknięcie świata może zająć trochę czasu, ponieważ trzeba wyczyścić pamięć podręczną klienta.\nWłączając to ustawienie, pojawi się ekran \"Zapisywanie świata\".",
-  "options.fastquit.backgroundPriority": "Priorytet wątku w tle",
-  "options.fastquit.backgroundPriority.description": "Ustawia priorytet wątku serwera podczas zapisywania światów w tle.\nTo poprawia wydajność klienta podczas zapisywania, ale spowoduje dłuższe zapisywanie w ogólnym rozrachunku.",
-  "options.fastquit.backgroundPriority.1": "1 (Minimum)",
-  "options.fastquit.backgroundPriority.2": "2 (Zalecane)",
-  "options.fastquit.backgroundPriority.5": "5 (Domyślne)",
-  "options.fastquit.backgroundPriority.10": "10 (Maksimum)",
-  "options.fastquit.showSavingTime": "Pokaż czas zapisywania",
-  "options.fastquit.showSavingTime.description": "Określa, czy na powiadomieniach i liście światów ma być wyświetlany czas potrzebny do zapisania świata.",
-  "options.fastquit.showSavingTime.toastsOnly": "Tylko powiadomienia",
+  "fastquit.toast.title": "FastQuit zakończony!",
+  "fastquit.toast.description": "Zakończono zapisywanie \"%s\"",
+  "fastquit.toast.deleted": "\"%s\" zostało usunięte",
 
-  "modmenu.summaryTranslation.fastquit": "Wróć do ekranu tytułowego podczas gdy świat jest wciąż zapisywany!",
-  "modmenu.descriptionTranslation.fastquit": "Ten mod pozwala wrócić do ekranu tytułowego podczas trwającego zapisywania świata w tle."
+  "fastquit.screen.waiting": "Czekanie na zakończenie zapisywania \"%s\"...",
+
+  "fastquit.config.general.showToasts": "Pokazuj powiadomienia",
+  "fastquit.config.general.showToasts.description": "Określa, czy po zakończeniu zapisywania świata pojawi się powiadomienie.",
+  "fastquit.config.general.renderSavingScreen": "Pokazuj ekran \"Zapisywanie świata\"",
+  "fastquit.config.general.renderSavingScreen.description": "Jeśli grasz z dużym zasięgiem renderowania, zamknięcie świata może zająć trochę czasu, ponieważ trzeba wyczyścić pamięć podręczną klienta.\nWłączając to ustawienie, pojawi się ekran \"Zapisywanie świata\".",
+  "fastquit.config.general.showSavingTime": "Pokaż czas zapisywania",
+  "fastquit.config.general.showSavingTime.description": "Określa, czy na powiadomieniach i liście światów ma być wyświetlany czas potrzebny do zapisania świata.",
+  "fastquit.config.general.showSavingTime.toastsOnly": "Tylko powiadomienia",
+  "fastquit.config.performance.backgroundPriority": "Priorytet wątku w tle",
+  "fastquit.config.performance.backgroundPriority.description": "Ustawia priorytet wątku serwera podczas zapisywania światów w tle.\nTo poprawia wydajność klienta podczas zapisywania, ale spowoduje dłuższe zapisywanie w ogólnym rozrachunku.",
+  "fastquit.config.performance.backgroundPriority.1": "1 (Minimum)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (Zalecane)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (Domyślne)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (Maksimum)",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Wróć do ekranu tytułowego podczas gdy świat jest wciąż zapisywany!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "Ten mod pozwala wrócić do ekranu tytułowego podczas trwającego zapisywania świata w tle."
 }

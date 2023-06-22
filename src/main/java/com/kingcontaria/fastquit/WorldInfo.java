@@ -13,9 +13,10 @@ public class WorldInfo {
     /**
      * Saves the time of instantiation which is the same as the start of saving of the corresponding world.
      */
-    private final long startedSaving = System.currentTimeMillis();
+    private final long startedSaving;
 
     public WorldInfo() {
+        this.startedSaving = System.currentTimeMillis();
     }
 
     /**

@@ -10,6 +10,6 @@ import net.minecraft.client.gui.screen.Screen;
 public final class CatalogueIntegration {
 
     public static Screen createConfigScreen(Screen parent, ModContainer mod) {
-        return new ConfigScreen(parent);
+        return FastQuit.CONFIG.createConfigScreen(parent);
     }
 }

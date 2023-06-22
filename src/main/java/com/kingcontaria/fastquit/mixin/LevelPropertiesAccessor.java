@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(LevelProperties.class)
 public interface LevelPropertiesAccessor {
-    @Accessor
-    LevelInfo getLevelInfo();
+    @Accessor("levelInfo")
+    LevelInfo fastquit$getLevelInfo();
 }

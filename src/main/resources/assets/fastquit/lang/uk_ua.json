@@ -1,21 +1,24 @@
 {
-"toast.fastquit.title":"Роботу FastQuit завершено!",
-"toast.fastquit.description":"Світ \"%s\" збережено!",
-"toast.fastquit.deleted":"Світ \"%s\" видалено",
-"screen.fastquit.waiting":"Очікується завершення збереження світу \"%s\"..",
-"options.fastquit.showToasts":"Показувати сповіщення",
-"options.fastquit.showToasts.description":"Увімкнути відображення сповіщень при завершенні збереження світу.",
-"options.fastquit.renderSavingScreen":"Показувати екран \"Збереження світу\"",
-"options.fastquit.renderSavingScreen.description":"При грі з високим значенням дальності рендеру, вихід зі світу може займати дещо більше часу через необхідність у вивантаженні даних про чанки на стороні клієнта.\nЯкщо увімкнено, під час вивантаження даних відображатиметься екран \"Збереження світу\".",
-"options.fastquit.backgroundPriority":"Пріорітетні потоки обробки",
-"options.fastquit.backgroundPriority.description":"Встановити кількість пріорітетних потоків сервера, що оброблюватимуть збереження світу у фоновому режимі.\nЦе здійснюється задля покращення швидкодії клієнта під час збереження. Проте, увімкнення цього параметра збільшить загальний час збереження.",
-"options.fastquit.backgroundPriority.1":"1 (мінімальне)",
-"options.fastquit.backgroundPriority.2":"2 (рекомендоване)",
-"options.fastquit.backgroundPriority.5":"5 (за замовчуванням)",
-"options.fastquit.backgroundPriority.10":"10 (максимальне)",
-"options.fastquit.showSavingTime":"Показувати тривалість збереження",
-"options.fastquit.showSavingTime.description":"Показувати тривалість збереження світу у сповіщеннях та списку світів.",
-"options.fastquit.showSavingTime.toastsOnly":"Тільки сповіщення",
-"modmenu.summaryTranslation.fastquit":"Користуйтеся головним меню, поки у фоновому режимі здійснюється збереження світу!",
-"modmenu.descriptionTranslation.fastquit":"Цей мод дозволяє вам повертатись у головне меню швидше, поки у фоновому режимі здійснюється збереження вашого світу."
+  "fastquit.toast.title":"Роботу FastQuit завершено!",
+  "fastquit.toast.description":"Світ \"%s\" збережено!",
+  "fastquit.toast.deleted":"Світ \"%s\" видалено",
+  
+  "fastquit.screen.waiting":"Очікується завершення збереження світу \"%s\"..",
+  
+  "fastquit.config.general.showToasts":"Показувати сповіщення",
+  "fastquit.config.general.showToasts.description":"Увімкнути відображення сповіщень при завершенні збереження світу.",
+  "fastquit.config.general.renderSavingScreen":"Показувати екран \"Збереження світу\"",
+  "fastquit.config.general.renderSavingScreen.description":"При грі з високим значенням дальності рендеру, вихід зі світу може займати дещо більше часу через необхідність у вивантаженні даних про чанки на стороні клієнта.\nЯкщо увімкнено, під час вивантаження даних відображатиметься екран \"Збереження світу\".",
+  "fastquit.config.general.showSavingTime":"Показувати тривалість збереження",
+  "fastquit.config.general.showSavingTime.description":"Показувати тривалість збереження світу у сповіщеннях та списку світів.",
+  "fastquit.config.general.showSavingTime.toastsOnly":"Тільки сповіщення",
+  "fastquit.config.performance.backgroundPriority":"Пріорітетні потоки обробки",
+  "fastquit.config.performance.backgroundPriority.description":"Встановити кількість пріорітетних потоків сервера, що оброблюватимуть збереження світу у фоновому режимі.\nЦе здійснюється задля покращення швидкодії клієнта під час збереження. Проте, увімкнення цього параметра збільшить загальний час збереження.",
+  "fastquit.config.performance.backgroundPriority.1":"1 (мінімальне)",
+  "fastquit.config.performance.backgroundPriority.2":"2 (рекомендоване)",
+  "fastquit.config.performance.backgroundPriority.5":"5 (за замовчуванням)",
+  "fastquit.config.performance.backgroundPriority.10":"10 (максимальне)",
+
+  "fastquit.modmenu.summaryTranslation.fastquit":"Користуйтеся головним меню, поки у фоновому режимі здійснюється збереження світу!",
+  "fastquit.modmenu.descriptionTranslation.fastquit":"Цей мод дозволяє вам повертатись у головне меню швидше, поки у фоновому режимі здійснюється збереження вашого світу."
 }

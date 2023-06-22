@@ -18,33 +18,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftClientMixin {
 
     @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
-    private boolean fastQuit(IntegratedServer server) {
-        int worlds = FastQuit.savingWorlds.size();
-
+    private boolean fastquit(IntegratedServer server) {
         FastQuit.savingWorlds.put(server, new WorldInfo());
 
-        Thread thread = server.getThread();
-        if (FastQuit.backgroundPriority != 0) {
-            thread.setPriority(FastQuit.backgroundPriority);
+        if (FastQuit.CONFIG.backgroundPriority != 0) {
+            server.getThread().setPriority(FastQuit.CONFIG.backgroundPriority);
         }
-        thread.setName("Background " + thread.getName() + (worlds > 0 ? " (" + worlds + ")" : ""));
 
         FastQuit.log("Disconnected \"" + server.getSaveProperties().getLevelName() + "\" from the client.");
         return true;
     }
 
     @WrapWithCondition(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))
-    private boolean fastQuit_doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
-        return FastQuit.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
+    private boolean fastquit$doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
+        return FastQuit.CONFIG.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
     }
 
     @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect()V", shift = At.Shift.AFTER))
-    private void fastQuit_waitForSaveOnShutdown(CallbackInfo ci) {
+    private void fastquit$waitForSaveOnShutdown(CallbackInfo ci) {
         FastQuit.exit();
     }
 
     @Inject(method = "printCrashReport", at = @At("HEAD"))
-    private static void fastQuit_waitForSaveOnCrash(CallbackInfo ci) {
+    private static void fastquit$waitForSaveOnCrash(CallbackInfo ci) {
         FastQuit.exit();
     }
 }

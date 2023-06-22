@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(LevelInfo.class)
 public interface LevelInfoAccessor {
     @Mutable
-    @Accessor
-    void setName(String name);
+    @Accessor("name")
+    void fastquit$setName(String name);
 }

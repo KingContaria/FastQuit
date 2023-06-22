@@ -16,15 +16,18 @@ import java.util.Collections;
 @Mixin(LevelStorage.class)
 public abstract class LevelStorageMixin {
 
-    @Shadow @Final Path savesDirectory;
+    @Shadow @Final private Path savesDirectory;
 
     @Inject(method = "createSession", at = @At("HEAD"))
-    private void fastQuit_waitForSaveOnSessionCreation(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
+    private void fastquit$waitForSaveOnSessionCreation(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
+        if (!FastQuit.CONFIG.allowMultipleServers()) {
+            FastQuit.wait(FastQuit.savingWorlds.keySet());
+        }
         FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
     }
 
     @Inject(method = "method_43418", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), cancellable = true, remap = false)
-    private void fastQuit_addCurrentlySavingLevelsToWorldList(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
+    private void fastquit$addCurrentlySavingLevelsToWorldList(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
         FastQuit.getSession(levelSave.path()).ifPresent(session -> {
             try (session) {
                 cir.setReturnValue(session.getLevelSummary());

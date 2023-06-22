@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(MinecraftClient.class)
 public interface MinecraftClientAccessor {
-    @Invoker
-    void callRender(boolean tick);
+    @Invoker("render")
+    void fastquit$render(boolean tick);
 }

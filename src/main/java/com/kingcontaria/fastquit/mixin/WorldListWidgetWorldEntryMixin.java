@@ -25,8 +25,13 @@ public abstract class WorldListWidgetWorldEntryMixin {
     @Shadow @Final private MinecraftClient client;
     @Shadow @Final private LevelSummary level;
 
-    @WrapOperation(method = {"delete", "edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
+    @WrapOperation(method = {"edit", "recreate"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSession(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
     private LevelStorage.Session fastquit$editSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
+        return FastQuit.getSession(storage.getSavesDirectory().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
+    }
+
+    @WrapOperation(method = "delete", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage;createSessionWithoutSymlinkCheck(Ljava/lang/String;)Lnet/minecraft/world/level/storage/LevelStorage$Session;"))
+    private LevelStorage.Session fastquit$deleteSavingWorld(LevelStorage storage, String directoryName, Operation<LevelStorage.Session> original) {
         return FastQuit.getSession(storage.getSavesDirectory().resolve(directoryName)).orElseGet(() -> original.call(storage, directoryName));
     }
 

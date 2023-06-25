@@ -121,7 +121,7 @@ public final class FastQuit implements ClientModInitializer {
 
         Screen oldScreen = client.currentScreen;
 
-        Text stillSaving = TextHelper.translatable("screen.fastquit.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
+        Text stillSaving = TextHelper.translatable("fastquit.screen.waiting", String.join("\" & \"", servers.stream().map(server -> server.getSaveProperties().getLevelName()).toList()));
         log(stillSaving.getString());
 
         servers.forEach(server -> server.getThread().setPriority(Thread.NORM_PRIORITY));

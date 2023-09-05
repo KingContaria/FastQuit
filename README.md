@@ -80,6 +80,10 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 - Skidamek (Polish)
 - Oondanomala (Italian)
 - Madis0 (Estonian)
+- notlin4 (Traditional Chinese)
+- BurrConnie (Ukrainian)
+- GodGun968 (Simplified Chinese)
+- ImVietnam (Vietnamese)
 ####
 
 ### Compatibility

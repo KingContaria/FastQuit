@@ -3,6 +3,7 @@ package com.kingcontaria.fastquit;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
+import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
@@ -21,22 +22,29 @@ public class FastQuitConfig implements ConfigData {
     /**
      * Determines whether the "Saving world" screen gets rendered.
      */
+    @ConfigEntry.Gui.Tooltip
     public boolean renderSavingScreen = false;
 
     /**
      * Determines whether a toast gets shown when a world finishes saving.
      */
+    @ConfigEntry.Gui.Tooltip
     public boolean showToasts = true;
 
     /**
      * Determines whether the time it took to save the world gets displayed on toasts and the world list.
      */
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public ShowSavingTime showSavingTime = ShowSavingTime.TRUE;
 
     /**
      * Determines the Thread priority used for {@link IntegratedServer}'s saving in the background.
      * Value needs to be between 0 and 10, with Thread priority staying unchanged if the value is 0.
      */
+    @ConfigEntry.Category("performance")
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.BoundedDiscrete(max = Thread.MAX_PRIORITY)
     public int backgroundPriority = 2;
 
     /**
@@ -45,12 +53,15 @@ public class FastQuitConfig implements ConfigData {
      *
      * @apiNote Access through {@link FastQuitConfig#allowMultipleServers()} to avoid known mod conflicts!
      */
+    @ConfigEntry.Category("compat")
+    @ConfigEntry.Gui.Tooltip
     private boolean allowMultipleServers = true;
 
     /**
      * This {@link Set} holds the names of all currently active mods that conflict with {@link FastQuitConfig#allowMultipleServers}.
      * @see FastQuitConfig#allowMultipleServers()
      */
+    @ConfigEntry.Gui.Excluded
     private static final Set<String> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS = new HashSet<>();
 
     static {
@@ -69,13 +80,15 @@ public class FastQuitConfig implements ConfigData {
         if (!MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.isEmpty()) {
             return false;
         }
-        return allowMultipleServers;
+        return this.allowMultipleServers;
     }
 
     /**
      * @return Returns a config screen built with Cloth Config API
      */
     public Screen createConfigScreen(Screen parent) {
+        // if (true) return AutoConfig.getConfigScreen(FastQuitConfig.class, parent).get();
+
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
                 .setTitle(TextHelper.literal(FastQuit.FASTQUIT.getName()))
@@ -133,6 +146,15 @@ public class FastQuitConfig implements ConfigData {
         // Mod Compatibility Settings
 
         ConfigCategory modCompatCategory = builder.getOrCreateCategory(TextHelper.translatable("fastquit.config.compat"));
+/*
+        modCompatCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.compat.allowMultipleServers"), this.allowMultipleServers)
+                .setTooltip(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.description"))
+                .setDefaultValue(true)
+                .setSaveConsumer(allowMultipleServers -> this.allowMultipleServers = allowMultipleServers)
+                .setRequirement(() -> !MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.isEmpty())
+                .build()
+        );
+ */
 
         if (MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.isEmpty()) {
             modCompatCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.compat.allowMultipleServers"), this.allowMultipleServers)
@@ -155,7 +177,15 @@ public class FastQuitConfig implements ConfigData {
     public enum ShowSavingTime {
         FALSE,
         TOAST_ONLY,
-        TRUE
+        TRUE;
+
+        @Override
+        public String toString() {
+            if (this == ShowSavingTime.TOAST_ONLY) {
+                return TextHelper.translatable("fastquit.config.general.showSavingTime.toastsOnly").getString();
+            }
+            return Text.translatable("text.cloth-config.boolean.value." + (this == ShowSavingTime.TRUE)).getString();
+        }
     }
     
     private enum ModCompat {

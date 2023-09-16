@@ -5,19 +5,20 @@
 
   "fastquit.screen.waiting": "\"%s\" salvestamise lõppemise ootamine...",
 
-  "fastquit.config.general.showToasts": "Hüpikud",
-  "fastquit.config.general.showToasts.description": "Määrab, kas maailma salvestamise lõpus kuvatakse hüpikut.",
-  "fastquit.config.general.renderSavingScreen": "\"Maailma salvestamine\" kuva",
-  "fastquit.config.general.renderSavingScreen.description": "Kõrge renderduskaugusega mängides võib maailmast lahkumine siiski mõnda aega võtta, sest kliendipoolne kamakamälu tuleb tühjendada.\nSelle valiku lubamisel kuvatakse \"Maailma salvestamine\" kuva.",
-  "fastquit.config.general.showSavingTime": "Salvestamisaja kuvamine",
-  "fastquit.config.general.showSavingTime.description": "Määrab, kas maailma salvestamiseks kulunud/kuluv aeg kuvatakse hüpikutel ja maailmaloendis.",
   "fastquit.config.general.showSavingTime.toastsOnly": "Vaid hüpikud",
-  "fastquit.config.performance.backgroundPriority": "Taustalõime prioriteet",
-  "fastquit.config.performance.backgroundPriority.description": "Määrab serveri lõimeprioriteedi, kui maailmu salvestatakse taustal.\nSeda tehakse salvestamise hetkel kliendi jõudluse parandamiseks, ent muudab salvestamise üldiselt kauem kestvamaks.",
   "fastquit.config.performance.backgroundPriority.1": "1 (minimaalne)",
   "fastquit.config.performance.backgroundPriority.2": "2 (soovitatud)",
   "fastquit.config.performance.backgroundPriority.5": "5 (vaikeväärtus)",
   "fastquit.config.performance.backgroundPriority.10": "10 (maksimaalne)",
+
+  "text.autoconfig.fastquit.option.renderSavingScreen": "\"Maailma salvestamine\" kuva",
+  "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "Kõrge renderduskaugusega mängides võib maailmast lahkumine siiski mõnda aega võtta, sest kliendipoolne kamakamälu tuleb tühjendada.\nSelle valiku lubamisel kuvatakse \"Maailma salvestamine\" kuva.",
+  "text.autoconfig.fastquit.option.showToasts": "Hüpikud",
+  "text.autoconfig.fastquit.option.showToasts.@Tooltip": "Määrab, kas maailma salvestamise lõpus kuvatakse hüpikut.",
+  "text.autoconfig.fastquit.option.showSavingTime": "Salvestamisaja kuvamine",
+  "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "Määrab, kas maailma salvestamiseks kulunud/kuluv aeg kuvatakse hüpikutel ja maailmaloendis.",
+  "text.autoconfig.fastquit.option.backgroundPriority": "Taustalõime prioriteet",
+  "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "Määrab serveri lõimeprioriteedi, kui maailmu salvestatakse taustal.\nSeda tehakse salvestamise hetkel kliendi jõudluse parandamiseks, ent muudab salvestamise üldiselt kauem kestvamaks.",
 
   "fastquit.modmenu.summaryTranslation.fastquit": "Pöördu tagasi avamenüüsse, kuni maailm veel salvestub!",
   "fastquit.modmenu.descriptionTranslation.fastquit": "See mod võimaldab sul pöörduda avamenüüsse varakult, kuni maailm taustal veel edasi salvestub."

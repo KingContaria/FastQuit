@@ -1,24 +1,25 @@
 {
-  "fastquit.toast.title":"Роботу FastQuit завершено!",
-  "fastquit.toast.description":"Світ \"%s\" збережено!",
-  "fastquit.toast.deleted":"Світ \"%s\" видалено",
+  "fastquit.toast.title": "Роботу FastQuit завершено!",
+  "fastquit.toast.description": "Світ \"%s\" збережено!",
+  "fastquit.toast.deleted": "Світ \"%s\" видалено",
   
-  "fastquit.screen.waiting":"Очікується завершення збереження світу \"%s\"..",
+  "fastquit.screen.waiting": "Очікується завершення збереження світу \"%s\"..",
   
-  "fastquit.config.general.showToasts":"Показувати сповіщення",
-  "fastquit.config.general.showToasts.description":"Увімкнути відображення сповіщень при завершенні збереження світу.",
-  "fastquit.config.general.renderSavingScreen":"Показувати екран \"Збереження світу\"",
-  "fastquit.config.general.renderSavingScreen.description":"При грі з високим значенням дальності рендеру, вихід зі світу може займати дещо більше часу через необхідність у вивантаженні даних про чанки на стороні клієнта.\nЯкщо увімкнено, під час вивантаження даних відображатиметься екран \"Збереження світу\".",
-  "fastquit.config.general.showSavingTime":"Показувати тривалість збереження",
-  "fastquit.config.general.showSavingTime.description":"Показувати тривалість збереження світу у сповіщеннях та списку світів.",
-  "fastquit.config.general.showSavingTime.toastsOnly":"Тільки сповіщення",
-  "fastquit.config.performance.backgroundPriority":"Пріорітетні потоки обробки",
-  "fastquit.config.performance.backgroundPriority.description":"Встановити кількість пріорітетних потоків сервера, що оброблюватимуть збереження світу у фоновому режимі.\nЦе здійснюється задля покращення швидкодії клієнта під час збереження. Проте, увімкнення цього параметра збільшить загальний час збереження.",
-  "fastquit.config.performance.backgroundPriority.1":"1 (мінімальне)",
-  "fastquit.config.performance.backgroundPriority.2":"2 (рекомендоване)",
-  "fastquit.config.performance.backgroundPriority.5":"5 (за замовчуванням)",
-  "fastquit.config.performance.backgroundPriority.10":"10 (максимальне)",
+  "fastquit.config.general.showSavingTime.toastsOnly": "Тільки сповіщення",
+  "fastquit.config.performance.backgroundPriority.1": "1 (мінімальне)",
+  "fastquit.config.performance.backgroundPriority.2": "2 (рекомендоване)",
+  "fastquit.config.performance.backgroundPriority.5": "5 (за замовчуванням)",
+  "fastquit.config.performance.backgroundPriority.10": "10 (максимальне)",
 
-  "fastquit.modmenu.summaryTranslation.fastquit":"Користуйтеся головним меню, поки у фоновому режимі здійснюється збереження світу!",
-  "fastquit.modmenu.descriptionTranslation.fastquit":"Цей мод дозволяє вам повертатись у головне меню швидше, поки у фоновому режимі здійснюється збереження вашого світу."
+  "text.autoconfig.fastquit.option.renderSavingScreen": "Показувати екран \"Збереження світу\"",
+  "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "При грі з високим значенням дальності рендеру, вихід зі світу може займати дещо більше часу через необхідність у вивантаженні даних про чанки на стороні клієнта.\nЯкщо увімкнено, під час вивантаження даних відображатиметься екран \"Збереження світу\".",
+  "text.autoconfig.fastquit.option.showToasts": "Показувати сповіщення",
+  "text.autoconfig.fastquit.option.showToasts.@Tooltip": "Увімкнути відображення сповіщень при завершенні збереження світу.",
+  "text.autoconfig.fastquit.option.showSavingTime": "Показувати тривалість збереження",
+  "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "Показувати тривалість збереження світу у сповіщеннях та списку світів.",
+  "text.autoconfig.fastquit.option.backgroundPriority": "Пріорітетні потоки обробки",
+  "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "Встановити кількість пріорітетних потоків сервера, що оброблюватимуть збереження світу у фоновому режимі.\nЦе здійснюється задля покращення швидкодії клієнта під час збереження. Проте, увімкнення цього параметра збільшить загальний час збереження.",
+
+  "fastquit.modmenu.summaryTranslation.fastquit": "Користуйтеся головним меню, поки у фоновому режимі здійснюється збереження світу!",
+  "fastquit.modmenu.descriptionTranslation.fastquit": "Цей мод дозволяє вам повертатись у головне меню швидше, поки у фоновому режимі здійснюється збереження вашого світу."
 }

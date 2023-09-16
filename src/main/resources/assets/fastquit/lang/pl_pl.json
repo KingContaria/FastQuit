@@ -5,19 +5,20 @@
 
   "fastquit.screen.waiting": "Czekanie na zakończenie zapisywania \"%s\"...",
 
-  "fastquit.config.general.showToasts": "Pokazuj powiadomienia",
-  "fastquit.config.general.showToasts.description": "Określa, czy po zakończeniu zapisywania świata pojawi się powiadomienie.",
-  "fastquit.config.general.renderSavingScreen": "Pokazuj ekran \"Zapisywanie świata\"",
-  "fastquit.config.general.renderSavingScreen.description": "Jeśli grasz z dużym zasięgiem renderowania, zamknięcie świata może zająć trochę czasu, ponieważ trzeba wyczyścić pamięć podręczną klienta.\nWłączając to ustawienie, pojawi się ekran \"Zapisywanie świata\".",
-  "fastquit.config.general.showSavingTime": "Pokaż czas zapisywania",
-  "fastquit.config.general.showSavingTime.description": "Określa, czy na powiadomieniach i liście światów ma być wyświetlany czas potrzebny do zapisania świata.",
   "fastquit.config.general.showSavingTime.toastsOnly": "Tylko powiadomienia",
-  "fastquit.config.performance.backgroundPriority": "Priorytet wątku w tle",
-  "fastquit.config.performance.backgroundPriority.description": "Ustawia priorytet wątku serwera podczas zapisywania światów w tle.\nTo poprawia wydajność klienta podczas zapisywania, ale spowoduje dłuższe zapisywanie w ogólnym rozrachunku.",
   "fastquit.config.performance.backgroundPriority.1": "1 (Minimum)",
   "fastquit.config.performance.backgroundPriority.2": "2 (Zalecane)",
   "fastquit.config.performance.backgroundPriority.5": "5 (Domyślne)",
   "fastquit.config.performance.backgroundPriority.10": "10 (Maksimum)",
+
+  "text.autoconfig.fastquit.option.renderSavingScreen": "Pokazuj ekran \"Zapisywanie świata\"",
+  "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "Jeśli grasz z dużym zasięgiem renderowania, zamknięcie świata może zająć trochę czasu, ponieważ trzeba wyczyścić pamięć podręczną klienta.\nWłączając to ustawienie, pojawi się ekran \"Zapisywanie świata\".",
+  "text.autoconfig.fastquit.option.showToasts": "Pokazuj powiadomienia",
+  "text.autoconfig.fastquit.option.showToasts.@Tooltip": "Określa, czy po zakończeniu zapisywania świata pojawi się powiadomienie.",
+  "text.autoconfig.fastquit.option.showSavingTime": "Pokaż czas zapisywania",
+  "text.autoconfig.fastquit.option.showSavingTime.@Tooltip": "Określa, czy na powiadomieniach i liście światów ma być wyświetlany czas potrzebny do zapisania świata.",
+  "text.autoconfig.fastquit.option.backgroundPriority": "Priorytet wątku w tle",
+  "text.autoconfig.fastquit.option.backgroundPriority.@Tooltip": "Ustawia priorytet wątku serwera podczas zapisywania światów w tle.\nTo poprawia wydajność klienta podczas zapisywania, ale spowoduje dłuższe zapisywanie w ogólnym rozrachunku.",
 
   "fastquit.modmenu.summaryTranslation.fastquit": "Wróć do ekranu tytułowego podczas gdy świat jest wciąż zapisywany!",
   "fastquit.modmenu.descriptionTranslation.fastquit": "Ten mod pozwala wrócić do ekranu tytułowego podczas trwającego zapisywania świata w tle."

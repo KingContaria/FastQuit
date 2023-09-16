@@ -61,7 +61,6 @@ public class FastQuitConfig implements ConfigData {
      * This {@link Set} holds the names of all currently active mods that conflict with {@link FastQuitConfig#allowMultipleServers}.
      * @see FastQuitConfig#allowMultipleServers()
      */
-    @ConfigEntry.Gui.Excluded
     private static final Set<String> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS = new HashSet<>();
 
     static {
@@ -98,30 +97,24 @@ public class FastQuitConfig implements ConfigData {
 
         // General Settings
 
-        ConfigCategory generalCategory = builder.getOrCreateCategory(TextHelper.translatable("fastquit.config.general"));
+        ConfigCategory generalCategory = builder.getOrCreateCategory(TextHelper.translatable("text.autoconfig.fastquit.category.default"));
 
-        generalCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.general.showToasts"), this.showToasts)
-                .setTooltip(TextHelper.translatable("fastquit.config.general.showToasts.description"))
-                .setDefaultValue(true)
-                .setSaveConsumer(showToasts -> this.showToasts = showToasts)
-                .build()
-        );
-
-        generalCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.general.renderSavingScreen"), this.renderSavingScreen)
-                .setTooltip(TextHelper.translatable("fastquit.config.general.renderSavingScreen.description"))
+        generalCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("text.autoconfig.fastquit.option.renderSavingScreen"), this.renderSavingScreen)
+                .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip"))
                 .setDefaultValue(false)
                 .setSaveConsumer(renderSavingScreen -> this.renderSavingScreen = renderSavingScreen)
                 .build()
         );
 
-        generalCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("fastquit.config.general.showSavingTime"), FastQuitConfig.ShowSavingTime.class, this.showSavingTime)
-                .setTooltip(TextHelper.translatable("fastquit.config.general.showSavingTime.description"))
-                .setEnumNameProvider(showSavingTime -> {
-                    if (showSavingTime == ShowSavingTime.TOAST_ONLY) {
-                        return TextHelper.translatable("fastquit.config.general.showSavingTime.toastsOnly");
-                    }
-                    return Text.translatable("text.cloth-config.boolean.value." + (showSavingTime == ShowSavingTime.TRUE));
-                })
+        generalCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("text.autoconfig.fastquit.option.showToasts"), this.showToasts)
+                .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.showToasts.@Tooltip"))
+                .setDefaultValue(true)
+                .setSaveConsumer(showToasts -> this.showToasts = showToasts)
+                .build()
+        );
+
+        generalCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("text.autoconfig.fastquit.option.showSavingTime"), FastQuitConfig.ShowSavingTime.class, this.showSavingTime)
+                .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.showSavingTime.@Tooltip"))
                 .setDefaultValue(ShowSavingTime.TRUE)
                 .setSaveConsumer(showSavingTime -> this.showSavingTime = showSavingTime)
                 .build()
@@ -129,10 +122,10 @@ public class FastQuitConfig implements ConfigData {
 
         // Performance Settings
 
-        ConfigCategory performanceCategory = builder.getOrCreateCategory(TextHelper.translatable("fastquit.config.performance"));
+        ConfigCategory performanceCategory = builder.getOrCreateCategory(TextHelper.translatable("text.autoconfig.fastquit.category.performance"));
 
-        performanceCategory.addEntry(entryBuilder.startIntSlider(TextHelper.translatable("fastquit.config.performance.backgroundPriority"), this.backgroundPriority, 0, Thread.MAX_PRIORITY)
-                .setTooltip(TextHelper.translatable("fastquit.config.performance.backgroundPriority.description"))
+        performanceCategory.addEntry(entryBuilder.startIntSlider(TextHelper.translatable("text.autoconfig.fastquit.option.backgroundPriority"), this.backgroundPriority, 0, Thread.MAX_PRIORITY)
+                .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.backgroundPriority.@Tooltip"))
                 .setTextGetter(backgroundPriority -> switch (backgroundPriority) {
                     case 0 -> TextHelper.OFF;
                     case 1, 2, 5, 10 -> TextHelper.translatable("fastquit.config.performance.backgroundPriority." + backgroundPriority);
@@ -145,7 +138,7 @@ public class FastQuitConfig implements ConfigData {
 
         // Mod Compatibility Settings
 
-        ConfigCategory modCompatCategory = builder.getOrCreateCategory(TextHelper.translatable("fastquit.config.compat"));
+        ConfigCategory modCompatCategory = builder.getOrCreateCategory(TextHelper.translatable("text.autoconfig.fastquit.category.compat"));
 /*
         modCompatCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.compat.allowMultipleServers"), this.allowMultipleServers)
                 .setTooltip(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.description"))
@@ -157,15 +150,15 @@ public class FastQuitConfig implements ConfigData {
  */
 
         if (MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS.isEmpty()) {
-            modCompatCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("fastquit.config.compat.allowMultipleServers"), this.allowMultipleServers)
-                    .setTooltip(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.description"))
+            modCompatCategory.addEntry(entryBuilder.startBooleanToggle(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers"), this.allowMultipleServers)
+                    .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip"))
                     .setDefaultValue(true)
                     .setSaveConsumer(allowMultipleServers -> this.allowMultipleServers = allowMultipleServers)
                     .build()
             );
         } else {
-            modCompatCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("fastquit.config.compat.allowMultipleServers"), ModCompat.class, ModCompat.DISABLED)
-                    .setTooltip(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.description").append("\n\n").append(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.disabledForCompat", String.join(", ", MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS))))
+            modCompatCategory.addEntry(entryBuilder.startEnumSelector(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers"), ModCompat.class, ModCompat.DISABLED)
+                    .setTooltip(TextHelper.translatable("text.autoconfig.fastquit.option.allowMultipleServers.@Tooltip").append("\n\n").append(TextHelper.translatable("fastquit.config.compat.allowMultipleServers.disabledForCompat", String.join(", ", MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS))))
                     .setEnumNameProvider(disabled -> TextHelper.translatable("addServer.resourcePack.disabled").styled(style -> style.withColor(Formatting.RED)))
                     .build()
             );

@@ -7,11 +7,12 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -167,17 +168,17 @@ public class FastQuitConfig implements ConfigData {
         return builder.build();
     }
 
-    public enum ShowSavingTime {
+    public enum ShowSavingTime implements SelectionListEntry.Translatable {
         FALSE,
         TOAST_ONLY,
         TRUE;
 
         @Override
-        public String toString() {
+        public @NotNull String getKey() {
             if (this == ShowSavingTime.TOAST_ONLY) {
-                return TextHelper.translatable("fastquit.config.general.showSavingTime.toastsOnly").getString();
+                return "fastquit.config.general.showSavingTime.toastsOnly";
             }
-            return Text.translatable("text.cloth-config.boolean.value." + (this == ShowSavingTime.TRUE)).getString();
+            return "text.cloth-config.boolean.value." + (this == ShowSavingTime.TRUE);
         }
     }
     

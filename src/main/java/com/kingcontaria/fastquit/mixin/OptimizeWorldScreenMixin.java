@@ -11,14 +11,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Collections;
-
 @Mixin(OptimizeWorldScreen.class)
 public abstract class OptimizeWorldScreenMixin {
 
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "create", at = @At("HEAD"))
     private static void fastquit$waitForSaveOnOptimizeWorld(MinecraftClient client, BooleanConsumer callback, DataFixer dataFixer, LevelStorage.Session session, boolean eraseCache, CallbackInfoReturnable<OptimizeWorldScreen> cir) {
-        FastQuit.getSavingWorld(session).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld(session).ifPresent(FastQuit::wait);
     }
 }

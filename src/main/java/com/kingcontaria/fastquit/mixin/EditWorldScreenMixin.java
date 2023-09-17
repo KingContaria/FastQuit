@@ -10,8 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collections;
-
 @Mixin(EditWorldScreen.class)
 public abstract class EditWorldScreenMixin {
 
@@ -19,6 +17,6 @@ public abstract class EditWorldScreenMixin {
 
     @Inject(method = {"method_19931", "method_27029"}, at = @At("HEAD"), remap = false, cancellable = true)
     private void fastquit$waitForSaveOnBackupOrOptimizeWorld_cancellable(CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.storageSession).ifPresent(server -> FastQuit.wait(Collections.singleton(server), ci));
+        FastQuit.getSavingWorld(this.storageSession).ifPresent(server -> FastQuit.wait(server, ci));
     }
 }

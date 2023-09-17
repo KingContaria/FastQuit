@@ -93,6 +93,20 @@ public final class FastQuit implements ClientModInitializer {
     /**
      * @see #wait(Collection, CallbackInfo)
      */
+    public static void wait(IntegratedServer server) {
+        wait(Collections.singleton(server), null);
+    }
+
+    /**
+     * @see #wait(Collection, CallbackInfo)
+     */
+    public static void wait(IntegratedServer server, @Nullable CallbackInfo cancellable) {
+        wait(Collections.singleton(server), cancellable);
+    }
+
+    /**
+     * @see #wait(Collection, CallbackInfo)
+     */
     public static void wait(Collection<IntegratedServer> servers) {
         wait(servers, null);
     }

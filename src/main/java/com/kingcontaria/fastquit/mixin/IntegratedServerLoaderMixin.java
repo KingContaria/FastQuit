@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collections;
-
 @Mixin(IntegratedServerLoader.class)
 public abstract class IntegratedServerLoaderMixin {
 
@@ -22,7 +20,7 @@ public abstract class IntegratedServerLoaderMixin {
 
     @Inject(method = "start(Lnet/minecraft/client/gui/screen/Screen;Ljava/lang/String;ZZ)V", at = @At("HEAD"), cancellable = true)
     private void fastquit$waitForSaveOnWorldLoad_cancellable(Screen parent, String levelName, boolean safeMode, boolean canShowBackupPrompt, CallbackInfo ci) {
-        FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> FastQuit.wait(Collections.singleton(server), ci));
+        FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> FastQuit.wait(server, ci));
         if (ci.isCancelled()) {
             this.client.setScreen(parent);
         }

@@ -50,7 +50,7 @@ public abstract class MinecraftServerMixin {
 
     @WrapWithCondition(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
     private boolean fastquit$cancelPlayerSavingIfDeleted(PlayerManager playerManager) {
-        if (isDeleted()) {
+        if (this.isDeleted()) {
             LOGGER.info("Cancelled saving players because level was deleted");
             return false;
         }
@@ -59,7 +59,7 @@ public abstract class MinecraftServerMixin {
 
     @Inject(method = "save", at = {@At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V")}, cancellable = true)
     private void fastquit$cancelSavingIfDeleted(CallbackInfoReturnable<Boolean> cir) {
-        if (isDeleted()) {
+        if (this.isDeleted()) {
             LOGGER.info("Cancelled saving worlds because level was deleted");
             cir.setReturnValue(false);
         }

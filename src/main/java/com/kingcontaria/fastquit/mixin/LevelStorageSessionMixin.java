@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
-import java.util.Collections;
 
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
@@ -62,7 +61,7 @@ public abstract class LevelStorageSessionMixin {
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "createBackup", at = @At("HEAD"))
     private void fastquit$waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
-        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(FastQuit::wait);
     }
 
     @Inject(method = "save", at = @At("TAIL"))
@@ -86,7 +85,7 @@ public abstract class LevelStorageSessionMixin {
             FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {
                 FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
                 if (!server.isOnThread()) {
-                    FastQuit.wait(Collections.singleton(server));
+                    FastQuit.wait(server);
                 }
             });
         }

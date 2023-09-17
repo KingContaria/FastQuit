@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.nio.file.Path;
-import java.util.Collections;
 
 @Mixin(LevelStorage.class)
 public abstract class LevelStorageMixin {
@@ -23,7 +22,7 @@ public abstract class LevelStorageMixin {
         if (!FastQuit.CONFIG.allowMultipleServers()) {
             FastQuit.wait(FastQuit.savingWorlds.keySet());
         }
-        FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(server -> FastQuit.wait(Collections.singleton(server)));
+        FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(FastQuit::wait);
     }
 
     @Inject(method = "method_43418", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), cancellable = true, remap = false)

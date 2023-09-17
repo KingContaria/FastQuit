@@ -91,7 +91,7 @@ public class FastQuitConfig implements ConfigData {
 
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parent)
-                .setTitle(TextHelper.literal(FastQuit.FASTQUIT.getName()))
+                .setTitle(TextHelper.translatable("text.autoconfig.fastquit.title"))
                 .setSavingRunnable(() -> AutoConfig.getConfigHolder(FastQuitConfig.class).save());
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();

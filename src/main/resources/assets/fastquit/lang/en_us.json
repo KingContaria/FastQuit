@@ -12,6 +12,7 @@
   "fastquit.config.performance.backgroundPriority.10": "10 (Maximum)",
   "fastquit.config.compat.allowMultipleServers.disabledForCompat": "§cThis option is disabled to avoid issues with the following mods:\n%s",
 
+  "text.autoconfig.fastquit.title": "FastQuit",
   "text.autoconfig.fastquit.category.default": "General",
   "text.autoconfig.fastquit.option.renderSavingScreen": "Render \"Saving world\" Screen",
   "text.autoconfig.fastquit.option.renderSavingScreen.@Tooltip": "When playing on high render distance, quitting the world can still take a bit because the client-side chunk storage has to be cleared.\nBy enabling this setting the \"Saving world\" screen will be rendered.",

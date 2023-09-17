@@ -164,9 +164,10 @@ public final class FastQuit implements ClientModInitializer {
     }
 
     /**
-     * @return optionally returns the currently {@link IntegratedServer} matching the given {@link Path}
+     * @return optionally returns the currently saving {@link IntegratedServer} matching the given {@link Path}
      */
     public static Optional<IntegratedServer> getSavingWorld(Path path) {
+        // noinspection resource
         return savingWorlds.keySet().stream().filter(server -> ((LevelStorageSessionAccessor) ((MinecraftServerAccessor) server).fastquit$getSession()).fastquit$getDirectory().path().equals(path)).findFirst();
     }
 
@@ -174,6 +175,7 @@ public final class FastQuit implements ClientModInitializer {
      * @return optionally returns the currently saving {@link IntegratedServer} matching the given {@link LevelStorage.Session}
      */
     public static Optional<IntegratedServer> getSavingWorld(LevelStorage.Session session) {
+        // noinspection resource
         return savingWorlds.keySet().stream().filter(server -> ((MinecraftServerAccessor) server).fastquit$getSession() == session).findFirst();
     }
 
@@ -185,6 +187,7 @@ public final class FastQuit implements ClientModInitializer {
         return getSavingWorld(path).flatMap(server -> {
             LevelStorage.Session session;
             synchronized (session = ((MinecraftServerAccessor) server).fastquit$getSession()) {
+                // noinspection resource
                 if (((LevelStorageSessionAccessor) session).fastquit$getLock().isValid()) {
                     occupiedSessions.add(session);
                     return Optional.of(session);

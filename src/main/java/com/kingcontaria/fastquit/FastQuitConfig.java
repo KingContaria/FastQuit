@@ -62,6 +62,7 @@ public class FastQuitConfig implements ConfigData {
      * This {@link Set} holds the names of all currently active mods that conflict with {@link FastQuitConfig#allowMultipleServers}.
      * @see FastQuitConfig#allowMultipleServers()
      */
+    @ConfigEntry.Gui.Excluded
     private static final Set<String> MODS_THAT_CONFLICT_WITH_MULTIPLE_SERVERS = new HashSet<>();
 
     static {

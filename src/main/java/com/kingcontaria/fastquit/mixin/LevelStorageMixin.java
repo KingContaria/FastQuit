@@ -29,7 +29,7 @@ public abstract class LevelStorageMixin {
     private void fastquit$addCurrentlySavingLevelsToWorldList(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
         FastQuit.getSession(levelSave.path()).ifPresent(session -> {
             try (session) {
-                cir.setReturnValue(session.getLevelSummary());
+                cir.setReturnValue(session.getLevelSummary(session.readLevelProperties()));
             } catch (Exception e) {
                 FastQuit.error("Failed to load level summary from saving server!", e);
             }

@@ -4,6 +4,7 @@ import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.nbt.NbtCompound;
@@ -38,15 +39,6 @@ public abstract class LevelStorageSessionMixin {
     @Shadow public abstract WorldSaveHandler createSaveHandler();
 
     @Synchronized
-    @Shadow public abstract @Nullable LevelSummary getLevelSummary();
-
-    @Synchronized
-    @Shadow public abstract @Nullable Pair<SaveProperties, DimensionOptionsRegistryHolder.DimensionsConfig> readLevelProperties(DynamicOps<NbtElement> ops, DataConfiguration dataConfiguration, Registry<DimensionOptions> dimensionOptionsRegistry, Lifecycle lifecycle);
-
-    @Synchronized
-    @Shadow public abstract @Nullable DataConfiguration getDataPackSettings();
-
-    @Synchronized
     @Shadow public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);
 
     @Synchronized
@@ -64,7 +56,7 @@ public abstract class LevelStorageSessionMixin {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(FastQuit::wait);
     }
 
-    @Inject(method = "save", at = @At("TAIL"))
+    @Inject(method = "save(Ljava/lang/String;)V", at = @At("TAIL"))
     private void fastquit$editSavingWorldName(String name, CallbackInfo ci) {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).fastquit$getLevelInfo()).fastquit$setName(name));
     }

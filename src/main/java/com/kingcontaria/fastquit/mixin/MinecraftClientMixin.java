@@ -8,11 +8,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.crash.CrashReport;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.io.File;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -39,8 +42,8 @@ public abstract class MinecraftClientMixin {
         FastQuit.exit();
     }
 
-    @Inject(method = "printCrashReport", at = @At("HEAD"))
-    private static void fastquit$waitForSaveOnCrash(CallbackInfo ci) {
+    @Inject(method = "printCrashReport(Lnet/minecraft/client/MinecraftClient;Ljava/io/File;Lnet/minecraft/util/crash/CrashReport;)V", at = @At("HEAD"))
+    private static void fastquit$waitForSaveOnCrash(MinecraftClient client, File file, CrashReport cr, CallbackInfo ci) {
         FastQuit.exit();
     }
 }

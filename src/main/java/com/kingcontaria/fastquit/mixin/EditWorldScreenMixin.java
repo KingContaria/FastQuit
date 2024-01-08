@@ -19,7 +19,7 @@ public abstract class EditWorldScreenMixin {
 
     @Inject(
             method = {
-                    "method_54598",
+                    "method_54595",
                     "method_54596"
             },
             at = @At("HEAD"),

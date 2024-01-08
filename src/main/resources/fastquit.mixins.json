@@ -9,6 +9,7 @@
     "LevelInfoAccessor",
     "LevelPropertiesAccessor",
     "LevelStorageMixin",
+    "LevelStorageSessionAccessor",
     "LevelStorageSessionMixin",
     "MinecraftClientAccessor",
     "MinecraftClientMixin",
@@ -16,7 +17,6 @@
     "MinecraftServerMixin",
     "OptimizeWorldScreenMixin",
     "RealmsUploadScreenMixin",
-    "LevelStorageSessionAccessor",
     "WorldListWidgetWorldEntryMixin"
   ],
   "injectors": {

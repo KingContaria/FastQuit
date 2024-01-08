@@ -3,19 +3,11 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.plugin.Synchronized;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.resource.DataConfiguration;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.WorldSaveHandler;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.minecraft.world.level.storage.SessionLock;
@@ -29,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
@@ -39,13 +32,22 @@ public abstract class LevelStorageSessionMixin {
     @Shadow public abstract WorldSaveHandler createSaveHandler();
 
     @Synchronized
+    @Shadow public abstract @Nullable LevelSummary getLevelSummary(Dynamic<?> dynamic);
+
+    @Synchronized
+    @Shadow protected abstract @Nullable Dynamic<?> readLevelProperties(boolean old);
+
+    @Synchronized
     @Shadow public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);
+
+    @Synchronized
+    @Shadow public abstract long createBackup() throws IOException;
 
     @Synchronized
     @Shadow public abstract void deleteSessionLock() throws IOException;
 
     @Synchronized
-    @Shadow public abstract void save(String name) throws IOException;
+    @Shadow protected abstract void save(Consumer<NbtCompound> nbtProcessor) throws IOException;
 
     @Synchronized
     @Shadow public abstract void close() throws IOException;

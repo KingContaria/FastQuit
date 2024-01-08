@@ -17,7 +17,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
 
-    @Redirect(method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"))
+    @Redirect(
+            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"
+            )
+    )
     private boolean fastquit(IntegratedServer server) {
         FastQuit.savingWorlds.put(server, new WorldInfo());
 
@@ -29,17 +35,33 @@ public abstract class MinecraftClientMixin {
         return true;
     }
 
-    @WrapWithCondition(method = "reset", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"))
+    @WrapWithCondition(
+            method = "reset",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/MinecraftClient;render(Z)V"
+            )
+    )
     private boolean fastquit$doNotOpenSaveScreen(MinecraftClient client, boolean tick, Screen screen) {
         return FastQuit.CONFIG.renderSavingScreen || !(screen instanceof MessageScreen && screen.getTitle().equals(TextHelper.translatable("menu.savingLevel")));
     }
 
-    @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;disconnect()V", shift = At.Shift.AFTER))
+    @Inject(
+            method = "stop",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/MinecraftClient;disconnect()V",
+                    shift = At.Shift.AFTER
+            )
+    )
     private void fastquit$waitForSaveOnShutdown(CallbackInfo ci) {
         FastQuit.exit();
     }
 
-    @Inject(method = "printCrashReport(Lnet/minecraft/client/MinecraftClient;Ljava/io/File;Lnet/minecraft/util/crash/CrashReport;)V", at = @At("HEAD"))
+    @Inject(
+            method = "printCrashReport(Lnet/minecraft/client/MinecraftClient;Ljava/io/File;Lnet/minecraft/util/crash/CrashReport;)V",
+            at = @At("HEAD")
+    )
     private static void fastquit$waitForSaveOnCrash(CallbackInfo ci) {
         FastQuit.exit();
     }

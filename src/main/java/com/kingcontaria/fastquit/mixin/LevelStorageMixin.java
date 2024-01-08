@@ -15,9 +15,14 @@ import java.nio.file.Path;
 @Mixin(LevelStorage.class)
 public abstract class LevelStorageMixin {
 
-    @Shadow @Final private Path savesDirectory;
+    @Shadow
+    @Final
+    private Path savesDirectory;
 
-    @Inject(method = "createSession", at = @At("HEAD"))
+    @Inject(
+            method = "createSession",
+            at = @At("HEAD")
+    )
     private void fastquit$waitForSaveOnSessionCreation(String levelName, CallbackInfoReturnable<LevelStorage.Session> cir) {
         if (!FastQuit.CONFIG.allowMultipleServers()) {
             FastQuit.wait(FastQuit.savingWorlds.keySet());
@@ -25,7 +30,15 @@ public abstract class LevelStorageMixin {
         FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(FastQuit::wait);
     }
 
-    @Inject(method = "method_43418", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"), cancellable = true, remap = false)
+    @Inject(
+            method = "method_43418",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/slf4j/Logger;warn(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;)V"
+            ),
+            cancellable = true,
+            remap = false
+    )
     private void fastquit$addCurrentlySavingLevelsToWorldList(LevelStorage.LevelSave levelSave, CallbackInfoReturnable<LevelSummary> cir) {
         FastQuit.getSession(levelSave.path()).ifPresent(session -> {
             try (session) {

@@ -24,9 +24,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
 
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
-    @Inject(method = "exit", at = @At("RETURN"))
+    @Inject(
+            method = "exit",
+            at = @At("RETURN")
+    )
     private void fastquit$finishSaving(CallbackInfo ci) {
         //noinspection ConstantConditions
         if ((Object) this instanceof IntegratedServer server) {
@@ -48,7 +53,13 @@ public abstract class MinecraftServerMixin {
         }
     }
 
-    @WrapWithCondition(method = "shutdown", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"))
+    @WrapWithCondition(
+            method = "shutdown",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/server/PlayerManager;saveAllPlayerData()V"
+            )
+    )
     private boolean fastquit$cancelPlayerSavingIfDeleted(PlayerManager playerManager) {
         if (this.isDeleted()) {
             LOGGER.info("Cancelled saving players because level was deleted");
@@ -57,7 +68,20 @@ public abstract class MinecraftServerMixin {
         return true;
     }
 
-    @Inject(method = "save", at = {@At(value = "INVOKE", target = "Ljava/util/Iterator;next()Ljava/lang/Object;"), @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V")}, cancellable = true)
+    @Inject(
+            method = "save",
+            at = {
+                    @At(
+                            value = "INVOKE",
+                            target = "Ljava/util/Iterator;next()Ljava/lang/Object;"
+                    ),
+                    @At(
+                            value = "INVOKE",
+                            target = "Lnet/minecraft/world/level/storage/LevelStorage$Session;backupLevelDataFile(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/world/SaveProperties;Lnet/minecraft/nbt/NbtCompound;)V"
+                    )
+            },
+            cancellable = true
+    )
     private void fastquit$cancelSavingIfDeleted(CallbackInfoReturnable<Boolean> cir) {
         if (this.isDeleted()) {
             LOGGER.info("Cancelled saving worlds because level was deleted");

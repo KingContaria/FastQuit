@@ -26,31 +26,41 @@ import java.util.function.Consumer;
 @Mixin(LevelStorage.Session.class)
 public abstract class LevelStorageSessionMixin {
 
-    @Shadow @Final private String directoryName;
+    @Shadow
+    @Final
+    private String directoryName;
 
     @Synchronized
-    @Shadow public abstract WorldSaveHandler createSaveHandler();
+    @Shadow
+    public abstract WorldSaveHandler createSaveHandler();
 
     @Synchronized
-    @Shadow public abstract @Nullable LevelSummary getLevelSummary(Dynamic<?> dynamic);
+    @Shadow
+    public abstract @Nullable LevelSummary getLevelSummary(Dynamic<?> dynamic);
 
     @Synchronized
-    @Shadow protected abstract @Nullable Dynamic<?> readLevelProperties(boolean old);
+    @Shadow
+    protected abstract @Nullable Dynamic<?> readLevelProperties(boolean old);
 
     @Synchronized
-    @Shadow public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);
+    @Shadow
+    public abstract void backupLevelDataFile(DynamicRegistryManager registryManager, SaveProperties saveProperties, @Nullable NbtCompound nbt);
 
     @Synchronized
-    @Shadow public abstract long createBackup() throws IOException;
+    @Shadow
+    public abstract long createBackup() throws IOException;
 
     @Synchronized
-    @Shadow public abstract void deleteSessionLock() throws IOException;
+    @Shadow
+    public abstract void deleteSessionLock() throws IOException;
 
     @Synchronized
-    @Shadow protected abstract void save(Consumer<NbtCompound> nbtProcessor) throws IOException;
+    @Shadow
+    protected abstract void save(Consumer<NbtCompound> nbtProcessor) throws IOException;
 
     @Synchronized
-    @Shadow public abstract void close() throws IOException;
+    @Shadow
+    public abstract void close() throws IOException;
 
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
     @Inject(method = "createBackup", at = @At("HEAD"))

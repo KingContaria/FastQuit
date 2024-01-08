@@ -13,9 +13,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(IntegratedServerLoader.class)
 public abstract class IntegratedServerLoaderMixin {
 
-    @Shadow @Final private LevelStorage storage;
+    @Shadow
+    @Final
+    private LevelStorage storage;
 
-    @Inject(method = "start(Ljava/lang/String;Ljava/lang/Runnable;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "start(Ljava/lang/String;Ljava/lang/Runnable;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void fastquit$waitForSaveOnWorldLoad_cancellable(String levelName, Runnable onCancel, CallbackInfo ci) {
         FastQuit.getSavingWorld(this.storage.getSavesDirectory().resolve(levelName)).ifPresent(server -> FastQuit.wait(server, ci));
         if (ci.isCancelled()) {

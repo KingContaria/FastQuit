@@ -13,10 +13,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EditWorldScreen.class)
 public abstract class EditWorldScreenMixin {
 
-    @Shadow @Final private LevelStorage.Session storageSession;
+    @Shadow
+    @Final
+    private LevelStorage.Session storageSession;
 
-    @Inject(method = {"method_54598", "method_54596"}, at = @At("HEAD"), remap = false, cancellable = true)
-    private void fastquit$waitForSaveOnBackupOrOptimizeWorld_cancellable(CallbackInfo ci) {
+    @Inject(
+            method = {
+                    "method_54598",
+                    "method_54596"
+            },
+            at = @At("HEAD"),
+            require = 2,
+            remap = false,
+            cancellable = true
+    )
+    private void waitForSaveOnBackupOrOptimizeWorld_cancellable(CallbackInfo ci) {
         FastQuit.getSavingWorld(this.storageSession).ifPresent(server -> FastQuit.wait(server, ci));
     }
 }

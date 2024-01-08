@@ -84,6 +84,8 @@ We also wait for the worlds to finish saving when quitting the game to ensure no
 - BurrConnie (Ukrainian)
 - GodGun968 (Simplified Chinese)
 - ImVietnam (Vietnamese)
+- ishi-sama (French)
+- KAGUYA-1137 (Japanese)
 ####
 
 ### Compatibility

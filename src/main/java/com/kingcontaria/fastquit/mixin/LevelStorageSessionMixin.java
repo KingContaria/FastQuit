@@ -63,27 +63,45 @@ public abstract class LevelStorageSessionMixin {
     public abstract void close() throws IOException;
 
     // this now acts as a fallback in case the method gets called from somewhere else than EditWorldScreen
-    @Inject(method = "createBackup", at = @At("HEAD"))
+    @Inject(
+            method = "createBackup",
+            at = @At("HEAD")
+    )
     private void fastquit$waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(FastQuit::wait);
     }
 
-    @Inject(method = "save(Ljava/lang/String;)V", at = @At("TAIL"))
+    @Inject(
+            method = "save(Ljava/lang/String;)V",
+            at = @At("TAIL")
+    )
     private void fastquit$editSavingWorldName(String name, CallbackInfo ci) {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).fastquit$getLevelInfo()).fastquit$setName(name));
     }
 
-    @Inject(method = "deleteSessionLock", at = @At("TAIL"))
+    @Inject(
+            method = "deleteSessionLock",
+            at = @At("TAIL")
+    )
     private void fastquit$deleteSavingWorld(CallbackInfo ci) {
         FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).map(FastQuit.savingWorlds::get).ifPresent(info -> info.deleted = true);
     }
 
-    @WrapWithCondition(method = "close", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"))
+    @WrapWithCondition(
+            method = "close",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/storage/SessionLock;close()V"
+            )
+    )
     private boolean fastquit$checkSessionClose(SessionLock lock) {
         return !FastQuit.occupiedSessions.remove((LevelStorage.Session) (Object) this);
     }
 
-    @Inject(method = "checkValid", at = @At("HEAD"))
+    @Inject(
+            method = "checkValid",
+            at = @At("HEAD")
+    )
     private void fastquit$warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
         if (!Thread.holdsLock(this)) {
             FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {

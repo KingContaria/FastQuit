@@ -26,7 +26,7 @@ public final class FastQuit implements ClientModInitializer {
     public static final ModMetadata FASTQUIT = FabricLoader.getInstance().getModContainer("fastquit").orElseThrow().getMetadata();
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final String LOG_PREFIX = "[" + FASTQUIT.getName() + "] ";
-    public static final FastQuitConfig CONFIG;
+    public static final FastQuitConfig CONFIG = AutoConfig.register(FastQuitConfig.class, Toml4jConfigSerializer::new).getConfig();
 
     /**
      * Synchronized {@link Map} containing all currently saving {@link IntegratedServer}'s, with a {@link WorldInfo} with more information about the world.
@@ -37,11 +37,6 @@ public final class FastQuit implements ClientModInitializer {
      * Stores {@link LevelStorage.Session}'s used by FastQuit as to only close them if no other process is currently using them.
      */
     public static final List<LevelStorage.Session> occupiedSessions = Collections.synchronizedList(new ArrayList<>());
-
-    static {
-        AutoConfig.register(FastQuitConfig.class, Toml4jConfigSerializer::new);
-        CONFIG = AutoConfig.getConfigHolder(FastQuitConfig.class).getConfig();
-    }
 
     @Override
     public void onInitializeClient() {

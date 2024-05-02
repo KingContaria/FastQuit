@@ -2,10 +2,11 @@ package com.kingcontaria.fastquit.mixin;
 
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.plugin.Synchronized;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.WorldSaveHandler;
 import net.minecraft.world.level.storage.LevelStorage;
@@ -15,12 +16,14 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @Mixin(LevelStorage.Session.class)
@@ -68,7 +71,7 @@ public abstract class LevelStorageSessionMixin {
             at = @At("HEAD")
     )
     private void fastquit$waitForSaveOnBackup(CallbackInfoReturnable<Long> cir) {
-        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(FastQuit::wait);
+        this.getSavingWorld().ifPresent(FastQuit::wait);
     }
 
     @Inject(
@@ -76,7 +79,7 @@ public abstract class LevelStorageSessionMixin {
             at = @At("TAIL")
     )
     private void fastquit$editSavingWorldName(String name, CallbackInfo ci) {
-        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).fastquit$getLevelInfo()).fastquit$setName(name));
+        this.getSavingWorld().ifPresent(server -> ((LevelInfoAccessor) (Object) ((LevelPropertiesAccessor) server.getSaveProperties()).fastquit$getLevelInfo()).fastquit$setName(name));
     }
 
     @Inject(
@@ -84,7 +87,7 @@ public abstract class LevelStorageSessionMixin {
             at = @At("TAIL")
     )
     private void fastquit$deleteSavingWorld(CallbackInfo ci) {
-        FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).map(FastQuit.savingWorlds::get).ifPresent(info -> info.deleted = true);
+        this.getSavingWorld().map(FastQuit.savingWorlds::get).ifPresent(info -> info.deleted = true);
     }
 
     @WrapWithCondition(
@@ -104,12 +107,17 @@ public abstract class LevelStorageSessionMixin {
     )
     private void fastquit$warnIfUnSynchronizedSessionAccess(CallbackInfo ci) {
         if (!Thread.holdsLock(this)) {
-            FastQuit.getSavingWorld((LevelStorage.Session) (Object) this).ifPresent(server -> {
+            this.getSavingWorld().ifPresent(server -> {
                 FastQuit.warn("Un-synchronized access to \"" + this.directoryName + "\" session!");
                 if (!server.isOnThread()) {
                     FastQuit.wait(server);
                 }
             });
         }
+    }
+    
+    @Unique
+    private Optional<IntegratedServer> getSavingWorld() {
+        return FastQuit.getSavingWorld((LevelStorage.Session) (Object) this);
     }
 }

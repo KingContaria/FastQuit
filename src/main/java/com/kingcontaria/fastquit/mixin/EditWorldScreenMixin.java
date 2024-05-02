@@ -17,6 +17,8 @@ public abstract class EditWorldScreenMixin {
     @Final
     private LevelStorage.Session storageSession;
 
+    // method_54595 - Optimize World
+    // method_54596 - Make Backup
     @Inject(
             method = {
                     "method_54595",

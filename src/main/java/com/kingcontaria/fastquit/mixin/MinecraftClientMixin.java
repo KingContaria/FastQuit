@@ -3,7 +3,7 @@ package com.kingcontaria.fastquit.mixin;
 import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.TextHelper;
 import com.kingcontaria.fastquit.WorldInfo;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.MessageScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftClientMixin {
 
     @Redirect(
-            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;)V",
+            method = "disconnect(Lnet/minecraft/client/gui/screen/Screen;Z)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/server/integrated/IntegratedServer;isStopping()Z"

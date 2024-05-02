@@ -30,6 +30,7 @@ public abstract class LevelStorageMixin {
         FastQuit.getSavingWorld(this.savesDirectory.resolve(levelName)).ifPresent(FastQuit::wait);
     }
 
+    // method_43418 - lambda in loadSummaries
     @Inject(
             method = "method_43418",
             at = @At(

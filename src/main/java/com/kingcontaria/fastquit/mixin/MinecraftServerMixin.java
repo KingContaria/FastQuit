@@ -4,7 +4,7 @@ import com.kingcontaria.fastquit.FastQuit;
 import com.kingcontaria.fastquit.FastQuitConfig;
 import com.kingcontaria.fastquit.TextHelper;
 import com.kingcontaria.fastquit.WorldInfo;
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.toast.SystemToast;
 import net.minecraft.server.MinecraftServer;

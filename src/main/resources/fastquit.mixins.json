@@ -16,7 +16,7 @@
     "MinecraftServerAccessor",
     "MinecraftServerMixin",
     "OptimizeWorldScreenMixin",
-    "RealmsUploadScreenMixin",
+    "UploadCompressorMixin",
     "WorldListWidgetWorldEntryMixin"
   ],
   "injectors": {

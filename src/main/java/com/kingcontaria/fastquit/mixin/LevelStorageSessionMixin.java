@@ -7,8 +7,8 @@ import com.mojang.serialization.Dynamic;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.world.PlayerSaveHandler;
 import net.minecraft.world.SaveProperties;
-import net.minecraft.world.WorldSaveHandler;
 import net.minecraft.world.level.storage.LevelStorage;
 import net.minecraft.world.level.storage.LevelSummary;
 import net.minecraft.world.level.storage.SessionLock;
@@ -35,7 +35,7 @@ public abstract class LevelStorageSessionMixin {
 
     @Synchronized
     @Shadow
-    public abstract WorldSaveHandler createSaveHandler();
+    public abstract PlayerSaveHandler createSaveHandler();
 
     @Synchronized
     @Shadow
